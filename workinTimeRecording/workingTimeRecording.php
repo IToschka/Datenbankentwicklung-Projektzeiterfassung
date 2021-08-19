@@ -8,6 +8,9 @@
     <body>
         <h1>Erfassungsbereich der Arbeitszeiten</h1>
             <form>
+                <?php
+                // Schleife an dieser Stelle einfügen - Array Liste mit Projektaufgaben + Zuordnung --> prüfen wo PNR übereinstimmt und dafür eine Zeile mit dem Projekt anlegen
+                ?>
                 <input type="text" name="Project" placeholder="Projekt 1">
                 <br>
                 <input type="text" name="Task" placeholder="Projektaufgabe 1">

@@ -7,11 +7,11 @@
 
     <body>
         <?php 
-        // Bedinunung normaler Mitarbeiter
+        // Bedinunung normaler Mitarbeiter erfüllt --> anhand der PNR prüfen wie auch nach Login
         ?>
         <a href="employeeMenu.html"><button>Startmenu</button></a>
         <?php
-        // Bedinunung Projektleiter
+        // Bedinunung Projektleiter erfüllt --> anhand der PNR prüfen wie auch nach Login
         ?>
         <a href="employeeMenu.html"><button>Startmenu</button></a>
         <a href="index.html"><button>Abmelden</button></a>
