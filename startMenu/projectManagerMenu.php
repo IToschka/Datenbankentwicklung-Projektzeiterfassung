@@ -6,18 +6,26 @@
     </head>
 
     <body>
+        <center>
         <h1>Projektmanager - Menü</h1>
-        <a href="mitarbeitererfassung.html"> Erfassungsbereich der Mitarbeiter </a>
-        <br>
-        <a href="projectsAndTasksIndex.html"> Erfassungsbereich der Projekte & Projektaufgaben </a>
-        <br>
-        <a href="employeesAndProjects.html"> Erfassungsbereich der Projektmitarbeiter </a>
-        <br>
-        <a href="workingTimeRecording.html"> Erfassungsbereich der Arbeitszeiten </a>
-        <br>
-        <a href="arbeitszeitauswertung.html"> Auswertungsbereich der Arbeitszeiten </a>
+        <a href="../employeeManagement/employeeManagementMenu.php"><button>Erfassungsbereich der Mitarbeiter</button></a>
         <br>
         <br>
-        <a href="index.html"><button>Abmelden</button></a>
+        <a href="../projectManagement/projectsAndTasksIndex.php"><button>Erfassungsbereich der Projekte & Projektaufgaben</button></a>
+        <br>
+        <br>
+        <a href="../employeesAndProjects.php"><button>Erfassungsbereich der Projektmitarbeiter</button></a>
+        <br>
+        <br>
+        <a href="../workingTimeRecording/workingTimeRecording.php"><button>Erfassungsbereich der Projektarbeitszeiten</button></a>
+        <br>
+        <br>
+        <a href="../x.php"><button>Auswertungsbereich der Arbeitszeiten</button></a>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a href="../login.php"><button>Abmelden</button></a>
+        </center>
     </body>
 </html>

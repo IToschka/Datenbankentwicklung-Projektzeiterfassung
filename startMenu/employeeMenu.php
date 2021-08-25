@@ -6,10 +6,14 @@
     </head>
 
     <body>
+        <center>
         <h1>Mitarbeiter - Menü</h1>
-        <a href="workingTimeRecording.html"> Erfassungsbereich der Arbeitszeiten </a>
+        <a href="../workingTimeRecording/workingTimeRecording.php"><button>Erfassungsbereich der Projektarbeitszeiten</button></a>
         <br>
         <br>
-        <a href="index.html"><button>Abmelden</button></a>
+        <br>
+        <br>
+        <a href="../login.php"><button>Abmelden</button></a>
+        </center>
     </body>
 </html>
