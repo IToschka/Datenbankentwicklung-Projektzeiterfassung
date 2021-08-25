@@ -2,7 +2,7 @@
 
 include_once '../../includes/dbh.inc.php';
 
-if (isset($_POST['save_workingTime'])) {
+if (isset($_POST['button_save_workingTime'])) {
 
     //$lastDateEnderedPlusOne = Last date auslesen, ein Tag addieren und ausgeben
 

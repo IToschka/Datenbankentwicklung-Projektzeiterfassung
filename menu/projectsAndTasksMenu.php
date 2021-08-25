@@ -7,6 +7,7 @@
     </head>
 
     <body>
+    <center>
     <h1>Wählen Sie eine Aktion</h1>
     <a href="projectsAndTasksNew.html">Neues Projekt anlegen </a>
         <br>
@@ -14,5 +15,5 @@
     <br>
     <a href="projectsAndTasksChange.html">Bestehendes Projekt ändern</a>
     </body>
-
+    </center>
 </html>

@@ -6,6 +6,7 @@
     </head>
 
     <body>
+    <center>
     <h1>Mitarbeiterverwaltung - Menü</h1>
 
         <a href="createEmployee.php"> Mitarbeiter erfassen </a>
@@ -14,5 +15,6 @@
         <br>
         <a href="deleteEmployee.php"> Mitarbeiter löschen</a>
         <br>
+    </center>
     </body>
 </html>

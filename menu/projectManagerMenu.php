@@ -8,10 +8,10 @@
     <body>
         <center>
         <h1>Projektmanager - Menü</h1>
-        <a href="../employeeManagement/employeeManagementMenu.php"><button>Erfassungsbereich der Mitarbeiter</button></a>
+        <a href="employeeManagementMenu.php"><button>Erfassungsbereich der Mitarbeiter</button></a>
         <br>
         <br>
-        <a href="../projectManagement/projectsAndTasksIndex.php"><button>Erfassungsbereich der Projekte & Projektaufgaben</button></a>
+        <a href="projectsAndTasksMenu.php"><button>Erfassungsbereich der Projekte & Projektaufgaben</button></a>
         <br>
         <br>
         <a href="../employeesAndProjects.php"><button>Erfassungsbereich der Projektmitarbeiter</button></a>
