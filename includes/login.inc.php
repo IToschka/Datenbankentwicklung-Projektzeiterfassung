@@ -20,7 +20,7 @@ if (isset($_POST['button_login'])) {
   }
   else{
       if(employeeRole($conn, $pnr) == true){
-        $_SESSION['projectRole'] = "projektManager";
+        $_SESSION['projectManager'] = "projektManager";
         header("location: ../startMenu/projectManagerMenu.php");
       }else{
         header("location: ../startMenu/employeeMenu.php");
