@@ -6,6 +6,9 @@
     </head>
 
     <body>
+        <?php
+            $pnr = $_SESSION['pnr'];
+
         <h1>Erfassungsbereich der Projektarbeitszeiten</h1>
             <form action="includes/workingTimeRecording.inc.php" method="POST">
                 <input type="date" name="lastDateEnderedPlusOne" placeholder="Datum">
@@ -18,7 +21,7 @@
                         </tr>
                         <tr>
                             <td>Personalnummer:</td>
-                            <td><input type="text" name="projectTaskID" placeholder="Projektaufgabe"></td>
+                            <td>echo $pnr</td>
                         </tr>
                         <tr>
                             <td>Uhrzeit bei Beginn:</td>
@@ -36,7 +39,9 @@
             </form>
 
 
-            <?php
+              session_start();
+              include_once '../includes/functions.inc.php';
+
             if(isset($_GET["error"])){
                 if($_GET["error"] == "invalidTime"){
                 echo "<p>Die Uhrzeit bei Beendigung darf nicht vor der Uhrzeit bei Beginn liegen!";

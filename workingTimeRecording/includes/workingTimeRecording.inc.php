@@ -1,15 +1,16 @@
 <?php
 
 include_once '../../includes/dbh.inc.php';
+include_once '../../includes/loginHeader.php';
 
 if (isset($_POST['button_save_workingTime'])) {
 
-    //$lastDateEnderedPlusOne = Last date auslesen, ein Tag addieren und ausgeben
+    //$lastDateEnderedPlusOne = Last date auslesen, ein Tag addieren und ausgeben, wenn Wochentag --> function
 
-    //$pnr = angemeldete PNR auslesen und ausgeben
+    $pnr = $_SESSION['pnr'];
 
-    $projectID = $_POST['projectID'];
-    $projectTaskID = $_POST['projectTaskID'];
+    $projectID;
+    $projectTaskID;
     $beginTime = $_POST['beginTime'];
     $endTime = $_POST['endTime'];
 

@@ -11,19 +11,6 @@ function invalidTime($beginTime, $endTime){
     return $result;
 }
 
-/*
-function stmtfailed(?){
-    $result;
-    if(?){
-        $result = true;
-    }
-    else {
-         $result = false;
-    }
-    return $result;
-}
-*/
-
 function emptyInput($beginTime, $endTime){
     $result;
     if(empty($beginTime) && empty($endTime)) {
@@ -44,16 +31,3 @@ function oneEmptyInput($beginTime, $endTime){
     }
     return $result;
 }
-
-/*
-function none(?){
-    $result;
-    if(?){
-        $result = true;
-    }
-    else {
-         $result = false;
-    }
-    return $result;
-}
-*/
