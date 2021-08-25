@@ -5,10 +5,10 @@ include_once '../../includes/loginHeader.php';
 
 if (isset($_POST['button_save_workingTime'])) {
 
-    //$lastDateEnderedPlusOne = Last date auslesen, ein Tag addieren und ausgeben, wenn Wochentag --> function
+    $recordingDate;
+    // = Last date auslesen, ein Tag addieren und ausgeben, wenn Wochentag --> function
 
-    $pnr = $_SESSION['pnr'];
-
+    $pnr;
     $projectID;
     $projectTaskID;
     $beginTime = $_POST['beginTime'];
@@ -38,6 +38,9 @@ if (isset($_POST['button_save_workingTime'])) {
         header("location: ../workingTimeRecording.php?error=oneEmptyInput");
         exit();
     }
+
+    saveTimeRecoring($conn, $pnr, $projectID, $projectTaskID, $recordingDate, $beginTime, $endTime);
+        
 
     /*
     if(none(??) !== false){

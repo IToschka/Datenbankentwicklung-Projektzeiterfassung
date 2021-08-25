@@ -6,13 +6,16 @@
     </head>
 
     <body>
-        <?php
-            $pnr = $_SESSION['pnr'];
+
 
         <h1>Erfassungsbereich der Projektarbeitszeiten</h1>
             <form action="includes/workingTimeRecording.inc.php" method="POST">
                 <input type="date" name="lastDateEnderedPlusOne" placeholder="Datum">
-                <input type="text" name="yourPNR" placeholder="PNR">
+                <?php
+                    session_start();
+                    $pnr = $_SESSION['pnr'];
+                    echo $pnr
+                ?>
                 <table>
                     <tbody>
                         <tr>
@@ -21,7 +24,7 @@
                         </tr>
                         <tr>
                             <td>Personalnummer:</td>
-                            <td>echo $pnr</td>
+                            <td></td>;
                         </tr>
                         <tr>
                             <td>Uhrzeit bei Beginn:</td>
@@ -33,13 +36,13 @@
                         </tr>
                     </tbody>
                 </table>
-                    
+
                 <input type="submit" name="button_save_workingTime" value="Speichern">
-                
+
             </form>
 
+            <?php
 
-              session_start();
               include_once '../includes/functions.inc.php';
 
             if(isset($_GET["error"])){
@@ -48,7 +51,7 @@
                 }
                 elseif($_GET["error"] == "stmtfailed"){
                     echo "<p>Etwas ist schief gelaufen!</p>";
-                } 
+                }
                 elseif($_GET["error"] == "emptyInput"){
                 echo "<p>Es wurde erfasst, das der Mitarbeiter an diesem Tag an keinem Projekt gearbeitet hat.</p>";
                 }
@@ -57,7 +60,7 @@
                     }
                 elseif($_GET["error"] == "none"){
                     echo "<p>Die Projektzeit(en) wurde(n) erfolgreich erfasst.</p>";
-                }    
+                }
             }
             ?>
 
