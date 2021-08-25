@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include_once 'dbh.inc.php';
 
 if (isset($_POST['button_login'])) {
@@ -17,12 +17,17 @@ if (isset($_POST['button_login'])) {
   if(login($conn, $pnr, $password)!== false){
       header("location: ../login.php?error=incorrectLoginData");
       exit();
-  }else{
-    echo "Angemeldet";
-    header("location: ../employeeManagement/createEmployee.php");
+  }
+  else{
+      if(employeeRole($conn, $pnr) == true){
+        $_SESSION['projectRole'] = "projektManager";
+        header("location: ../startMenu/projectManagerMenu.php");
+      }else{
+        header("location: ../startMenu/employeeMenu.php");
+      }
   }
 
 } else {
-  header("location: ../login.php");
-  exit();
+    header("location: ../login.php");
+    exit();
 }

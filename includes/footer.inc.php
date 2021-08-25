@@ -6,8 +6,11 @@
     </head>
 
     <body>
-        <?php 
+        <?php
         // Bedinunung normaler Mitarbeiter erfüllt --> anhand der PNR prüfen wie auch nach Login
+        if()
+
+
         ?>
         <a href="employeeMenu.html"><button>Startmenu</button></a>
         <?php
