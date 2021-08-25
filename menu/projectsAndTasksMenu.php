@@ -3,17 +3,20 @@
 
     <head>
    <meta charset="utf-8">
+   <link rel="stylesheet" href="../css/style.css">
    <title>Erfassungsbereich Projekte & Projektaufgaben </title>
     </head>
 
     <body>
     <center>
-    <h1>Wählen Sie eine Aktion</h1>
-    <a href="projectsAndTasksNew.html">Neues Projekt anlegen </a>
-        <br>
-    <a href="projectsAndTasksCopy.html">Projekt aus bestehendem Projekt anlegen</a>
-    <br>
-    <a href="projectsAndTasksChange.html">Bestehendes Projekt ändern</a>
+    <h1>Erfassungsbereich Projekte & Projektaufgaben</h1>
+    <nav>
+    <ul>
+      <li><a href="../projectManagement/projectsAndTasksNew.php"> Neues Projekt anlegen </a></li>
+      <li><a href="../projectManagement/projectsAndTasksCopy.php">Projekt kopieren</a></li>
+      <li><a href="../projectManagement/projectsAndTasksChange.php">Projekt ändern</a></li>
+    </ul>
+    </nav>
     </body>
-    </center>
+
 </html>

@@ -1,15 +1,19 @@
+<?php
+    include_once '../menu/employeeManagementMenu.php';
+?>
 <!DOCTYPE html>
 <html>
     <head>
        <meta charset="utf-8">
+       <link rel="stylesheet" href="../css/style.css">
        <title></title>
     </head>
 
     <body>
-    <h1>Mitarbeiter anlegen</h1>
+        
     <form action="includes/employeeQueries.inc.php" method="POST">
     <table>
-            <tbody>                
+            <tbody>
                 <tr>
                     <td>Vorname*:</td>
                     <td><input type="text" name="firstname" placeholder="Vorname"></td>
