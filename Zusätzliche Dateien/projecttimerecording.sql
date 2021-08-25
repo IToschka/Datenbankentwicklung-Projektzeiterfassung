@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 19. Jul 2021 um 10:19
+-- Erstellungszeit: 25. Aug 2021 um 08:27
 -- Server-Version: 10.4.19-MariaDB
 -- PHP-Version: 8.0.7
 
@@ -21,6 +21,25 @@ SET time_zone = "+00:00";
 -- Datenbank: `projecttimerecording`
 --
 
+DELIMITER $$
+--
+-- Funktionen
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `GeneratePNR` () RETURNS MEDIUMINT(6) Begin
+DECLARE MaxPnr MEDIUMINT(6);
+
+    Select Max(PNR) Into MaxPnr
+    From employee;
+    If MaxPnr is Null Then
+    SET MaxPnr = 0;
+    Else 
+    SET  MaxPnr = MaxPnr + 1;
+    End if;
+      return MaxPnr;
+  End$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -29,10 +48,12 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `employee` (
   `PNR` mediumint(6) NOT NULL,
-  `Name` varchar(50) NOT NULL,
+  `Firstname` varchar(50) NOT NULL,
+  `Lastname` varchar(50) NOT NULL,
   `CoreWorkingTimeFrom` time NOT NULL DEFAULT '08:00:00',
   `CoreWorkingTimeTo` time NOT NULL DEFAULT '16:00:00',
   `HiringDate` date NOT NULL,
+  `WeeklyWorkingHours` tinyint(4) NOT NULL,
   `LastDateEntered` date DEFAULT NULL,
   `ProjectManager` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -41,9 +62,12 @@ CREATE TABLE `employee` (
 -- Daten für Tabelle `employee`
 --
 
-INSERT INTO `employee` (`PNR`, `Name`, `CoreWorkingTimeFrom`, `CoreWorkingTimeTo`, `HiringDate`, `LastDateEntered`, `ProjectManager`) VALUES
-(0, 'Admin', '00:00:00', '00:00:00', '2000-01-01', NULL, 1),
-(1000, 'Hans Müller', '08:00:00', '16:00:00', '2021-06-06', NULL, 0);
+INSERT INTO `employee` (`PNR`, `Firstname`, `Lastname`, `CoreWorkingTimeFrom`, `CoreWorkingTimeTo`, `HiringDate`, `WeeklyWorkingHours`, `LastDateEntered`, `ProjectManager`) VALUES
+(0, 'Admin', '', '00:00:00', '00:00:00', '2000-01-01', 0, NULL, 1),
+(1, 'Hans Müller', '', '08:00:00', '16:00:00', '2021-06-06', 0, NULL, 1),
+(2, 'Tamara', 'Romer', '07:30:00', '15:30:00', '2021-08-22', 25, NULL, 1),
+(3, 'Tamara', 'Romer', '03:47:00', '14:47:00', '2021-07-27', 20, NULL, 0),
+(4, 'Lili', 'Bauer', '09:00:00', '20:00:00', '2021-08-02', 25, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -66,6 +90,16 @@ CREATE TABLE `login` (
   `PNR` mediumint(6) NOT NULL,
   `Password` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `login`
+--
+
+INSERT INTO `login` (`PNR`, `Password`) VALUES
+(1, 'Hallo'),
+(2, 'IchhabekeinenPaln'),
+(3, 'Hallo'),
+(4, 'FGtv400!');
 
 -- --------------------------------------------------------
 
