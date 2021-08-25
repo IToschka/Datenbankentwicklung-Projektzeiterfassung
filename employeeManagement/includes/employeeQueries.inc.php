@@ -6,7 +6,7 @@ if (isset($_POST['button_create'])) {
     $result = mysqli_query($conn, $sql);
     $row= mysqli_fetch_assoc($result);
     $pnr = $row['PNR'];
-    
+
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $password = $_POST['password'];

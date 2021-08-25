@@ -10,7 +10,7 @@
     </head>
 
     <body>
-        
+
     <form action="includes/employeeQueries.inc.php" method="POST">
     <table>
             <tbody>
