@@ -10,12 +10,12 @@
     </head>
 
     <body>
-    <form action="includes/employeeQueries.inc.php" method="POST">
+    <form action="includes/employeeManagement_Script.inc.php" method="POST">
     <table>
             <tbody>
                 <tr>
                     <td>Personalnummer:</td>
-                    <td><input type="text" name="pnr" placeholder="Personalnummer"></td>
+                    <td><input type="text" name="pnr" placeholder="Personalnummer" maxlength="6" required></td>
                 </tr>
                 <tr>
                     <td>Kernarbeitszeit von:</td>
@@ -40,10 +40,7 @@
 
     <?php
     if(isset($_GET["error"])){
-        if($_GET["error"] == "emptyInput"){
-            echo "<p>Bitte geben Sie eine Personalnummer ein!</p>";
-        }
-        elseif ($_GET["error"] == "pnrNotExists") {
+        if($_GET["error"] == "pnrNotExists") {
             echo "<p>Die Personalnummer existiert nicht!</p>";
         }
         elseif ($_GET["error"] == "invalidWeeklyWorkingHours") {

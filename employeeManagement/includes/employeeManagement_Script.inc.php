@@ -1,5 +1,6 @@
 <?php
 include_once '../../includes/dbh.inc.php';
+include_once 'employeeManagement_Functions.inc.php';
 
 if (isset($_POST['button_create'])) {
     $sql = "SELECT GeneratePNR() AS PNR;";
@@ -20,13 +21,7 @@ if (isset($_POST['button_create'])) {
         $projectManager = false;
     }
 
-    require_once 'createFunctions.inc.php';
 
-    if(emptyInput($firstname, $lastname, $password, $coreTimeFrom, $coreTimeTo,
-    $hiringDate, $weeklyWorkingHours) !== false){
-        header("location: ../createEmployee.php?error=emptyInput");
-        exit();
-    }
 
     if(invalidFirstname($firstname) !== false){
         header("location: ../createEmployee.php?error=invalidFirstname");
@@ -60,26 +55,16 @@ if (isset($_POST['button_create'])) {
     createLogin($conn, $pnr, $password);
     }
 
-
-
-
-
-
-
     elseif(isset($_POST['button_update'])){
         $pnr = $_POST['pnr'];
         $coreTimeFrom = $_POST['coreTimeFrom'];
         $coreTimeTo = $_POST['coreTimeTo'];
         $weeklyWorkingHours = $_POST['weeklyWorkingHours'];
 
-        require_once 'updateFunctions.inc.php';
 
-        if(emptyInput($pnr) !== false){
-        header("location: ../updateEmployee.php?error=emptyInput");
-        exit();
-        }
 
-        if(PnrNotExists($conn, $pnr) !== false){
+
+        if(PnrNotExistsUpdate($conn, $pnr) !== false){
             header("location: ../updateEmployee.php?error=pnrNotExists");
             exit();
         }
@@ -99,14 +84,8 @@ if (isset($_POST['button_create'])) {
     elseif(isset($_POST['button_delete'])) {
         $pnr = $_POST['pnr'];
 
-        require_once 'deleteFunctions.inc.php';
 
-        if(emptyInput($pnr) !== false){
-        header("location: ../deleteEmployee.php?error=emptyInput");
-        exit();
-        }
-
-        if(PnrNotExists($conn, $pnr) !== false){
+        if(PnrNotExistsDelete($conn, $pnr) !== false){
             header("location: ../deleteEmployee.php?error=pnrNotExists");
             exit();
         }
