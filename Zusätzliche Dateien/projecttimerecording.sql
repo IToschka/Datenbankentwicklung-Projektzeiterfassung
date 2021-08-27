@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 25. Aug 2021 um 08:27
+-- Erstellungszeit: 27. Aug 2021 um 11:25
 -- Server-Version: 10.4.19-MariaDB
 -- PHP-Version: 8.0.7
 
@@ -109,10 +109,21 @@ INSERT INTO `login` (`PNR`, `Password`) VALUES
 
 CREATE TABLE `project` (
   `ProjectID` mediumint(9) NOT NULL,
-  `Projektname` varchar(50) NOT NULL,
+  `ProjectName` varchar(50) NOT NULL,
   `ProjectManagerPNR` mediumint(6) NOT NULL,
   `BeginDate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `project`
+--
+
+INSERT INTO `project` (`ProjectID`, `ProjectName`, `ProjectManagerPNR`, `BeginDate`) VALUES
+(1, 'Gebäudesanierung', 2, '2021-09-20'),
+(2, 'S/4 HANA Conversion', 4, '2022-03-20'),
+(3, 'Entwicklung Bauteil X', 2, '2021-09-20'),
+(4, 'Testprojekt', 4, '2022-03-20'),
+(5, 'Softwareauswahl Einkaufsprozesse', 3, '2022-04-03');
 
 -- --------------------------------------------------------
 
@@ -125,6 +136,23 @@ CREATE TABLE `projecttask` (
   `ProjectID` mediumint(9) NOT NULL,
   `Description` varchar(2000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `projecttask`
+--
+
+INSERT INTO `projecttask` (`ProjectTaskID`, `ProjectID`, `Description`) VALUES
+(1, 1, 'Auswahl eines Anbieters, der unseren qualikativen Anforderungen gewachsen ist.'),
+(1, 2, 'Ansatz für die Konvertierung wählen.'),
+(1, 3, 'Zeichnung des Bauteils erstellen.'),
+(2, 1, 'Planung der Raumwechsel.'),
+(2, 2, 'Aufteilung der Zuständigkeitsbereiche.'),
+(2, 3, 'Technische Machbarkeit abklären und konkreten Bauplan erstellen.'),
+(3, 2, 'Schulungen durchführen für die Fachbereiche'),
+(3, 3, 'Lieferantenauswahl und Einkauf der Bauteile.'),
+(4, 3, 'Bauphase'),
+(5, 3, 'Testphase'),
+(6, 3, 'Übergang zur Serienproduktion managen.');
 
 -- --------------------------------------------------------
 
@@ -169,7 +197,7 @@ ALTER TABLE `login`
 --
 ALTER TABLE `project`
   ADD PRIMARY KEY (`ProjectID`),
-  ADD UNIQUE KEY `Projektname` (`Projektname`),
+  ADD UNIQUE KEY `Projektname` (`ProjectName`),
   ADD KEY `ProjectManagerPNR` (`ProjectManagerPNR`);
 
 --
@@ -195,7 +223,7 @@ ALTER TABLE `timerecording`
 -- AUTO_INCREMENT für Tabelle `project`
 --
 ALTER TABLE `project`
-  MODIFY `ProjectID` mediumint(9) NOT NULL AUTO_INCREMENT;
+  MODIFY `ProjectID` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints der exportierten Tabellen
