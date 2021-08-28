@@ -1,21 +1,9 @@
 <?php
 
-function emptyInput($firstname, $lastname, $password, $coreTimeFrom, $coreTimeTo,
-    $hiringDate, $weeklyWorkingHours) {
-        $result;
-        if(empty($firstname) || empty($lastname) || empty($password) || empty($coreTimeFrom)
-        || empty($coreTimeTo)|| empty($hiringDate)|| empty($weeklyWorkingHours)) {
-            $result = true;
-        }
-        else {
-            $result = false;
-        }
-        return $result;
-    }
-
+//Funktionen für Mitarbeiter anlegen
 function invalidFirstname($firstname){
     $result;
-    if(!preg_match("/^[a-zA-ZäöüÄÖÜ?ß-]*$/", $firstname) && strlen(trim($firstname))<2) {
+    if(!preg_match("/^[a-zA-ZäöüÄÖÜß \-]+$/", $firstname)) {
             $result = true;
     }
     else{
@@ -26,7 +14,7 @@ function invalidFirstname($firstname){
 
 function invalidLastname($lastname){
     $result;
-    if(!preg_match("/^[a-zA-ZäöüÄÖÜ?ß-]*$/", $lastname) && strlen(trim($lastname))<2) {
+    if(!preg_match("/^[a-zA-ZäöüÄÖÜß \-]+$/", $lastname)) {
             $result = true;
     }
     else{
@@ -96,29 +84,15 @@ function createLogin($conn, $pnr, $password){
     mysqli_stmt_bind_param($stmt, "ss",$pnr, $password);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: ../createEmployee.php?error=none?");
+    header("location: ../createEmployee.php?error=none");
     exit();
 }
 
 
 
 
-
-
-
-
-function emptyInput($pnr) {
-        $result;
-        if(empty($pnr)) {
-            $result = true;
-        }
-        else {
-            $result = false;
-        }
-        return $result;
-    }
-
-    function pnrNotExists($conn, $pnr){
+//Funktionen für Mitarbeiter Ändern
+    function pnrNotExistsUpdate($conn, $pnr){
         $sql = "SELECT * FROM employee WHERE PNR = ?;";
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -193,17 +167,9 @@ function emptyInput($pnr) {
 
 
 
+//Funktionen für Mitarbeiter löschen
 
-
-
-
-
-
-
-
-
-
-    function pnrNotExists($conn, $pnr){
+    function pnrNotExistsDelete($conn, $pnr){
         $sql = "SELECT * FROM employee WHERE PNR = ?;";
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){

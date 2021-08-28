@@ -23,7 +23,7 @@ function emptyInput($beginTime, $endTime){
 }
 
 function oneEmptyInput($beginTime, $endTime){
-    if(empty($beginTime) || empty($endTime) {
+    if(empty($beginTime) || empty($endTime)) {
         $result = true;
     }
     else {
@@ -37,8 +37,7 @@ function saveTimeRecoring($conn, $pnr, $projectID, $projectTaskID, $recordingDat
   $sql = "INSERT INTO timerecording (PNR, ProjectID, ProjectTaskID, RecordingDate, TaskBegin, TaskEnd) VALUES (?, ?, ?, ?, ?, ?);";
   $stmt = mysqli_stmt_init($conn);
   if(!mysqli_stmt_prepare($stmt, $sql)){
-    ///Header muss angepasst
-      header("location: ../createEmployee.php?error=stmtfailed");
+      header("location: ../workingTimerRecording.php?error=stmtfailed");
       exit();
   }
 
