@@ -6,37 +6,43 @@
     </head>
 
     <body>
-
-
         <h1>Erfassungsbereich der Projektarbeitszeiten</h1>
-            <form action="includes/workingTimeRecording.inc.php" method="POST">
-                <input type="date" name="lastDateEnderedPlusOne" placeholder="Datum">
-                <?php
-                    session_start();
-                    $pnr = $_SESSION['pnr'];
-                    echo $pnr
-                ?>
+            <form action="includes/workingTimeRecordingScript.inc.php" method="POST">
                 <table>
                     <tbody>
-                        <tr>
-                            <td>ProjektID:</td>
-                            <td><input type="text" name="projectID" placeholder="Projekt"></td>
+                        <tr> 
+                            <td>Erfassungsdatum:</td>
+                            <td><input type="date" name="recordingDate" placeholder="Datum">
                         </tr>
                         <tr>
                             <td>Personalnummer:</td>
-                            <td></td>;
+                            <td><input type="text" name="pnr" 
+                                value=<?php
+                                    session_start();
+                                    $pnr = $_SESSION['pnr'];
+                                    echo $pnr;
+                                    ?>>
                         </tr>
+                </table> 
+                <br>   
+                <table>
+                    <thead>
                         <tr>
-                            <td>Uhrzeit bei Beginn:</td>
+                            <td>ProjektID:</td>
+                            <td>ProjektaufgabenID:</td>
+                            <td>Beginn:</td>
+                            <td>Ende:</td>
+                        </tr>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" name="projectID" placeholder="Projekt"></td>
+                            <td><input type="text" name="projectTaskID" placeholder="Projektaufgabe"></td>
                             <td><input type="time" name="beginTime" placeholder="Von"></td>
-                        </tr>
-                        <tr>
-                            <td>Uhrzeit bei Beendigung:</td>
                             <td><input type="time" name="endTime" placeholder="Bis"></td>
                         </tr>
                     </tbody>
                 </table>
-
+                <br>
                 <input type="submit" name="button_save_workingTime" value="Speichern">
 
             </form>
