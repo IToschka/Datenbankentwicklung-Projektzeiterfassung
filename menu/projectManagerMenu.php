@@ -13,8 +13,11 @@
           <tr class="startMenuColumn">
            <td><a href="employeeManagementMenu.php">Erfassungsbereich der Mitarbeiter</a></td>
           </tr>
+          <tr class ="startMenuColumn">
+            <td><a href="projectsAndTasksMenu.php">Projekte & Projektaufgaben erfassen</a></td>
+          </tr>
           <tr class="startMenuColumn">
-           <td ><a href="../employeesAndProjects.php">Erfassungsbereich der Projektmitarbeiter</a></td>
+           <td ><a href="../projectManagement/employeesAndProjects.php">Erfassungsbereich der Projektmitarbeiter</a></td>
           </tr>
           <tr class="startMenuColumn">
            <td >  <a href="../workingTimeRecording/workingTimeRecording.php">Erfassungsbereich der Projektarbeitszeiten</a></td>

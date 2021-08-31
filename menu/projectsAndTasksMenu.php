@@ -17,6 +17,7 @@
       <li><a href="../projectManagement/projectsAndTasksChange.php">Projekt ändern</a></li>
     </ul>
     </nav>
+</center>
     </body>
 
 </html>

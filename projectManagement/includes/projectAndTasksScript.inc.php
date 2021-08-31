@@ -7,40 +7,44 @@ if (isset($_POST['button_createProject'])) {
   $projectName = $_POST['projectname'];
   $beginDate = $_POST['beginDate'];
   $amountTasks= $_POST['amountTasks'];
+  $projectManager = $_POST['projectManager'];
+  
+  date_default_timezone_set("Europe/Berlin");
+$timestamp = time();
+$date = date("d.m.Y");
+
+$task = $_POST['task'];
 
 //create functions
-if(emptyInput($projectName, $beginDate) !== false){
-    header("location: ../projectsAndTasksNew.php?error=emptyInput");
+if(invalidDate($beginDate) !== false) {
+    header("location: ../projectsAndTaskNew.php?error=invalidDate");
+    exit();
+}
+ if(invalidProjectManagerPNR($projectManager)) {
+    header("location: ../projectAndTasksNew.php?error=invalidProjectManagerPNR");
     exit();
 }
 
-createProject($conn, $projectName, $beginDate);
+if(numericProjectManagerPNR($projectManager) !== false) {
+    header("location: ../projectsAndTaskNew.php?error=numericProjectManager");
+    exit();
 }
 
+createProject($conn, $projectName, $beginDate, $projectManager);
+}
 
+if (isset($_POST['button_createTasks'])) {
+    createTasks($task);
+}
 
-/*
-Anderes File
+//----------------------------------------------------------------
 
-include_once '../../includes/dbh.inc.php';
+//Mitarbeiter Projekte zuordnen
 
-if (isset($_POST['button_create'])) {
-    $sql = "SELECT GeneratePNR() AS PNR;";
-    $result = mysqli_query($conn, $sql);
-    $row= mysqli_fetch_assoc($result);
-    $pnr = $row['PNR'];
+if (isset($_POST['button_connect'])) {
+    $pnr = $_POST["pnr"];
+    $projectID = $_POST['projectID'];
 
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $password = $_POST['password'];
-    $coreTimeFrom = $_POST['coreTimeFrom'];
-    $coreTimeTo = $_POST['coreTimeTo'];
-    $hiringDate = $_POST['hiringDate'];
-    $weeklyWorkingHours = $_POST['weeklyWorkingHours'];
-    if (isset($_POST['projectManager'])){
-        $projectManager = true;
-    }else{
-        $projectManager = false;
-    }
+    createConnection($conn, $pnr, $projectID);
+}
 
-*/
