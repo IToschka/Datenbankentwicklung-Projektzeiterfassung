@@ -9,42 +9,99 @@ if (isset($_POST['button_createProject'])) {
   $amountTasks= $_POST['amountTasks'];
   $projectManager = $_POST['projectManager'];
   
-  date_default_timezone_set("Europe/Berlin");
-$timestamp = time();
-$date = date("d.m.Y");
+  //$task = $_POST['task'];
 
-$task = $_POST['task'];
 
-//create functions
-if(invalidDate($beginDate) !== false) {
-    header("location: ../projectsAndTaskNew.php?error=invalidDate");
+if(invalidDate($date, $beginDate) !== false) {
+    header("location: ../projectsAndTasksNew.php?error=invalidDate");
     exit();
 }
- if(invalidProjectManagerPNR($projectManager)) {
-    header("location: ../projectAndTasksNew.php?error=invalidProjectManagerPNR");
+ if(invalidProjectManagerPNR($conn, $projectManager)) {
+    header("location: ../projectsAndTasksNew.php?error=invalidProjectManagerPNR");
     exit();
 }
 
 if(numericProjectManagerPNR($projectManager) !== false) {
-    header("location: ../projectsAndTaskNew.php?error=numericProjectManager");
+    header("location: ../projectsAndTasksNew.php?error=numericProjectManagerPNR");
     exit();
-}
+} 
 
 createProject($conn, $projectName, $beginDate, $projectManager);
+countTasks($amountTasks);
 }
 
-if (isset($_POST['button_createTasks'])) {
-    createTasks($task);
+
+elseif (isset($_POST['button_createTasks'])) {
+    //createTasks($task); 
+} 
+
+//----------------------------------------------------------------
+
+//Projekt kopieren
+elseif(isset($_POST['button_change'])) {
+    $projectName = $_POST['projectname'];
+  $beginDate = $_POST['beginDate'];
+  $amountTasks= $_POST['amountTasks'];
+  $projectManager = $_POST['projectManager'];
+
+  changeProject($conn, $projectName, $beginDate, $projectManager);
+
 }
 
 //----------------------------------------------------------------
 
-//Mitarbeiter Projekte zuordnen
+//Mitarbeiter Projekten zuordnen
 
-if (isset($_POST['button_connect'])) {
+
+
+elseif (isset($_POST['button_connect'])) {
     $pnr = $_POST["pnr"];
     $projectID = $_POST['projectID'];
 
-    createConnection($conn, $pnr, $projectID);
+if(invalidpnr($conn, $pnr) !== false) {
+    header("location: ../employeesAndProjects.php?error=invalidpnr");
+    exit();
+}
+if(invalidProjectID($conn, $projectID) !== false) {
+    header("location: ../employeesAndProjects.php?error=invalidProjectID");
+    exit();
+} 
+if(numericPNR($pnr) !== false) {
+    header("location: ../employeesAndProjects.php?error=inumericPNR");
+    exit();
+} 
+
+createConnection($conn, $pnr, $projectID);
 }
 
+elseif(isset($_POST['button_disconnect'])) {
+    $pnr = $_POST["pnr"];
+    $projectID = $_POST['projectID'];
+
+if(invalidpnr($conn, $pnr) !== false) {
+    header("location: ../employeesAndProjects.php?error=invalidpnr");
+    exit();
+}
+if(invalidProjectID($conn, $projectID) !== false) {
+    header("location: ../employeesAndProjects.php?error=invalidProjectID");
+    exit();
+} 
+deleteConnection($conn, $pnr, $projectID);
+}
+
+
+elseif(isset($_POST['button_projectsAndTasksMenu'])){
+    header("location: ../projectsAndTasksMenu.php");
+    exit();
+}
+
+elseif(isset($_POST['button_projectManagerMenu'])){
+    header("location: ../projectManagerMenu.php");
+    exit();
+}
+elseif(isset($_POST['button_disconnect'])) {
+    $pnr = $_POST["pnr"];
+    $projectID = $_POST['projectID'];
+
+    deleteConnection($conn, $pnr, $projectID);
+}

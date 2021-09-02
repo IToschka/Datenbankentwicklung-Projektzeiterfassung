@@ -24,7 +24,7 @@
                       </tr>
                       <tr>
                       <td>PNR Projektleiter:</td>
-                      <td><input type="text" name="projektManager" required></td> 
+                      <td><input type="text" name="projectManager" required></td> 
                       <tr>
                           <td>Anzahl der Aufgaben</td>
                           <td><input type="number" name="amountTasks"></td>
@@ -33,6 +33,8 @@
               </table>
 
             <input type="submit" name="button_createProject" value="Eingaben speichern">
+            <input type="submit" name="button_projectManagerMenu" value="Zurück zum Hauptmenü">
+            
          </form>
 
          <?php
@@ -41,10 +43,10 @@
                  echo "<p>Das angegebene Datum liegt in der Vergangenheit!</p>";
              }
            elseif ($_GET["error"] == "invalidProjectManagerPNR") {
-                echo "<p>Dieser Mitarbeiter ist kein Projektleiter!</p>";
-            }
+                echo "<p>Dieser Mitarbeiter ist kein Projektleiter!</p>"; 
+            } 
             elseif ($_GET["error"] == "numericProjectManagerPNR") {
-                echo "<p>Die PNR der Projektleiters muss darf nur nummerische Werte enthalten!</p>";
+                echo "<p>Die PNR des Projektleiters muss darf nur nummerische Werte enthalten!</p>";
             }
              elseif ($_GET["error"] == "none") {
                  echo "<p>Das Projekt wurde erfolgreich angelegt!</p>";
