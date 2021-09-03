@@ -16,7 +16,7 @@ if(invalidDate($date, $beginDate) !== false) {
     header("location: ../projectsAndTasksNew.php?error=invalidDate");
     exit();
 }
- if(invalidProjectManagerPNR($conn, $projectManager)) {
+ if(invalidProjectManagerPNR($conn, $projectManager) !== false) {
     header("location: ../projectsAndTasksNew.php?error=invalidProjectManagerPNR");
     exit();
 }
@@ -46,6 +46,12 @@ elseif(isset($_POST['button_change'])) {
 
   changeProject($conn, $projectName, $beginDate, $projectManager);
 
+}
+
+//----------------------------------------------------------------
+
+elseif(isset($_POST['button_change'])) {
+    $projectID = $_POST['projectID'];
 }
 
 //----------------------------------------------------------------

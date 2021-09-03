@@ -19,7 +19,8 @@ function invalidProjectManagerPNR($conn, $projectManager) {
         $sql = "SELECT * FROM employee WHERE ProjectManager = '1' AND PNR = ?;";
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
-            header("location: ../projectsAndTasksNew.php?error=invalidProjectManager");
+                echo "SQL Statement failed";
+                header("location: ../projectsAndTasksNew.php?error=stmtfailed");
             exit();
         }
         mysqli_stmt_bind_param($stmt, "s", $pnr);
@@ -115,13 +116,46 @@ else {
 
 //------------------------------------------------------------------------
 
+function choseProject($conn, $projectID) {
+        $sql = "SELECT (ProjectID, BeginDate, ProjectManagerPNR) FROM project WHERE ProjectID = ?;";
+}
+
+function changeProject($conn, $projectName, $beginDate, $projectManager) {
+        $sql = "INSERT INTO project (ProjectName, BeginDate, ProjectManagerPNR) VALUES (?, ?, ?);";
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)) {
+                echo "SQL Statement failed";
+                header("location: ../projectsAndTasksChange.php?error=stmtfailed");
+                exit();
+        }
+        else {
+                mysqli_stmt_bind_param($stmt, "sss", $projectName, $beginDate, $projectManager);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+                header("location: ../projectsAndTasksChange.php?error=none");
+                
+                exit();
+        
+        }
+function displayTasks($conn, $projectID) {
+        $sql = "SELECT ProjectTaskID, Description FROM projecttask WHERE ProjectID = ?;";
+
+} 
+
+function changeTask($conn, $task) {
+        $sql = "INSERT (Description) INTO projecttask VALUES ?;";
+}
+
+//------------------------------------------------------------------------
+
 //Personalnummer und ProjektID muss es geben. Muss mit $conn sein siehe oben. Beides
 
 function invalidpnr($conn, $pnr) {
         $sql =  "SELECT * FROM employee WHERE PNR = ?;";
         $stmt = mysqli_stmt_init($conn);                
         if(!mysqli_stmt_prepare($stmt, $sql)){
-        header("location: ../employeesAndProjects.php?error=invalidpnr");
+                echo "SQL Statement failed";
+                header("location: ../employeesAndProjects.php?error=stmtfailed");
         exit();
         }
         mysqli_stmt_bind_param($stmt, "s", $pnr);
@@ -144,7 +178,8 @@ function invalidProjectID($conn, $projectID) {
         $sql =  "SELECT * FROM project WHERE ProjectID = ?;";
         $stmt = mysqli_stmt_init($conn);                
         if(!mysqli_stmt_prepare($stmt, $sql)){
-        header("location: ../employeesAndProjects.php?error=projectID");
+                echo "SQL Statement failed";
+                header("location: ../employeesAndProjects.php?error=stmtfailed");
         exit();
         }
         mysqli_stmt_bind_param($stmt, "s", $pnr);
