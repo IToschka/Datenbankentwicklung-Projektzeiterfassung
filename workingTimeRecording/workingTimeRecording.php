@@ -8,13 +8,14 @@
     <body>
         <?php
             session_start();
+            include_once '../includes/dbh.inc.php';
+
+
   
         ?>
         <h1>Erfassungsbereich der Projektarbeitszeiten</h1>
             <form action="includes/workingTimeRecordingScript.inc.php" method="POST">
                 <?php 
-                   include_once '../includes/dbh.inc.php';
-                /*
                     //Projekt und Projektaufgeben, abhängig von PNR, dem Erfassungsdatum und dem Projektstart ausgeben
                     $sql ='SELECT ProjectID, ProjectTaskID, ProjectTask FROM employeeproject ep, project p, projecttask pt
                         WHERE ep.pnr = ? AND ep.projectID = p.projectID AND p.projectID = pt.projectID AND ? >= p.BeginDate;';
@@ -33,7 +34,7 @@
                     $countResult = $result->num_rows();
 
                     //Variable für die Anzahl der Projekte, die dem Mitarbeiter angezeigt werden
-                    $countRow = 0;*/
+                    $countRow = 0;
                 ?>
                     <table>
                         <tbody>
@@ -62,13 +63,13 @@
                                     <td>Beginn:</td>
                                     <td>Ende:</td>
                                 </tr>
-               <?php /*
+               <?php 
                    //Zeilen erstellen und mit Projekten füllen
                     while($countResult = $result->fetch_assoc()) {
                         echo                 
                         '<tbody>
                                 <tr>
-                                    <td><input type="text" name="projectID" value=  $countResult['projectID']></td>
+                                    <td><input type="text" name="projectID" value= $countResult['projectID']></td>
                                     <td><input type="text" name="projectTaskID" value=  $countResult['projectTaskID']></td>
                                     <td><input type="time" name="beginTime'.$countRow'"></td>
                                     <td><input type="time" name="endTime'.$countRow'"></td>
@@ -76,7 +77,7 @@
                             </tbody>';
                         
                     }
-                    </table>*/
+                    </table>
                 ?>
                 <br>
                 <input type="submit" name="button_save_workingTime" value="Speichern">
