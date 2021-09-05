@@ -8,14 +8,13 @@
     <body>
         <?php
             session_start();
-            include_once '../includes/dbh.inc.php';
-
-
   
         ?>
         <h1>Erfassungsbereich der Projektarbeitszeiten</h1>
             <form action="includes/workingTimeRecordingScript.inc.php" method="POST">
-                <?php /*
+                <?php 
+                   include_once '../includes/dbh.inc.php';
+                /*
                     //Projekt und Projektaufgeben, abhängig von PNR, dem Erfassungsdatum und dem Projektstart ausgeben
                     $sql ='SELECT ProjectID, ProjectTaskID, ProjectTask FROM employeeproject ep, project p, projecttask pt
                         WHERE ep.pnr = ? AND ep.projectID = p.projectID AND p.projectID = pt.projectID AND ? >= p.BeginDate;';
@@ -38,19 +37,21 @@
                 ?>
                     <table>
                         <tbody>
-                            <tr> 
-                                <td>Erfassungsdatum:</td>
-                                <td><?php 
-                                require_once "includes/workingTimeRecordingScript.inc.php";
-                                echo $recordingDate;
-                                ?>
-                            </tr>
                             <tr>
                                 <td>Personalnummer:</td>
                                 <td><input type="text" textarea readonly="readonly" name="pnr"
                                         value= <?php $pnr = $_SESSION['pnr']; echo $pnr ?>></td>
                                 </td>
                             </tr>
+                            <tr> 
+                                <td>Erfassungsdatum:</td>
+                                <td><?php 
+                                require_once "includes/workingTimeRecordingFunctions.inc.php";
+                                $recordingDate = recordingDate($conn, $pnr);
+                                echo $recordingDate;
+                                ?>
+                            </tr>
+                            
                     </table> 
                     <br>   
                     <table>

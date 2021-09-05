@@ -11,24 +11,25 @@ function recordingDate($conn, $pnr) {
        header("location: ../workingTimeRecording.php?error=stmtfailed");
         exit();
     }
-    mysqli_stmt_prepare($stmt, "s", $pnr);
+    mysqli_stmt_bind_param($stmt, "s", $pnr);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $recordingDate;
     //Verwendet wird die PHP-Funktion string to time (strtotime)
     while($row = mysqli_fetch_assoc($result)){
-        $lastDateEntered = $row['lastDateEntered'];
+        $lastDateEntered = $row['LastDateEntered'];
         //Ist lastDateEntered Freitag --> soll auf Montag gesprungen werden --> 3 Tage weiter (Sa & So kommen dadurch nie vor)
         if(recordingDate('l', strtotime($lastDateEntered)) == 'Friday') {
-            $recordingDate = date('m.d.y', strtotime("+3 day", strtotime($row['lastDateEntered'])));
+            $recordingDate = date('m.d.y', strtotime("+3 day", strtotime($row['LastDateEntered'])));
         }
         else {
             //Ist lastDateEntered Mo-Do --> soll auf nächsten Tag gesprungen werden --> 1 Tag weiter     
-            $recordingDate = date('m.d.y', strtotime("+1 day", strtotime($row['lastDateEntered'])));
-        }   
+            $recordingDate = date('m.d.y', strtotime("+1 day", strtotime($row['LastDateEntered'])));
+        }
+        return $recordingDate;
+ 
     }
-    return $recordingDate;
-    header("location: ../workingTimeRecording.php");
+
 }
 
 function invalidTime($beginTime, $endTime){
