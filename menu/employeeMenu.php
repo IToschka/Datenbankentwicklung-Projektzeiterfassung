@@ -9,10 +9,6 @@
     <body>
         <center>
         <h1>Mitarbeiter - Menü</h1>
-
-        <body>
-        <center>
-        <h1>Projektmanager - Menü</h1>
         <table class="startMenu">
           <tr>
            <td><a href="../workingTimeRecording/workingTimeRecording.php">Erfassungsbereich der Projektarbeitszeiten</a></td>
