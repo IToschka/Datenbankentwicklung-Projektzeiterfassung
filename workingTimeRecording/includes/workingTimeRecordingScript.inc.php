@@ -2,10 +2,13 @@
 
 include_once '../../includes/dbh.inc.php';
 include_once 'workingTimeRecordingFunctions.inc.php';
+            
+//Abrufen der Funktion, mit welcher das Erfassungsdatum bestimmt wird
+$recordingDate = recordingDate($conn, $pnr);
 
 if (isset($_POST['button_save_workingTime'])) {
 
-    $recordingDate = $_POST['recordingDate'];;
+    $recordingDate = $_POST['recordingDate'];
     // = Last date auslesen, ein Tag addieren und ausgeben, wenn Wochentag --> function
 
     $pnr = $_POST['pnr'];;

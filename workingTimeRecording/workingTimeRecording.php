@@ -6,42 +6,77 @@
     </head>
 
     <body>
+        <?php
+            session_start();
+            include_once '../includes/dbh.inc.php';
+
+
+  
+        ?>
         <h1>Erfassungsbereich der Projektarbeitszeiten</h1>
             <form action="includes/workingTimeRecordingScript.inc.php" method="POST">
-                <table>
-                    <tbody>
-                        <tr> 
-                            <td>Erfassungsdatum:</td>
-                            <td><input type="date" name="recordingDate" placeholder="Datum">
-                        </tr>
-                        <tr>
-                            <td>Personalnummer:</td>
-                            <td><input type="text" name="pnr" 
-                                value=<?php
-                                    session_start();
-                                    $pnr = $_SESSION['pnr'];
-                                    echo $pnr;
-                                    ?>>
-                        </tr>
-                </table> 
-                <br>   
-                <table>
-                    <thead>
-                        <tr>
-                            <td>ProjektID:</td>
-                            <td>ProjektaufgabenID:</td>
-                            <td>Beginn:</td>
-                            <td>Ende:</td>
-                        </tr>
-                    <tbody>
-                        <tr>
-                            <td><input type="text" name="projectID" placeholder="Projekt"></td>
-                            <td><input type="text" name="projectTaskID" placeholder="Projektaufgabe"></td>
-                            <td><input type="time" name="beginTime" placeholder="Von"></td>
-                            <td><input type="time" name="endTime" placeholder="Bis"></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <?php /*
+                    //Projekt und Projektaufgeben, abhängig von PNR, dem Erfassungsdatum und dem Projektstart ausgeben
+                    $sql ='SELECT ProjectID, ProjectTaskID, ProjectTask FROM employeeproject ep, project p, projecttask pt
+                        WHERE ep.pnr = ? AND ep.projectID = p.projectID AND p.projectID = pt.projectID AND ? >= p.BeginDate;';
+                    $stmt = mysqli_stmt_init($conn);
+                    if(!mysqli_stmt_prepare($stmt, $sql)){
+                        header("location: workingTimerRecording.php?error=stmtfailed");
+                        exit();
+                    }
+                    $result->get_result();
+
+                    //Liste für Projkte und Projektaufgaben
+                    $projectP = array();
+                    $projectTaskPT = array();
+
+                    //Anzahl der Ergebnisse der SQL-Abfrage
+                    $countResult = $result->num_rows();
+
+                    //Variable für die Anzahl der Projekte, die dem Mitarbeiter angezeigt werden
+                    $countRow = 0;*/
+                ?>
+                    <table>
+                        <tbody>
+                            <tr> 
+                                <td>Erfassungsdatum:</td>
+                                <td><?php 
+                                require_once "includes/workingTimeRecordingScript.inc.php";
+                                echo $recordingDate;
+                                ?>
+                            </tr>
+                            <tr>
+                                <td>Personalnummer:</td>
+                                <td><input type="text" textarea readonly="readonly" name="pnr"
+                                        value= <?php $pnr = $_SESSION['pnr']; echo $pnr ?>></td>
+                                </td>
+                            </tr>
+                    </table> 
+                    <br>   
+                    <table>
+                            <thead>
+                                <tr>
+                                    <td>ProjektID:</td>
+                                    <td>ProjektaufgabenID:</td>
+                                    <td>Beginn:</td>
+                                    <td>Ende:</td>
+                                </tr>
+               <?php /*
+                   //Zeilen erstellen und mit Projekten füllen
+                    while($countResult = $result->fetch_assoc()) {
+                        echo                 
+                        '<tbody>
+                                <tr>
+                                    <td><input type="text" name="projectID" value=  $countResult['projectID']></td>
+                                    <td><input type="text" name="projectTaskID" value=  $countResult['projectTaskID']></td>
+                                    <td><input type="time" name="beginTime'.$countRow'"></td>
+                                    <td><input type="time" name="endTime'.$countRow'"></td>
+                                </tr>
+                            </tbody>';
+                        
+                    }
+                    </table>*/
+                ?>
                 <br>
                 <input type="submit" name="button_save_workingTime" value="Speichern">
 
@@ -49,7 +84,7 @@
 
             <?php
 
-              include_once '../includes/functions.inc.php';
+              include_once 'includes/workingTimeRecordingFunctions.inc.php';
 
             if(isset($_GET["error"])){
                 if($_GET["error"] == "invalidTime"){
