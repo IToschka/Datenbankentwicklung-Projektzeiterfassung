@@ -96,7 +96,7 @@ function createLogin($conn, $pnr, $password){
         $sql = "SELECT * FROM employee WHERE PNR = ?;";
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
-            header("location: ../updateEmployee.php?error=pnrNotExists");
+            header("location: ../updateEmployee.php?error=stmtfailed");
             exit();
         }
         mysqli_stmt_bind_param($stmt, "s", $pnr);
@@ -173,7 +173,7 @@ function createLogin($conn, $pnr, $password){
         $sql = "SELECT * FROM employee WHERE PNR = ?;";
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
-            header("location: ../deleteEmployee.php?error=pnrNotExists");
+            header("location: ../deleteEmployee.php?error=stmtfailed");
             exit();
         }
         mysqli_stmt_bind_param($stmt, "s", $pnr);

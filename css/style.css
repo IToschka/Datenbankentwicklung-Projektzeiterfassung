@@ -1,8 +1,22 @@
 
+form {
+  margin-left: 5%;
+}
+
+
+.formTable tr{
+  font-family: arial;
+  height: 40px;
+  width: 20%;
+  border: 1px solid #CF261E;
+
+}
+
+
 
 
 .startMenuTable{
-        margin-top: 2%;        
+        margin-top: 2%;
         background-color: #EAEAEA;
         border: 1px solid #CF261E;
 }
@@ -12,7 +26,7 @@
     width: 20%;
     border: 1px solid #CF261E;
 }
-    
+
 table tr td a{
         display: block;
         text-decoration: none;
@@ -20,16 +34,16 @@ table tr td a{
         font-family: arial;
         color: black;
         padding: 0 20px;
-    
+
     }
-    
+
 
 
 table tr td a:hover{
         color: #CF261E;
     }
 
-h1{
+ h1{
    font-family: arial;
     font-size: 30px;
     text-align: center;
@@ -73,7 +87,3 @@ ul li a:hover {
     color: #CF261E;
 
 }
-
-
-
-

@@ -2,15 +2,25 @@
 <html>
     <head>
        <meta charset="utf-8">
+       <link rel="stylesheet" href="css/style.css">
        <title>Login Projektzeiterfassung</title>
     </head>
 
     <body>
         <h1>Login Projektzeiterfassung</h1>
-        <form action="includes/login.inc.php" method="POST" >
-           <p>Personalnummer: <input type="text" name="pnr" placeholder="Personalnummer"> </p>
-           <p>Passwort: <input type="password" name="password" placeholder="Passwort"> </p>
-           <input type="submit" name="button_login" value="Anmelden">
+        <form action="includes/login.inc.php" method="POST" class="formTable" >
+          <table >
+            <tbody>
+                <tr>
+                    <td>Personalnummer:</td>
+                    <td><input type="text" name="pnr" placeholder="Personalnummer" required></td>
+                </tr>
+                <tr>
+                    <td>Passwort:</td>
+                    <td><input type="password" name="password" placeholder="Passwort" maxlength="20" required></td>
+                </tr>
+          </table>
+          <input type="submit" name="button_login" value="Anmelden">
         </form>
     </body>
 </html>

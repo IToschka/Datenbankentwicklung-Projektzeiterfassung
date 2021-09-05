@@ -6,15 +6,17 @@
     <head>
        <meta charset="utf-8">
        <link rel="stylesheet" href="../css/style.css">
+
        <title></title>
     </head>
 
     <body>
       <br>
       <br>
-    <center>
+
     <form action="includes/employeeManagement_Script.inc.php" method="POST" >
-    <table>
+    <h3>Bitte füllen sie die Felder aus</h3>
+    <table class="formTable">
             <tbody>
                 <tr>
                     <td>Vorname:</td>
@@ -51,8 +53,8 @@
             </tbody>
         </table>
 
-        <input type="submit" name="button_EmployeeMenu" value="Zurück zum Menü">
-        <input type="submit" name="button_create" value = "Erstellen">
+        <input type="submit" name="button_backToMenu" value="Zurück zum Menü">
+        <input type="submit" name="button_createEmployee" value = "Erstellen">
     </form>
     <br>
     <br>
@@ -84,6 +86,6 @@
     }
 
     ?>
-</center>
+
     </body>
 </html>

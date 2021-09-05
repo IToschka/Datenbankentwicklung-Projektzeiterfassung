@@ -2,7 +2,7 @@
 include_once '../../includes/dbh.inc.php';
 include_once 'employeeManagement_Functions.inc.php';
 
-if (isset($_POST['button_create'])) {
+if (isset($_POST['button_createEmployee'])) {
     $sql = "SELECT GeneratePNR() AS PNR;";
     $result = mysqli_query($conn, $sql);
     $row= mysqli_fetch_assoc($result);
@@ -55,7 +55,7 @@ if (isset($_POST['button_create'])) {
     createLogin($conn, $pnr, $password);
     }
 
-    elseif(isset($_POST['button_update'])){
+    elseif(isset($_POST['button_updateEmployee'])){
         $pnr = $_POST['pnr'];
         $coreTimeFrom = $_POST['coreTimeFrom'];
         $coreTimeTo = $_POST['coreTimeTo'];
@@ -81,7 +81,7 @@ if (isset($_POST['button_create'])) {
 
 
     }
-    elseif(isset($_POST['button_delete'])) {
+    elseif(isset($_POST['button_deleteEmployee'])) {
         $pnr = $_POST['pnr'];
 
 
@@ -95,5 +95,14 @@ if (isset($_POST['button_create'])) {
         elseif(isset($_POST['button_EmployeeMenu'])){
             header("location: ../employeeManagementMenu.php");
             exit();
+
+    }
+    elseif(isset($_POST['button_backToMenu'])) {
+      if (isset($_SESSION['projectManager'])){
+          header('Location: http://localhost:8080/Datenbankentwicklung-Projektzeiterfassung/startMenu/projectManagerMenu.php');
+      }else {
+        header('Location: http://localhost:8080/Datenbankentwicklung-Projektzeiterfassung/startMenu/employeeMenu.php');
+      }
+
 
     }

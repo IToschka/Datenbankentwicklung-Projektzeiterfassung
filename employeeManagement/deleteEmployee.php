@@ -22,8 +22,8 @@
             </tbody>
         </table>
 
-        <input type="submit" name="button_EmployeeMenu" value="Zurück zum Menü">
-        <input type="submit" name="button_delete" value="Löschen">
+        <input type="submit" name="button_backToMenu" value="Zurück zum Menü">
+        <input type="submit" name="button_deleteEmployee" value="Löschen">
     </form>
 
     <?php

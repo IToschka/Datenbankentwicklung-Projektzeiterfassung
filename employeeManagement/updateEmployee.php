@@ -32,8 +32,8 @@
             </tbody>
         </table>
 
-        <input type="submit" name="button_EmployeeMenu" value="Zurück zum Menü">
-        <input type="submit" name="button_update" value="Ändern">
+        <input type="submit" name="button_backToMenu" value="Zurück zum Menü">
+        <input type="submit" name="button_updateEmployee" value="Ändern">
 
     </form>
 
