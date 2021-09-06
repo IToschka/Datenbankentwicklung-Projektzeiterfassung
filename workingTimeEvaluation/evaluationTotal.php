@@ -1,5 +1,6 @@
 <?php
     include_once '../menu/workingTimeEvaluationMenu.php';
+    include_once 'evaluationScript.php'
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,12 +14,14 @@
       <br>
       <br>
     <center>
-    <form action="includes/employeeManagement_Script.inc.php" method="POST" >
+    <form action="evaluationScript.php" method="POST" >
       Von: <input type="date" name="evaluationFrom" required>
       Bis: <input type="date" name="evaluationTo" required>
     <br>
     <br>
     <h3>Abweichung der Wochenarbeitsstunden</h3>
+    <?php
+
     <table>
         <tbody>
                 <tr>
@@ -43,7 +46,7 @@
                 </tr>
           </tbody>
       </table>
-
+      ?>
       <br>
       <br>
       <h3>Abweichung der Kernarbeitszeit</h3>
@@ -74,7 +77,7 @@
 
 
         <input type="submit" name="button_EmployeeMenu" value="Zurück zum Menü">
-        <input type="submit" name="button_create" value = "Erstellen">
+        <input type="submit" name="button_Evaluate" value = "Auswerten">
 
 
     </form>
