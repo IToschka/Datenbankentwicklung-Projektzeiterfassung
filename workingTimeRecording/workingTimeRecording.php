@@ -43,12 +43,9 @@
 
                     //Projekt und Projektaufgeben, abhängig von PNR, dem Erfassungsdatum und dem Projektstart ausgeben
                     //Abruf in DB
-                    // WICHTIG: Berücksichtigung p.BeginDate fehlt noch, dass muss mit dem recordingDate verglichen werden
-                    // WHERE durch 'AND $recordingDate >= p.BeginDate ergänzen (oder so ähnlich)
-                    //dann auch das, anstelle von l. 46: mysqli_stmt_bind_param($stmt, "ss", $pnr, $recordingDate);
                     $sql ='SELECT p.ProjectID, pt.ProjectTaskID, p.ProjectName, pt.TaskDescription
                         FROM employeeproject ep, project p, projecttask pt
-                        WHERE ep.PNR = ? AND ep.ProjectID = p.ProjectID AND p.ProjectID = pt.ProjectID;';
+                        WHERE ep.PNR = ? AND ep.ProjectID = p.ProjectID AND p.ProjectID = pt.ProjectID AND ? <= p.BeginDate;';
                     //Verbindung zu DB
                     $stmt = mysqli_stmt_init($conn);
                     //Statement wird vorbereitet
@@ -57,7 +54,7 @@
                         exit();
                     }else{
                         //Parameter binden
-                        mysqli_stmt_bind_param($stmt, "s", $pnr);
+                        mysqli_stmt_bind_param($stmt, "ss", $pnr, $recordingDate);
                         //Paramter in DB ausführen
                         mysqli_stmt_execute($stmt);
                         $result = mysqli_stmt_get_result($stmt);

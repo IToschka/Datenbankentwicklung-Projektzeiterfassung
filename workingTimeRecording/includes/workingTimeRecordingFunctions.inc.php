@@ -22,11 +22,11 @@ function recordingDate($conn, $pnr) {
         $lastDateEntered = $row['LastDateEntered'];
         //Ist lastDateEntered Freitag --> soll auf Montag gesprungen werden --> 3 Tage weiter (Sa & So kommen dadurch nie vor)
         if(date('l', strtotime($lastDateEntered)) == 'Friday') {
-            $recordingDate = date('d.m.y', strtotime("+3 day", strtotime($row['LastDateEntered'])));
+            $recordingDate = date('Y-m-d', strtotime("+3 day", strtotime($row['LastDateEntered'])));
         }
         else {
             //Ist lastDateEntered Mo-Do --> soll auf nächsten Tag gesprungen werden --> 1 Tag weiter     
-            $recordingDate = date('d.m.y', strtotime("+1 day", strtotime($row['LastDateEntered'])));
+            $recordingDate = date('Y-m-d', strtotime("+1 day", strtotime($row['LastDateEntered'])));
         }
         return $recordingDate;
  
