@@ -10,10 +10,13 @@ function recordingDate($conn, $pnr) {
        echo "Das ist ein Fehler!";
        header("location: ../workingTimeRecording.php?error=stmtfailed");
         exit();
+    }else {
+        //Parameter binden
+        mysqli_stmt_bind_param($stmt, "s", $pnr);
+        //Paramter in DB ausführen
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
     }
-    mysqli_stmt_bind_param($stmt, "s", $pnr);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
     $recordingDate;
     //Verwendet wird die PHP-Funktion string to time (strtotime)
     while($row = mysqli_fetch_assoc($result)){
@@ -31,7 +34,7 @@ function recordingDate($conn, $pnr) {
     }
 
 }
-
+/*
 function invalidTime($beginTime, $endTime){
     $result;
     if($beginTime > $endTime){
@@ -64,7 +67,6 @@ function oneEmptyInput($beginTime, $endTime){
     return $result;
 }
 
-/*
 function saveTimeRecoring($conn, $pnr, $projectID, $projectTaskID, $recordingDate, $beginTime, $endTime){
   $sql = "INSERT INTO timeRecording (PNR, ProjectID, ProjectTaskID, RecordingDate, TaskBegin, TaskEnd) VALUES (?, ?, ?, ?, ?, ?);";
   $stmt = mysqli_stmt_init($conn);

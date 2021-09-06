@@ -9,38 +9,48 @@
         <?php
             session_start();
             include_once '../includes/dbh.inc.php';
-
-
-  
         ?>
         <h1>Erfassungsbereich der Projektarbeitszeiten</h1>
             <form action="includes/workingTimeRecordingScript.inc.php" method="POST">
                 <?php 
-                    //Projekt und Projektaufgeben, abhängig von PNR, dem Erfassungsdatum und dem Projektstart ausgeben
-                    $sql ='SELECT ProjectID, ProjectTaskID, ProjectTask FROM employeeproject ep, project p, projecttask pt
-                        WHERE ep.pnr = ? AND ep.projectID = p.projectID AND p.projectID = pt.projectID AND ? >= p.BeginDate;';
-                    $stmt = mysqli_stmt_init($conn);
-                    if(!mysqli_stmt_prepare($stmt, $sql)){
-                        header("location: workingTimerRecording.php?error=stmtfailed");
-                        exit();
-                    }
-                    $result->get_result();
-
+                    //Erstellen von diversen Hilsvariablen, die später benötigt werden
                     //Liste für Projkte und Projektaufgaben
                     $projectP = array();
                     $projectTaskPT = array();
 
                     //Anzahl der Ergebnisse der SQL-Abfrage
-                    $countResult = $result->num_rows();
+                    //$countResult;
 
                     //Variable für die Anzahl der Projekte, die dem Mitarbeiter angezeigt werden
                     $countRow = 0;
+
+                    //Projekt und Projektaufgeben, abhängig von PNR, dem Erfassungsdatum und dem Projektstart ausgeben
+                    //Abruf in DB
+                    $sql ='SELECT ProjectID, ProjectTaskID, ProjectTask, ProjectName, TaskDescription
+                        FROM employeeproject ep, project p, projecttask pt
+                        WHERE ep.pnr = ? AND ep.projectID = p.projectID AND p.projectID = pt.projectID AND ? >= p.BeginDate;';
+                    //Verbindung zu DB
+                    $stmt = mysqli_stmt_init($conn);
+                    //Statement wird vorbereitet
+                    if(!mysqli_stmt_prepare($stmt, $sql)){
+                        header("location: workingTimerRecording.php?error=stmtfailed");
+                        exit();
+                    }else{
+                        //Parameter binden
+                        mysqli_stmt_bind_param($stmt, "s", $pnr);
+                        //Paramter in DB ausführen
+                        mysqli_stmt_execute($stmt);
+                        $result = mysqli_stmt_get_result($stmt);
+                    }
+
+                    //$countResult = $result->num_rows();
+                    
                 ?>
                     <table>
                         <tbody>
                             <tr>
                                 <td>Personalnummer:</td>
-                                <td><input type="text" textarea readonly="readonly" name="pnr"
+                                 <td><input type="text" textarea readonly="readonly" name="pnr"
                                         value= <?php $pnr = $_SESSION['pnr']; echo $pnr ?>></td>
                                 </td>
                             </tr>
@@ -50,9 +60,7 @@
                                 require_once "includes/workingTimeRecordingFunctions.inc.php";
                                 $recordingDate = recordingDate($conn, $pnr);
                                 echo $recordingDate;
-                                ?>
-                            </tr>
-                            
+                                 ?></tr>
                     </table> 
                     <br>   
                     <table>
@@ -63,28 +71,27 @@
                                     <td>Beginn:</td>
                                     <td>Ende:</td>
                                 </tr>
-               <?php 
-                   //Zeilen erstellen und mit Projekten füllen
-                    while($countResult = $result->fetch_assoc()) {
-                        echo                 
-                        '<tbody>
-                                <tr>
-                                    <td><input type="text" name="projectID" value= $countResult['projectID']></td>
-                                    <td><input type="text" name="projectTaskID" value=  $countResult['projectTaskID']></td>
-                                    <td><input type="time" name="beginTime'.$countRow'"></td>
-                                    <td><input type="time" name="endTime'.$countRow'"></td>
-                                </tr>
-                            </tbody>';
-                        
-                    }
+                     <?php 
+                        //Zeilen erstellen und mit Projekten füllen
+                        while($row = mysqli_fetch_assoc($result)) {
+                        echo '<tbody>
+                                    <tr>
+                                        <td><input type="text" name="projectID" value=' .$row['ProjectTask'];'></td>
+                                        <td><input type="text" name="projectTaskID" value=' .$countResult['TaskDescription'];'></td>
+                                        <td><input type="time" name="beginTime'.$countRow;'"></td>
+                                        <td><input type="time" name="endTime'.$countRow;'"></td>
+                                    </tr>
+                               </tbody>';
+                                
+                        }
+                    ?>                  
                     </table>
-                ?>
-                <br>
+                    <br>
                 <input type="submit" name="button_save_workingTime" value="Speichern">
 
             </form>
 
-            <?php
+            <?php/*
 
               include_once 'includes/workingTimeRecordingFunctions.inc.php';
 
@@ -104,7 +111,7 @@
                 elseif($_GET["error"] == "none"){
                     echo "<p>Die Projektzeit(en) wurde(n) erfolgreich erfasst.</p>";
                 }
-            }
+            }*/
             ?>
 
     </body>
