@@ -17,15 +17,15 @@
                             <tr>
                                 <td>Personalnummer:</td>
                                  <td><input type="text" textarea readonly="readonly" name="pnr"
-                                        value= <?php $pnr = $_SESSION['pnr']; echo $pnr; ?>>
+                                        value= '<?php $pnr = $_SESSION['pnr']; echo $pnr; ?>'>
                                 </td>
                             </tr>
                             <tr> 
                                 <td>Erfassungsdatum:</td>
-                                <td><input type="text" textarea readonly="readonly" name="pnr"
-                                        value= <?php 
+                                <td><input type="text" textarea readonly="readonly" name="recodingDate"
+                                        value= '<?php 
                                         require_once "includes/workingTimeRecordingFunctions.inc.php";
-                                        $recordingDate = recordingDate($conn, $pnr); echo $recordingDate; ?>>
+                                        $recordingDate = recordingDate($conn, $pnr); echo $recordingDate; ?>'>
                                  </tr>
                     </table> 
                     <br>  
@@ -79,10 +79,10 @@
                         while($row = mysqli_fetch_assoc($result)) {
                         echo '<tbody>
                                     <tr>
-                                        <td><input type="text" name="projectID" value=' .$row['ProjectTask'];'></td>
-                                        <td><input type="text" name="projectTaskID" value=' .$countResult['TaskDescription'];'></td>
-                                        <td><input type="time" name="beginTime'.$countRow;'"></td>
-                                        <td><input type="time" name="endTime'.$countRow;'"></td>
+                                        <td><input type="text" textarea readonly="readonly" name="projectID" value=' .$row['ProjectName'].'></td>
+                                        <td><input type="text" textarea readonly="readonly" name="projectTaskID" value=' .$row['TaskDescription'].'></td>
+                                        <td><input type="time" name="beginTime'.$countRow.'"></td>
+                                        <td><input type="time" name="endTime'.$countRow.'"></td>
                                     </tr>
                                </tbody>';
                                 
@@ -94,9 +94,9 @@
 
             </form>
 
-            <?php/*
+            <?php
 
-              include_once 'includes/workingTimeRecordingFunctions.inc.php';
+            include_once 'includes/workingTimeRecordingFunctions.inc.php';
 
             if(isset($_GET["error"])){
                 if($_GET["error"] == "invalidTime"){
@@ -114,7 +114,7 @@
                 elseif($_GET["error"] == "none"){
                     echo "<p>Die Projektzeit(en) wurde(n) erfolgreich erfasst.</p>";
                 }
-            }*/
+            }
             ?>
 
     </body>
