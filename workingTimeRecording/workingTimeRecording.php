@@ -12,6 +12,23 @@
         ?>
         <h1>Erfassungsbereich der Projektarbeitszeiten</h1>
             <form action="includes/workingTimeRecordingScript.inc.php" method="POST">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Personalnummer:</td>
+                                 <td><input type="text" textarea readonly="readonly" name="pnr"
+                                        value= <?php $pnr = $_SESSION['pnr']; echo $pnr; ?>>
+                                </td>
+                            </tr>
+                            <tr> 
+                                <td>Erfassungsdatum:</td>
+                                <td><input type="text" textarea readonly="readonly" name="pnr"
+                                        value= <?php 
+                                        require_once "includes/workingTimeRecordingFunctions.inc.php";
+                                        $recordingDate = recordingDate($conn, $pnr); echo $recordingDate; ?>>
+                                 </tr>
+                    </table> 
+                    <br>  
                 <?php 
                     //Erstellen von diversen Hilsvariablen, die später benötigt werden
                     //Liste für Projkte und Projektaufgaben
@@ -26,9 +43,12 @@
 
                     //Projekt und Projektaufgeben, abhängig von PNR, dem Erfassungsdatum und dem Projektstart ausgeben
                     //Abruf in DB
-                    $sql ='SELECT ProjectID, ProjectTaskID, ProjectTask, ProjectName, TaskDescription
+                    // WICHTIG: Berücksichtigung p.BeginDate fehlt noch, dass muss mit dem recordingDate verglichen werden
+                    // WHERE durch 'AND $recordingDate >= p.BeginDate ergänzen (oder so ähnlich)
+                    //dann auch das, anstelle von l. 46: mysqli_stmt_bind_param($stmt, "ss", $pnr, $recordingDate);
+                    $sql ='SELECT p.ProjectID, pt.ProjectTaskID, p.ProjectName, pt.TaskDescription
                         FROM employeeproject ep, project p, projecttask pt
-                        WHERE ep.pnr = ? AND ep.projectID = p.projectID AND p.projectID = pt.projectID AND ? >= p.BeginDate;';
+                        WHERE ep.PNR = ? AND ep.ProjectID = p.ProjectID AND p.ProjectID = pt.ProjectID;';
                     //Verbindung zu DB
                     $stmt = mysqli_stmt_init($conn);
                     //Statement wird vorbereitet
@@ -45,24 +65,7 @@
 
                     //$countResult = $result->num_rows();
                     
-                ?>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>Personalnummer:</td>
-                                 <td><input type="text" textarea readonly="readonly" name="pnr"
-                                        value= <?php $pnr = $_SESSION['pnr']; echo $pnr ?>></td>
-                                </td>
-                            </tr>
-                            <tr> 
-                                <td>Erfassungsdatum:</td>
-                                <td><?php 
-                                require_once "includes/workingTimeRecordingFunctions.inc.php";
-                                $recordingDate = recordingDate($conn, $pnr);
-                                echo $recordingDate;
-                                 ?></tr>
-                    </table> 
-                    <br>   
+                ?> 
                     <table>
                             <thead>
                                 <tr>
