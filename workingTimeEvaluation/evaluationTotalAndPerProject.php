@@ -20,12 +20,14 @@
       <?php
 
       $totalSumWeeklyWorkingHours = 0;
+      $totalAverageWeeklyWorkingHours = 0;
       $totalMaxWeeklyWorkingHours = 0;
       $totalMinWeeklyWorkingHours = 0;
 
 
 
       $totalSumCoreWorkingHours = 0;
+      $totalAverageCoreWorkingHours = 0;
       $totalMinCoreWorkingHours = 0;
       $totalMaxCoreWorkingHours = 0;
 
@@ -36,6 +38,7 @@
         $evaluationTo = $_POST['evaluationTo'];
         $resultWeeklyWorkingHoursTotal = evaluateWeeklyWorkingsHoursTotal($conn, $evaluationFrom, $evaluationTo);
         $totalSumWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Sum"];
+        $totalAverageWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Average"];
         $totalMinWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Min"];
         $totalMaxWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Max"];
 
@@ -43,14 +46,14 @@
 
 
         $resultCoreWorkingHoursTotal = evaluateCoreWorkingTimeTotal($conn, $evaluationFrom, $evaluationTo);
-
         $totalSumCoreWorkingHours = $resultCoreWorkingHoursTotal["Sum"];
+        $totalAverageCoreWorkingHours = $resultCoreWorkingHoursTotal["Average"];
         $totalMinCoreWorkingHours = $resultCoreWorkingHoursTotal["Min"];
         $totalMaxCoreWorkingHours = $resultCoreWorkingHoursTotal["Max"];
       }
        ?>
 
-    <form action="evaluationTotal.php" method="POST" >
+    <form action="evaluationTotalAndPerProject.php" method="POST" >
       Von: <input type="date" name="evaluationFrom" value= '<?php
       echo $evaluationFrom; ?>' required>
       Bis: <input type="date" name="evaluationTo"  value= '<?php
@@ -72,7 +75,9 @@
                 </tr>
                 <tr>
                     <td>Durchschnitt</td>
-                    <td></td>
+                    <td><input type="text" textarea readonly="readonly" name="totalAverageWeeklyWorkingHours"
+                    value= '<?php
+                    echo $totalAverageWeeklyWorkingHours; ?>'</td>
                 </tr>
                 <tr>
                     <td>Minimum:</td>
@@ -107,7 +112,9 @@
                   </tr>
                   <tr>
                       <td>Durchschnitt</td>
-                      <td></td>
+                      <td><input type="text" textarea readonly="readonly" name="totalAverageCoreWorkingHours"
+                      value= '<?php
+                      echo $totalAverageCoreWorkingHours; ?>'></td>
                   </tr>
                   <tr>
                       <td>Minimum:</td>
