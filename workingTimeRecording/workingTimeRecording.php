@@ -17,15 +17,15 @@
                             <tr>
                                 <td>Personalnummer:</td>
                                  <td><input type="text" textarea readonly="readonly" name="pnr"
-                                        value= <?php $pnr = $_SESSION['pnr']; echo $pnr; ?>>
+                                        value= '<?php $pnr = $_SESSION['pnr']; echo $pnr; ?>'>
                                 </td>
                             </tr>
                             <tr> 
                                 <td>Erfassungsdatum:</td>
-                                <td><input type="text" textarea readonly="readonly" name="pnr"
-                                        value= <?php 
+                                <td><input type="text" textarea readonly="readonly" name="recodingDate"
+                                        value= '<?php 
                                         require_once "includes/workingTimeRecordingFunctions.inc.php";
-                                        $recordingDate = recordingDate($conn, $pnr); echo $recordingDate; ?>>
+                                        $recordingDate = recordingDate($conn, $pnr); echo $recordingDate; ?>'>
                                  </tr>
                     </table> 
                     <br>  
@@ -43,12 +43,9 @@
 
                     //Projekt und Projektaufgeben, abhängig von PNR, dem Erfassungsdatum und dem Projektstart ausgeben
                     //Abruf in DB
-                    // WICHTIG: Berücksichtigung p.BeginDate fehlt noch, dass muss mit dem recordingDate verglichen werden
-                    // WHERE durch 'AND $recordingDate >= p.BeginDate ergänzen (oder so ähnlich)
-                    //dann auch das, anstelle von l. 46: mysqli_stmt_bind_param($stmt, "ss", $pnr, $recordingDate);
                     $sql ='SELECT p.ProjectID, pt.ProjectTaskID, p.ProjectName, pt.TaskDescription
                         FROM employeeproject ep, project p, projecttask pt
-                        WHERE ep.PNR = ? AND ep.ProjectID = p.ProjectID AND p.ProjectID = pt.ProjectID;';
+                        WHERE ep.PNR = ? AND ep.ProjectID = p.ProjectID AND p.ProjectID = pt.ProjectID AND ? <= p.BeginDate;';
                     //Verbindung zu DB
                     $stmt = mysqli_stmt_init($conn);
                     //Statement wird vorbereitet
@@ -57,7 +54,7 @@
                         exit();
                     }else{
                         //Parameter binden
-                        mysqli_stmt_bind_param($stmt, "s", $pnr);
+                        mysqli_stmt_bind_param($stmt, "ss", $pnr, $recordingDate);
                         //Paramter in DB ausführen
                         mysqli_stmt_execute($stmt);
                         $result = mysqli_stmt_get_result($stmt);
@@ -79,10 +76,10 @@
                         while($row = mysqli_fetch_assoc($result)) {
                         echo '<tbody>
                                     <tr>
-                                        <td><input type="text" name="projectID" value=' .$row['ProjectTask'];'></td>
-                                        <td><input type="text" name="projectTaskID" value=' .$countResult['TaskDescription'];'></td>
-                                        <td><input type="time" name="beginTime'.$countRow;'"></td>
-                                        <td><input type="time" name="endTime'.$countRow;'"></td>
+                                        <td><input type="text" textarea readonly="readonly" name="projectID" value=' .$row['ProjectName'].'></td>
+                                        <td><input type="text" textarea readonly="readonly" name="projectTaskID" value=' .$row['TaskDescription'].'></td>
+                                        <td><input type="time" name="beginTime'.$countRow.'"></td>
+                                        <td><input type="time" name="endTime'.$countRow.'"></td>
                                     </tr>
                                </tbody>';
                                 
@@ -94,9 +91,9 @@
 
             </form>
 
-            <?php/*
+            <?php
 
-              include_once 'includes/workingTimeRecordingFunctions.inc.php';
+            include_once 'includes/workingTimeRecordingFunctions.inc.php';
 
             if(isset($_GET["error"])){
                 if($_GET["error"] == "invalidTime"){
@@ -114,7 +111,7 @@
                 elseif($_GET["error"] == "none"){
                     echo "<p>Die Projektzeit(en) wurde(n) erfolgreich erfasst.</p>";
                 }
-            }*/
+            }
             ?>
 
     </body>
