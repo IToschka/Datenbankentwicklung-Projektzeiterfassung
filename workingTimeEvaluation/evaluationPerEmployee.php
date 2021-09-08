@@ -20,17 +20,18 @@
       <?php
       $evaluatedPnr ="";
 
-      $totalSumWeeklyWorkingHours = 0;
-      $totalAverageWeeklyWorkingHours = 0;
-      $totalMaxWeeklyWorkingHours = 0;
-      $totalMinWeeklyWorkingHours = 0;
+      $perEmployeeSumWeeklyWorkingHours = 0;
+      $perEmployeeAverageWeeklyWorkingHours = 0;
+      $perEmployeeMinWeeklyWorkingHours = 0;
+      $perEmployeeMaxWeeklyWorkingHours = 0;
+      $perEmployeeWeeklyWorkingHours = 0;
 
 
 
-      $totalSumCoreWorkingHours = 0;
-      $totalAverageCoreWorkingHours = 0;
-      $totalMinCoreWorkingHours = 0;
-      $totalMaxCoreWorkingHours = 0;
+      $perEmployeeSumCoreWorkingHours = 0;
+      $perEmployeeAverageCoreWorkingHours = 0;
+      $perEmployeeMinCoreWorkingHours = 0;
+      $perEmployeeMaxCoreWorkingHours = 0;
 
 
       if (isset($_POST['button_Evaluate'])){
@@ -40,24 +41,24 @@
         $evaluatedPnr = $_POST['evaluatedPnr'];
 
 
-        $resultWeeklyWorkingHoursTotal = evaluateWeeklyWorkingsHoursTotal($conn, $evaluationFrom, $evaluationTo);
-        $totalSumWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Sum"];
-        $totalAverageWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Average"];
-        $totalMinWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Min"];
-        $totalMaxWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Max"];
+        $resultWeeklyWorkingHoursPerEmployee = evaluateWeeklyWorkingsHoursPerEmployee($conn, $evaluationFrom, $evaluationTo, $evaluatedPnr);
+        $perEmployeeSumWeeklyWorkingHours = $resultWeeklyWorkingHoursPerEmployee["Sum"];
+        $perEmployeeAverageWeeklyWorkingHours = $resultWeeklyWorkingHoursPerEmployee["Average"];
+        $perEmployeeMinWeeklyWorkingHours = $resultWeeklyWorkingHoursPerEmployee["Min"];
+        $perEmployeeMaxWeeklyWorkingHours = $resultWeeklyWorkingHoursPerEmployee["Max"];
 
 
 
 
-        $resultCoreWorkingHoursTotal = evaluateCoreWorkingTimeTotal($conn, $evaluationFrom, $evaluationTo);
-        $totalSumCoreWorkingHours = $resultCoreWorkingHoursTotal["Sum"];
-        $totalAverageCoreWorkingHours = $resultCoreWorkingHoursTotal["Average"];
-        $totalMinCoreWorkingHours = $resultCoreWorkingHoursTotal["Min"];
-        $totalMaxCoreWorkingHours = $resultCoreWorkingHoursTotal["Max"];
+        $resultCoreWorkingHoursPerEmployee = evaluateCoreWorkingTimePerEmployee($conn, $evaluationFrom, $evaluationTo, $evaluatedPnr);
+        $perEmployeeSumCoreWorkingHours = $resultCoreWorkingHoursPerEmployee["Sum"];
+        $perEmployeeAverageCoreWorkingHours = $resultCoreWorkingHoursPerEmployee["Average"];
+        $perEmployeeMinCoreWorkingHours = $resultCoreWorkingHoursPerEmployee["Min"];
+        $perEmployeeMaxCoreWorkingHours = $resultCoreWorkingHoursPerEmployee["Max"];
       }
        ?>
 
-    <form action="evaluationTotalAndPerProject.php" method="POST" >
+    <form action="evaluationPerEmployee.php" method="POST" >
       Von: <input type="date" name="evaluationFrom" value= '<?php
       echo $evaluationFrom; ?>' required>
       Bis: <input type="date" name="evaluationTo"  value= '<?php
@@ -74,30 +75,30 @@
                 <tr>
                     <td>Summe:</td>
                     <td>
-                      <input type="text" textarea readonly="readonly" name="totalSumWeeklyWorkingHours"
+                      <input type="text" textarea readonly="readonly" name="perEmployeeSumWeeklyWorkingHours"
                       value= '<?php
-                      echo $totalSumWeeklyWorkingHours; ?>'>
+                      echo $perEmployeeSumWeeklyWorkingHours; ?>'>
                     </td>
                 </tr>
                 <tr>
                     <td>Durchschnitt</td>
-                    <td><input type="text" textarea readonly="readonly" name="totalAverageWeeklyWorkingHours"
+                    <td><input type="text" textarea readonly="readonly" name="perEmployeeAverageWeeklyWorkingHours"
                     value= '<?php
-                    echo $totalAverageWeeklyWorkingHours; ?>'</td>
+                    echo $perEmployeeAverageWeeklyWorkingHours; ?>'</td>
                 </tr>
                 <tr>
                     <td>Minimum:</td>
                     <td>
-                      <input type="text" textarea readonly="readonly" name="totalMinWeeklyWorkingHours"
+                      <input type="text" textarea readonly="readonly" name="perEmployeeMinWeeklyWorkingHours"
                       value= '<?php
-                      echo $totalMinWeeklyWorkingHours; ?>'></td>
+                      echo $perEmployeeMinWeeklyWorkingHours; ?>'></td>
                 </tr>
                 <tr>
                     <td>Maxmimum:</td>
                     <td>
-                      <input type="text" textarea readonly="readonly" name="totalMaxWeeklyWorkingHours"
+                      <input type="text" textarea readonly="readonly" name="perEmployeeMaxWeeklyWorkingHours"
                       value= '<?php
-                      echo $totalMaxWeeklyWorkingHours; ?>'></td>
+                      echo $perEmployeeMaxWeeklyWorkingHours; ?>'></td>
                 </tr>
                 <tr>
                     <td>Standardabweichung:</td>
@@ -112,27 +113,27 @@
           <tbody>
                   <tr>
                       <td>Summe:</td>
-                      <td><input type="text" textarea readonly="readonly" name="totalSumCoreWorkingHours"
+                      <td><input type="text" textarea readonly="readonly" name="perEmployeeSumCoreWorkingHours"
                       value= '<?php
-                      echo $totalSumCoreWorkingHours; ?>'></td>
+                      echo $perEmployeeSumCoreWorkingHours; ?>'></td>
                   </tr>
                   <tr>
                       <td>Durchschnitt</td>
-                      <td><input type="text" textarea readonly="readonly" name="totalAverageCoreWorkingHours"
+                      <td><input type="text" textarea readonly="readonly" name="perEmployeeAverageCoreWorkingHours"
                       value= '<?php
-                      echo $totalAverageCoreWorkingHours; ?>'></td>
+                      echo $perEmployeeAverageCoreWorkingHours; ?>'></td>
                   </tr>
                   <tr>
                       <td>Minimum:</td>
-                      <td><input type="text" textarea readonly="readonly" name="totalMinCoreWorkingHours"
+                      <td><input type="text" textarea readonly="readonly" name="perEmployeeMinCoreWorkingHours"
                       value= '<?php
-                      echo $totalMinCoreWorkingHours; ?>'></td>
+                      echo $perEmployeeMinCoreWorkingHours; ?>'></td>
                   </tr>
                   <tr>
                       <td>Maxmimum:</td>
-                      <td><input type="text" textarea readonly="readonly" name="totalMaxCoreWorkingHours"
+                      <td><input type="text" textarea readonly="readonly" name="perEmployeeMaxCoreWorkingHours"
                       value= '<?php
-                      echo  $totalMaxCoreWorkingHours; ?>'></td>
+                      echo  $perEmployeeMaxCoreWorkingHours; ?>'></td>
                   </tr>
                   <tr>
                       <td>Standardabweichung:</td>
