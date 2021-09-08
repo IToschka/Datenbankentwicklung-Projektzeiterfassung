@@ -10,9 +10,8 @@
     <h1>Auswertung der Arbeitszeiten</h1>
     <nav>
     <ul>
-      <li><a href="../workingTimeEvaluation/evaluationTotal.php">Gesamtübersicht</a></li>
-      <li><a href="../workingTimeEvaluation/evaluationPerProject.php">Auswertung je Projekt</a></li>
-      <li><a href="../workingTimeEvaluation/evaluationPerEmployee.php">Auswertung je Mitarbeiter</a></li>
+      <li><a href="../workingTimeEvaluation/evaluationTotal.php">Projektbezogene Auswertung</a></li>
+      <li><a href="../workingTimeEvaluation/evaluationPerEmployee.php">Mitarbeiterbezogene Auswertung</a></li>
     </ul>
     </nav>
 

@@ -1,6 +1,7 @@
 <?php
     include_once '../menu/workingTimeEvaluationMenu.php';
-    include_once 'evaluationScript.php'
+    include_once '../includes/dbh.inc.php';
+    include_once 'evaluationFunctions.php'
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,22 +12,63 @@
     </head>
 
     <body>
+
       <br>
       <br>
     <center>
-    <form action="evaluationScript.php" method="POST" >
-      Von: <input type="date" name="evaluationFrom" required>
-      Bis: <input type="date" name="evaluationTo" required>
+
+      <?php
+
+      $totalSumWeeklyWorkingHours = 0;
+      $totalMaxWeeklyWorkingHours = 0;
+      $totalMinWeeklyWorkingHours = 0;
+
+
+
+      $totalSumCoreWorkingHours = 0;
+      $totalMinCoreWorkingHours = 0;
+      $totalMaxCoreWorkingHours = 0;
+
+
+      if (isset($_POST['button_Evaluate'])){
+
+        $evaluationFrom= $_POST['evaluationFrom'];
+        $evaluationTo = $_POST['evaluationTo'];
+        $resultWeeklyWorkingHoursTotal = evaluateWeeklyWorkingsHoursTotal($conn, $evaluationFrom, $evaluationTo);
+        $totalSumWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Sum"];
+        $totalMinWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Min"];
+        $totalMaxWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Max"];
+
+
+
+
+        $resultCoreWorkingHoursTotal = evaluateCoreWorkingTimeTotal($conn, $evaluationFrom, $evaluationTo);
+
+        $totalSumCoreWorkingHours = $resultCoreWorkingHoursTotal["Sum"];
+        $totalMinCoreWorkingHours = $resultCoreWorkingHoursTotal["Min"];
+        $totalMaxCoreWorkingHours = $resultCoreWorkingHoursTotal["Max"];
+      }
+       ?>
+
+    <form action="evaluationTotal.php" method="POST" >
+      Von: <input type="date" name="evaluationFrom" value= '<?php
+      echo $evaluationFrom; ?>' required>
+      Bis: <input type="date" name="evaluationTo"  value= '<?php
+      echo $evaluationTo; ?>' required>
+
     <br>
     <br>
     <h3>Abweichung der Wochenarbeitsstunden</h3>
-    <?php
 
     <table>
         <tbody>
                 <tr>
                     <td>Summe:</td>
-                    <td></td>
+                    <td>
+                      <input type="text" textarea readonly="readonly" name="totalSumWeeklyWorkingHours"
+                      value= '<?php
+                      echo $totalSumWeeklyWorkingHours; ?>'>
+                    </td>
                 </tr>
                 <tr>
                     <td>Durchschnitt</td>
@@ -34,11 +76,17 @@
                 </tr>
                 <tr>
                     <td>Minimum:</td>
-                    <td></td>
+                    <td>
+                      <input type="text" textarea readonly="readonly" name="totalMinWeeklyWorkingHours"
+                      value= '<?php
+                      echo $totalMinWeeklyWorkingHours; ?>'></td>
                 </tr>
                 <tr>
                     <td>Maxmimum:</td>
-                    <td></td>
+                    <td>
+                      <input type="text" textarea readonly="readonly" name="totalMaxWeeklyWorkingHours"
+                      value= '<?php
+                      echo $totalMaxWeeklyWorkingHours; ?>'></td>
                 </tr>
                 <tr>
                     <td>Standardabweichung:</td>
@@ -46,7 +94,6 @@
                 </tr>
           </tbody>
       </table>
-      ?>
       <br>
       <br>
       <h3>Abweichung der Kernarbeitszeit</h3>
@@ -54,7 +101,9 @@
           <tbody>
                   <tr>
                       <td>Summe:</td>
-                      <td></td>
+                      <td><input type="text" textarea readonly="readonly" name="totalSumCoreWorkingHours"
+                      value= '<?php
+                      echo $totalSumCoreWorkingHours; ?>'></td>
                   </tr>
                   <tr>
                       <td>Durchschnitt</td>
@@ -62,11 +111,15 @@
                   </tr>
                   <tr>
                       <td>Minimum:</td>
-                      <td></td>
+                      <td><input type="text" textarea readonly="readonly" name="totalMinCoreWorkingHours"
+                      value= '<?php
+                      echo $totalMinCoreWorkingHours; ?>'></td>
                   </tr>
                   <tr>
                       <td>Maxmimum:</td>
-                      <td></td>
+                      <td><input type="text" textarea readonly="readonly" name="totalMaxCoreWorkingHours"
+                      value= '<?php
+                      echo  $totalMaxCoreWorkingHours; ?>'></td>
                   </tr>
                   <tr>
                       <td>Standardabweichung:</td>
