@@ -1,6 +1,6 @@
 <?php
 //Funktion zur Bestimmung des Erfassungsdatum
-function recordingDate($conn, $pnr) {
+function recordingDate($conn) {
     //Abruf in DB
     $sql = "SELECT LastDateEntered FROM employee WHERE PNR = ?;";
     //Verbindung zur DB
@@ -11,9 +11,10 @@ function recordingDate($conn, $pnr) {
         exit();
     }else {
         //Parameter binden
-        mysqli_stmt_bind_param($stmt, "s", $pnr);
+        mysqli_stmt_bind_param($stmt, "s",  $_SESSION['pnr']);
         //Paramter in DB ausführen
         mysqli_stmt_execute($stmt);
+        //Ergebnis abspeichern
         $result = mysqli_stmt_get_result($stmt);
     }
     $recordingDate;
@@ -29,14 +30,13 @@ function recordingDate($conn, $pnr) {
             $recordingDate = date('Y-m-d', strtotime("+1 day", strtotime($row['LastDateEntered'])));
         }
         return $recordingDate;
- 
-    }
-
+     }
 }
-/*
-function invalidTime($beginTime, $endTime){
+
+//Funktionien für die Validierung für eine evtl. Fehlermeldung
+function onlyBeginInput($beginTime, $endTime){
     $result;
-    if($beginTime > $endTime){
+    if($beginTime !== null && $endTime == null){
         $result = true;
     }
     else{
@@ -45,9 +45,9 @@ function invalidTime($beginTime, $endTime){
     return $result;
 }
 
-function emptyInput($beginTime, $endTime){
+function onlyEndInput($beginTime, $endTime){
     $result;
-    if(empty($beginTime) && empty($endTime)) {
+    if($beginTime == null && $endTime !== null) {
         $result = true;
     }
     else {
@@ -56,8 +56,8 @@ function emptyInput($beginTime, $endTime){
     return $result;
 }
 
-function oneEmptyInput($beginTime, $endTime){
-    if(empty($beginTime) || empty($endTime)) {
+function beginIsAfterEnd($beginTime, $endTime){
+    if($beginTime > $endTime) {
         $result = true;
     }
     else {
@@ -66,17 +66,60 @@ function oneEmptyInput($beginTime, $endTime){
     return $result;
 }
 
+/*$countEmptyInput = 0;
+function bothTimesEmpty($beginTime, $endTime){
+    if($beginTime == null && $endTime == null) {
+        $result = true;
+        $countEmptyInput++;
+    }
+    else {
+        $result = false;
+    }
+    return $result;
+    return $countEmptyInput;
+}
+
+function allTimesEmpty*/
+
+
+//Funktion zum Speichern der Einträge
 function saveTimeRecoring($conn, $pnr, $projectID, $projectTaskID, $recordingDate, $beginTime, $endTime){
-  $sql = "INSERT INTO timeRecording (PNR, ProjectID, ProjectTaskID, RecordingDate, TaskBegin, TaskEnd) VALUES (?, ?, ?, ?, ?, ?);";
-  $stmt = mysqli_stmt_init($conn);
-  if(!mysqli_stmt_prepare($stmt, $sql)){
+    //Manipulation in DB
+    $sql = "INSERT INTO timeRecording (PNR, ProjectID, ProjectTaskID, RecordingDate, TaskBegin, TaskEnd) VALUES (?, ?, ?, ?, ?, ?);";
+    //Verbindung zu DB
+    $stmt = mysqli_stmt_init($conn);
+    //Statement wird vorbereitet
+    if(!mysqli_stmt_prepare($stmt, $sql)){
       header("location: ../workingTimeRecording.php?error=stmtfailed");
       exit();
-  }
+    }else{
+        //Parameter binden
+        mysqli_stmt_bind_param($stmt, "ssssss",$pnr, $projectID, $projectTaskID, $recordingDate, $beginTime, $endTime);
+        //Parameter in DB ausführen
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    }
 
-  mysqli_stmt_bind_param($stmt, "ssssss",$pnr, $projectID, $projectTaskID, $recordingDate, $beginTime, $endTime);
-  mysqli_stmt_execute($stmt);
-  mysqli_stmt_close($stmt);
+ 
 
 }
-*/
+
+//Funktion zum Ändern des LastDateEntered
+//Diese Funktion darf nur aufgerufen werden, wenn alles richtig (ErrorCode=0) ist oder nichts eingetragen wurde
+function updateLastDateEntered($conn, $recordingDate, $pnr){
+    //Manipulation in DB
+    $sql = "UPDATE employee SET LastDateEntered = ? WHERE PNR = ?;";
+    //Verbindung zu DB
+    $stmt = mysqli_stmt_init($conn);
+    //Statement wird vorbereitet
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+      header("location: ../workingTimeRecording.php?error=stmtfailed");
+      exit();
+    }else{
+        //Parameter binden
+        mysqli_stmt_bind_param($stmt, "ss",$recordingDate,  $_SESSION['pnr']);
+        //Parameter in DB ausführen
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt); 
+    }
+}
