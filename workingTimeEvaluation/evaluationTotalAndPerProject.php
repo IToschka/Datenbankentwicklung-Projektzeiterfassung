@@ -36,6 +36,13 @@
 
         $evaluationFrom= $_POST['evaluationFrom'];
         $evaluationTo = $_POST['evaluationTo'];
+
+        if(invalidEvaluationDate($evaluationFrom, $evaluationTo) !== false){
+            header("location: evaluationTotalAndPerProject.php?error=evaluationDate");
+            exit();
+        }
+
+
         $resultWeeklyWorkingHoursTotal = evaluateWeeklyWorkingsHoursTotal($conn, $evaluationFrom, $evaluationTo);
         $totalSumWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Sum"];
         $totalAverageWeeklyWorkingHours = $resultWeeklyWorkingHoursTotal["Average"];
@@ -143,7 +150,14 @@
     </form>
     <br>
     <br>
+    <?php
+    if(isset($_GET["error"])){
 
+      if($_GET["error"] == "evaluationDate") {
+          echo "<p>Die zu evaluierende Datum ist nicht zulässig. Das Von-Datum sollte nicht nach dem Bis-Datum liegen!</p>";
+      }
+    }
+     ?>
 
 </center>
     </body>

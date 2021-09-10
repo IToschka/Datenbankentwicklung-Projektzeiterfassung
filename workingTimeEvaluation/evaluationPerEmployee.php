@@ -18,6 +18,7 @@
     <center>
 
       <?php
+
       $evaluatedPnr ="";
 
       $perEmployeeSumWeeklyWorkingHours = 0;
@@ -39,6 +40,22 @@
         $evaluationFrom= $_POST['evaluationFrom'];
         $evaluationTo = $_POST['evaluationTo'];
         $evaluatedPnr = $_POST['evaluatedPnr'];
+
+
+        if(invalidEvaluationDate($evaluationFrom, $evaluationTo) !== false){
+            header("location: evaluationPerEmployee.php?error=evaluationDate");
+            exit();
+        }
+
+        if(invalidPnr($evaluatedPnr) !== false){
+            header("location: evaluationPerEmployee.php?error=invalidPnr");
+            exit();
+        }
+
+        if(pnrNotExists($conn, $evaluatedPnr)!== false){
+            header("location: evaluationPerEmployee.php?error=pnrNotExists");
+            exit();
+        }
 
 
         $resultWeeklyWorkingHoursPerEmployee = evaluateWeeklyWorkingsHoursPerEmployee($conn, $evaluationFrom, $evaluationTo, $evaluatedPnr);
@@ -150,6 +167,21 @@
     </form>
     <br>
     <br>
+
+    <?php
+    if(isset($_GET["error"])){
+
+      if($_GET["error"] == "evaluationDate") {
+          echo "<p>Die zu evaluierende Datum ist nicht zulässig. Das Von-Datum sollte nicht nach dem Bis-Datum liegen!</p>";
+      }
+      elseif($_GET["error"] == "invalidPnr") {
+          echo "<p>Die Personalnummer ist ungültig. Es sind nur Nummern von 0-9 zulässig!</p>";
+      }
+      elseif($_GET["error"] == "pnrNotExists") {
+          echo "<p>Die Personalnummer existiert nicht!</p>";
+      }
+    }
+     ?>
 
 
 </center>
