@@ -25,7 +25,7 @@
                             </tr>
                             <tr> 
                                 <td>Erfassungsdatum:</td>
-                                <td><input type="text" textarea readonly="readonly" name="recodingDate"
+                                <td><input type="text" textarea readonly="readonly" name="recordingDate"
                                         value= '<?php 
                                         require_once "includes/workingTimeRecordingFunctions.inc.php";
                                         $recordingDate = recordingDate($conn); echo $recordingDate; ?>'>
@@ -38,7 +38,8 @@
                 <?php 
                     //Erstellen von diversen Hilsvariablen, die später benötigt werden
                     //Anzahl der Ergebnisse der SQL-Abfrage
-                    $countResult;
+                    $countResult = 0;
+                    $_SESSION['countResult'] = 0;
 
                     //Variable für die Anzahl der Projekte, die dem Mitarbeiter angezeigt werden
                     $countRow = 0;
@@ -46,8 +47,9 @@
                     //Liste für Projkte und Projektaufgaben sowie für die Begin- und die Endzeit
                     $projectP = array();
                     $projectTaskPT = array();
-
-                                        
+                    $beginTime = array();
+                    $endTime = array();
+                                       
                     
                     //Projekt und Projektaufgeben, abhängig von PNR, dem Erfassungsdatum und dem Projektstart ausgeben
                     //Abruf in DB
@@ -71,6 +73,7 @@
 
                     //Anzahl der Projektaufgaben in die dafür erstelle Variable speichern
                     $countResult = mysqli_num_rows($result);
+                    $_SESSION['countResult'] = $countResult;
                     
                     
                 ?> 
@@ -99,12 +102,18 @@
                                 </tbody>';
 
                                 //Einträge in die Array-Listen (projectP und projectTaskPT) speichern
-                                $projectP[] = $row['ProjectID'];
-                                $projectTaskPT[] = $row['ProjectTaskID'];
+                                array_push($projectP, $row['ProjectID']);
+                                //$projectP[] = $row['ProjectID'];
+                                array_push($projectTaskPT, $row['ProjectTaskID']);
+                                //$projectTaskPT[] = $row['ProjectTaskID'];
 
                                 //Zählervariable nach jeder Tabellenzeile um ein erhöhen
                                 $countRow++;                                  
                             }
+
+                            $_SESSION['projectP'] = $projectP;
+                            $_SESSION['projectTaskPT'] = $projectTaskPT;
+
                         ?>                  
                     </table>
                     <br>
