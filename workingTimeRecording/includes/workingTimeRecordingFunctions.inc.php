@@ -94,7 +94,7 @@ function saveTimeRecoring($conn, $pnr, $projectID, $projectTaskID, $recordingDat
       exit();
     }else{
         //Parameter binden
-        mysqli_stmt_bind_param($stmt, "ssssss",$pnr, $projectID, $projectTaskID, $recordingDate, $beginTime, $endTime);
+        mysqli_stmt_bind_param($stmt, "ssssss", $pnr, $projectID, $projectTaskID, $recordingDate, $beginTime, $endTime);
         //Parameter in DB ausführen
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
