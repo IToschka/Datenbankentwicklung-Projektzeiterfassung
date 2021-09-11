@@ -1,7 +1,7 @@
 <?php
     include_once '../menu/workingTimeEvaluationMenu.php';
     include_once '../includes/dbh.inc.php';
-    include_once 'evaluationFunctions.php'
+    include_once 'includes/evaluationPerEmployeeFunctions.inc.php'
 ?>
 <!DOCTYPE html>
 <html>
@@ -87,7 +87,7 @@
     <br>
     <h3>Abweichung der Wochenarbeitsstunden</h3>
 
-    <table>
+    <table class="formTable">
         <tbody>
                 <tr>
                     <td>Summe:</td>
@@ -126,7 +126,7 @@
       <br>
       <br>
       <h3>Abweichung der Kernarbeitszeit</h3>
-      <table>
+      <table class="formTable">
           <tbody>
                   <tr>
                       <td>Summe:</td>
@@ -182,6 +182,9 @@
       }
     }
      ?>
+
+
+
 
 
 </center>

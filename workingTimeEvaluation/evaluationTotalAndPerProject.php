@@ -1,7 +1,7 @@
 <?php
     include_once '../menu/workingTimeEvaluationMenu.php';
     include_once '../includes/dbh.inc.php';
-    include_once 'evaluationFunctions.php'
+    include_once 'includes/evaluationTotalAndPerProjectFunctions.inc.php'
 ?>
 <!DOCTYPE html>
 <html>
@@ -59,7 +59,7 @@
         $totalMaxCoreWorkingHours = $resultCoreWorkingHoursTotal["Max"];
       }
        ?>
-
+    <h2>Gesamtübersicht</h2>
     <form action="evaluationTotalAndPerProject.php" method="POST" >
       Von: <input type="date" name="evaluationFrom" value= '<?php
       echo $evaluationFrom; ?>' required>
@@ -158,6 +158,89 @@
       }
     }
      ?>
+     <br>
+     <h2>Abweichung pro Projekt</h2>
+
+     <br>
+     <table>
+       <thead>
+         <tr>
+             <th></th>
+             <th  colspan ="5" style="border: 1px solid #CF261E">Abweichung der Wochenarbeitsstunden</th>
+             <th colspan ="5" style="border: 1px solid #CF261E">Abweichung der KErnarbeitszeiten</th>
+         </tr>
+
+       </thead>
+       <tbody>
+         <tr>
+             <td style="border: 1px solid #CF261E">ProjectID</th>
+             <td style="border: 1px solid #CF261E">Summe</td>
+             <td style="border: 1px solid #CF261E">Durchschnitt</td>
+             <td style="border: 1px solid #CF261E">Minimum</td>
+             <td style="border: 1px solid #CF261E">Maximum</td>
+             <td style="border: 1px solid #CF261E">Standardabweichung</td>
+
+             <td>Summe</td>
+             <td>Durchschnitt</td>
+             <td>Minimum</td>
+             <td>Maximum</td>
+             <td>Standardabweichung</td>
+         </tr>
+
+     <?php
+        if (isset($_POST['button_Evaluate'])){
+          $projectIds = getAllProjectIds($conn, $evaluationFrom);
+
+          foreach ($projectIds as $element){
+            $perProjectSumWeeklyWorkingHours = 0;
+            $perProjectAverageWeeklyWorkingHours = 0;
+            $perProjectMinWeeklyWorkingHours = 0;
+            $perProjectMaxWeeklyWorkingHours = 0;
+
+
+          if(getEmployeesPerProject($conn, $element) == 0){
+            $perProjectSumWeeklyWorkingHours = "-";
+            $perProjectAverageWeeklyWorkingHours = "-";
+            $perProjectMinWeeklyWorkingHours = "-";
+            $perProjectMaxWeeklyWorkingHours = "-";
+          }else{
+            $resultWeeklyWorkingHoursPerProject = evaluateWeeklyWorkingsHoursPerProject($conn, $evaluationFrom, $evaluationTo,$element);
+            $perProjectSumWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Sum"];
+            $perProjectAverageWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Average"];
+            $perProjectMinWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Min"];
+            $perProjectMaxWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Max"];
+
+
+            $resultCoreWorkingHoursPerProject = evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo,$element);
+            $perProjectSumCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Sum"];
+            $perProjectAverageCoreWorkingHours = $resultCoreWorkingHoursPerProject["Average"];
+            $perProjectMinCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Min"];
+            $perProjectMaxCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Max"];
+
+
+          }
+
+            echo ' <tr>
+                      <td>'. $element .'</td>
+                      <td>'. $perProjectSumWeeklyWorkingHours .'</td>
+                      <td>'. $perProjectAverageWeeklyWorkingHours  .'</td>
+                      <td>'. $perProjectMinWeeklyWorkingHours .'</td>
+                      <td>'. $perProjectMaxWeeklyWorkingHours .'</td>
+                      <td>'. 0 .'</td>
+                      <td>'. $perProjectSumCoreWorkingHours .'</td>
+                      <td>'. $perProjectAverageCoreWorkingHours  .'</td>
+                      <td>'. $perProjectMinCoreWorkingHours .'</td>
+                      <td>'. $perProjectMaxCoreWorkingHours .'</td>
+                      <td>'. 0 .'</td>
+                  </tr>';
+
+          }
+
+        }
+
+      ?>
+      </tbody>
+    </table>
 
 </center>
     </body>

@@ -11,7 +11,7 @@
 
     <body>
     <form action="includes/employeeManagement_Script.inc.php" method="POST">
-    <table>
+    <table class="formTable">
             <tbody>
                 <tr>
                     <td>Personalnummer:</td>
