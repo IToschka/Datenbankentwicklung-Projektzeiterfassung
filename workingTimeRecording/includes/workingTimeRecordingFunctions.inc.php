@@ -6,10 +6,13 @@ function recordingDate($conn) {
     //Verbindung zur DB
     $stmt = mysqli_stmt_init($conn);
     //Statement wird vorbereitet
+    //Statement funktioniert nicht
     if(!mysqli_stmt_prepare($stmt, $sql)){
        header("location: ../workingTimeRecording.php?error=stmtfailed");
         exit();
-    }else {
+    }
+    //Statement funktioniert
+    else {
         //Parameter binden
         mysqli_stmt_bind_param($stmt, "s",  $_SESSION['pnr']);
         //Paramter in DB ausführen
@@ -36,7 +39,7 @@ function recordingDate($conn) {
 //Funktionien für die Validierung für eine evtl. Fehlermeldung
 function onlyBeginInput($beginTime, $endTime){
     $result;
-    if($beginTime !== null && $endTime == null){
+    if($beginTime != null && $endTime == null){
         $result = true;
     }
     else{
@@ -47,7 +50,7 @@ function onlyBeginInput($beginTime, $endTime){
 
 function onlyEndInput($beginTime, $endTime){
     $result;
-    if($beginTime == null && $endTime !== null) {
+    if($beginTime == null && $endTime != null) {
         $result = true;
     }
     else {
@@ -66,11 +69,23 @@ function beginIsAfterEnd($beginTime, $endTime){
     return $result;
 }
 
-/*$countEmptyInput = 0;
+function overlappingProjects($beginTime, $endTime, $beginTimeA, $endTimeA){
+    for($i = 0; $i < count($beginTimeA); $i++) {
+        if($beginTime > $beginTimeA[$i] && $beginTime < $endTimeA[$i]) {
+            return true;
+        }
+        elseif($endTime < $endTimeA[$i] && $endTime > $beginTimeA[$i]){
+            return true;  
+        }
+
+    }
+    
+    return false;
+}
+
 function bothTimesEmpty($beginTime, $endTime){
     if($beginTime == null && $endTime == null) {
         $result = true;
-        $countEmptyInput++;
     }
     else {
         $result = false;
@@ -79,7 +94,15 @@ function bothTimesEmpty($beginTime, $endTime){
     return $countEmptyInput;
 }
 
-function allTimesEmpty*/
+function emptyArray($beginTimeA, $endTimeA){
+    if(count($beginTimeA) == 0) {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+    return $result;
+}
 
 
 //Funktion zum Speichern der Einträge
