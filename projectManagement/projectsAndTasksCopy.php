@@ -11,9 +11,9 @@
     </head>
 
     <body>
-    <form method="post" action="projectsAndTasksNew.html"> <!--php Methode, die die html Seite aufruft und sie mit den Werten des ausgewählten Projekts vorausfüllt--></form>
+    <form method="post" action="projectAndTaskScript.inc.php">
    <p>ProjektID:<input type="number" name="ProjectID" ></p>
-    <input type="submit" name="confirm" value="Bestätigen">
+    <input type="submit" name="button_enterProject" value="Bestätigen">
     <input type="submit" name="button_projectManagerMenu" value="Zurück zum Hauptmenü">
     </form>
 </body>

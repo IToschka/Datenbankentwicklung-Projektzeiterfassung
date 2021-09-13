@@ -40,7 +40,7 @@ if(isset($_GET["error"])){
    elseif ($_GET["error"] == "none") {
     echo "<p>Der Mitarbeiter wurde erfolgreich dem Projekt zugeordnet!</p>";
 }
-elseif ($_GET["error"] == "numericPNR") {
+elseif ($_GET["error"] == "noNegativePNR") {
     echo "<p>Die PNR darf nur numerische Werte enthalten!</p>";
 }
     elseif ($_GET["error"] == "none1") {
