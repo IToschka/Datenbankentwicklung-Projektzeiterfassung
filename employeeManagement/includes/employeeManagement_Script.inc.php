@@ -1,4 +1,5 @@
 <?php
+//Autor Tamara Romer
 include_once '../../includes/dbh.inc.php';
 include_once 'employeeManagement_Functions.inc.php';
 
@@ -20,8 +21,6 @@ if (isset($_POST['button_createEmployee'])) {
     }else{
         $projectManager = false;
     }
-
-
 
     if(invalidFirstname($firstname) !== false){
         header("location: ../createEmployee.php?error=invalidFirstname");
@@ -53,56 +52,32 @@ if (isset($_POST['button_createEmployee'])) {
     $hiringDate, $weeklyWorkingHours, $projectManager);
 
     createLogin($conn, $pnr, $password);
+
+} elseif(isset($_POST['button_updateEmployee'])){
+    $pnr = $_POST['pnr'];
+    $coreTimeFrom = $_POST['coreTimeFrom'];
+    $coreTimeTo = $_POST['coreTimeTo'];
+    $weeklyWorkingHours = $_POST['weeklyWorkingHours'];
+
+    if(PnrNotExistsUpdate($conn, $pnr) !== false){
+      header("location: ../updateEmployee.php?error=pnrNotExists");
+      exit();
     }
 
-    elseif(isset($_POST['button_updateEmployee'])){
-        $pnr = $_POST['pnr'];
-        $coreTimeFrom = $_POST['coreTimeFrom'];
-        $coreTimeTo = $_POST['coreTimeTo'];
-        $weeklyWorkingHours = $_POST['weeklyWorkingHours'];
-
-
-
-
-        if(PnrNotExistsUpdate($conn, $pnr) !== false){
-            header("location: ../updateEmployee.php?error=pnrNotExists");
-            exit();
-        }
-
-
-        if(invalidWeeklyWorkingHours($weeklyWorkingHours) !== false){
-            header("location: ../updateEmployee.php?error=invalidWeeklyWorkingHours");
-            exit();
-        }
-
-        updateEmployee($conn, $coreTimeFrom, $coreTimeTo, $weeklyWorkingHours, $pnr);
-
-
-
-
+    if(invalidWeeklyWorkingHours($weeklyWorkingHours) !== false){
+        header("location: ../updateEmployee.php?error=invalidWeeklyWorkingHours");
+        exit();
     }
-    elseif(isset($_POST['button_deleteEmployee'])) {
-        $pnr = $_POST['pnr'];
 
+    updateEmployee($conn, $coreTimeFrom, $coreTimeTo, $weeklyWorkingHours, $pnr);
 
-        if(PnrNotExistsDelete($conn, $pnr) !== false){
-            header("location: ../deleteEmployee.php?error=pnrNotExists");
-            exit();
-        }
+} elseif(isset($_POST['button_deleteEmployee'])) {
+    $pnr = $_POST['pnr'];
 
-        deleteEmployee($conn, $pnr);
-        }
-        elseif(isset($_POST['button_EmployeeMenu'])){
-            header("location: ../employeeManagementMenu.php");
-            exit();
-
+    if(PnrNotExistsDelete($conn, $pnr) !== false){
+      header("location: ../deleteEmployee.php?error=pnrNotExists");
+      exit();
     }
-    elseif(isset($_POST['button_backToMenu'])) {
-      if (isset($_SESSION['projectManager'])){
-          header('Location: http://localhost:8080/Datenbankentwicklung-Projektzeiterfassung/startMenu/projectManagerMenu.php');
-      }else {
-        header('Location: http://localhost:8080/Datenbankentwicklung-Projektzeiterfassung/startMenu/employeeMenu.php');
-      }
 
-
-    }
+    deleteEmployee($conn, $pnr);
+}

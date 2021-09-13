@@ -1,4 +1,6 @@
 <?php
+  //Autor Tamara Romer
+    include_once '../includes/loginHeader.inc.php';
     include_once '../menu/employeeManagementMenu.php';
 ?>
 <!DOCTYPE html>
@@ -6,11 +8,9 @@
     <head>
        <meta charset="utf-8">
        <link rel="stylesheet" href="../css/style.css">
-       <title></title>
+       <title>Mitarbeiter löschen</title>
     </head>
-
     <body>
-
     <form action="includes/employeeManagement_Script.inc.php" method="POST">
     <table>
             <tbody>
@@ -22,12 +22,17 @@
             </tbody>
         </table>
 
-        <input type="submit" name="button_backToMenu" value="Zurück zum Menü">
         <input type="submit" name="button_deleteEmployee" value="Löschen">
+    </form>
+    <br>
+    <form action="../includes/footer.inc.php" method="POST" >
+      <input type="submit" name="button_BackToMenu" value="Zurück zum Menü">
+      <input type="submit" name="button_LogOut" value = "Abmelden">
     </form>
 
     <?php
     if(isset($_GET["error"])){
+      //Anzeige der Fehlermeldeung
         if($_GET["error"] == "pnrNotExists"){
             echo "<p>Die Personalnummer existiert nicht!</p>";
         }

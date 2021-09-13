@@ -1,19 +1,19 @@
 <?php
+  //Autor Tamara Romer
+    include_once '../includes/loginHeader.inc.php';
     include_once '../menu/employeeManagementMenu.php';
+
 ?>
 <!DOCTYPE html>
 <html>
     <head>
        <meta charset="utf-8">
        <link rel="stylesheet" href="../css/style.css">
-
-       <title></title>
+       <title>Mitarbeiter erstellen</title>
     </head>
-
     <body>
       <br>
       <br>
-
     <form action="includes/employeeManagement_Script.inc.php" method="POST" >
     <h3>Bitte füllen sie die Felder aus</h3>
     <table class="formTable">
@@ -53,17 +53,17 @@
             </tbody>
         </table>
 
-        <input type="submit" name="button_backToMenu" value="Zurück zum Menü">
         <input type="submit" name="button_createEmployee" value = "Erstellen">
     </form>
     <br>
-    <br>
-    <?php
-    include_once '../includes/footer.inc.php';
-     ?>
 
+    <form action="../includes/footer.inc.php" method="POST" >
+      <input type="submit" name="button_BackToMenu" value="Zurück zum Menü">
+      <input type="submit" name="button_LogOut" value = "Abmelden">
+    </form>
 
     <?php
+    //Anzeige der Fehlermeldeung
     if(isset($_GET["error"])){
         if($_GET["error"] == "invalidFirstname") {
             echo "<p>Der Vorname ist nicht zulässig. Der Name darf nur aus Buchstaben bestehen!</p>";
@@ -88,9 +88,6 @@
         }
 
     }
-
-
     ?>
-
     </body>
 </html>
