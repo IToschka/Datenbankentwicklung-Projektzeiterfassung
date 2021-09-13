@@ -9,51 +9,110 @@ if (isset($_POST['button_save_workingTime'])) {
     
     $pnr = $_POST['pnr'];
     $recordingDate = $_POST['recordingDate'];
-    $projectIDArray = $_SESSION['projectP'];
-    $projectTaskIDArray = $_SESSION['projectTaskPT'];
+    $projectIDArray = $_SESSION['projectA'];
+    $projectTaskIDArray = $_SESSION['projectTaskA'];
     $countResult = $_SESSION['countResult'];
+        
+    $beginTimeA = array();
+    $endTimeA = array();
 
-
-    //Validierung für eine evtl. Fehlermeldung
+    //Validierung für eine evtl. Fehlermeldung bzw. ob Speicherung in Array
     for ($i = 0; $i < $countResult; $i++){
 
         $beginTime = $_POST["beginTime{$i}"];
         $endTime = $_POST["endTime{$i}"];
+        
+        $exitCode = 0;
 
         //Es wurde nur eine Beginzeit bei (min) einer Projektaufgabe eigetragen
-        if(onlyBeginInput($beginTime, $endTime) !== false){
+        if(onlyBeginInput($beginTime, $endTime) == true){
             header("location: ../workingTimeRecording.php?error=onlyBeginInput");
+            $exitCode = 1;
             break;
         }
 
         //Es wurde nur eine Endzeit bei (min) einer Projektaufgabe eigetragen
-        if(onlyEndInput($beginTime, $endTime) !== false){
+        elseif(onlyEndInput($beginTime, $endTime) == true){
             header("location: ../workingTimeRecording.php?error=onlyEndInput");
+            $exitCode = 1;
             break;
         }
         
         //Die Endzeit liegt vor der Startzeit
-        elseif(beginIsAfterEnd($beginTime, $endTime) !== false){
+        elseif(beginIsAfterEnd($beginTime, $endTime) == true){
             header("location: ../workingTimeRecording.php?error=beginIsAfterEnd");
+            $exitCode = 1;
             break;
         }
 
-        /*//Es wurde gar keine Zeit eingetragen --> an keinem Projekt gearbeitet --> nur lastDateEntered hochsetzen
-        elseif(bothTimesEmpty($beginTime, $endTime) !== false){
-            header("location: ../workingTimeRecording.php?error=allTimesEmpty");
-            updateLastDateEntered($conn, $recordingDate);
-            header("location: ../workingTimeRecording.php");
+        //Es liegt eine Überlappung bei (min) zwei Projekten vor --> hier mit Array arbeiten
+        elseif(overlappingProjects($beginTime, $endTime, $beginTimeA, $endTimeA) == true){
+            header("location: ../workingTimeRecording.php?error=overlappingProjects");
+            $exitCode = 1;
             break;
-        }*/
+        }
 
-        //Überlappende Zeiten noch berücksichtigen
+        //Für das Projekt wurde keine gar keine Zeit eingetragen --> kein Fehler, aber auch trotzdem keine Speicherung im Array
+        elseif(bothTimesEmpty($beginTime, $endTime) == true){
+            $exitCode = 0;
+            //echo "Davor:" .count($projectIDArray);
+            unset($projectIDArray[$i]);
+            unset($projectTaskIDArray[$i]);
+            //echo "Danach:" .count($projectIDArray);
+        }
 
-        //Es wurden alle Zeiten syntaktisch richtig eingetragen --> Projekt soll in Array gespeichert werden
+        //Kein Fehler --> Speicherung in Array
+        else{    
+            array_push($beginTimeA, $beginTime);
+            array_push($endTimeA, $endTime);   
+        }
+
+    } //hier endet die for-Schleife
+
+
+
+    //Es wurde gar keine Zeit eingetragen (Array leer) --> nur updateLastDateEntered
+    if(emptyArray($beginTimeA, $endTimeA) == true && $exitCode == 0 ){
+        echo "Test Empty Array";
+        //header("location: ../workingTimeRecording.php?error=emptyArray");
+        updateLastDateEntered($conn, $recordingDate, $pnr);
+        if($recordingDate <= $datum = date("Y-m-d",$timestamp)) {
+            header("location: ../workingTimeRecording.php"); 
+        }
         else{
-            saveTimeRecoring($conn, $pnr, $projectIDArray[$i], $projectTaskIDArray[$i], $recordingDate, $beginTime, $endTime);
-            updateLastDateEntered($conn, $recordingDate, $pnr);
-            header("location: ../workingTimeRecording.php");
+            if($_SESSION['projectManager'] = "projektManager")
+            header("location: ../../projectManagerMenu.php");
+            else{
+                header("location: ../../employeeMenu.php");
+            }
+            
         }
-    
+    }
+    //Zeiten aus Array abspeichern  --> $i geht hier nicht mehr, da außerhalb der for-Schleife
+    elseif($exitCode == 0){
+        for($i=0; $i < count($projectIDArray); $i++){
+          saveTimeRecoring($conn, $pnr, $projectIDArray[$i], $projectTaskIDArray[$i], $recordingDate, $beginTimeA[$i], $endTimeA[$i]);
+          echo "<br>".$beginTimeA[$i]; 
+          //->format('His')
+          //replace : mit nichts und zwei 0 hinten zwei 0
+        }
+        updateLastDateEntered($conn, $recordingDate, $pnr);
+        exit();
+        if($recordingDate <= $datum = date("Y-m-d",$timestamp)) {
+            header("location: ../workingTimeRecording.php"); 
+        }
+        else{
+            if($_SESSION['projectManager'] = "projektManager"){
+                header("location: ../../menu/projectManagerMenu.php");
+            }            
+            else{
+                header("location: ../../menu/employeeMenu.php");
+            }    
+        }
+
+    }
+    else{
+        echo "Test else";
+        //do nothing, denn es wird bereits Fehler ausgegeben
     }
 } 

@@ -25,7 +25,7 @@
                             </tr>
                             <tr> 
                                 <td>Erfassungsdatum:</td>
-                                <td><input type="text" textarea readonly="readonly" name="recordingDate"
+                                <td><input type="date" textarea readonly="readonly" name="recordingDate"
                                         value= '<?php 
                                         require_once "includes/workingTimeRecordingFunctions.inc.php";
                                         $recordingDate = recordingDate($conn); echo $recordingDate; ?>'>
@@ -38,18 +38,14 @@
                 <?php 
                     //Erstellen von diversen Hilsvariablen, die später benötigt werden
                     //Anzahl der Ergebnisse der SQL-Abfrage
-                    $countResult = 0;
-                    $_SESSION['countResult'] = 0;
+                    $countResult;
 
                     //Variable für die Anzahl der Projekte, die dem Mitarbeiter angezeigt werden
                     $countRow = 0;
 
                     //Liste für Projkte und Projektaufgaben sowie für die Begin- und die Endzeit
-                    $projectP = array();
-                    $projectTaskPT = array();
-                    $beginTime = array();
-                    $endTime = array();
-                                       
+                    $projectA = array();
+                    $projectTaskA = array();                                       
                     
                     //Projekt und Projektaufgeben, abhängig von PNR, dem Erfassungsdatum und dem Projektstart ausgeben
                     //Abruf in DB
@@ -102,17 +98,15 @@
                                 </tbody>';
 
                                 //Einträge in die Array-Listen (projectP und projectTaskPT) speichern
-                                array_push($projectP, $row['ProjectID']);
-                                //$projectP[] = $row['ProjectID'];
-                                array_push($projectTaskPT, $row['ProjectTaskID']);
-                                //$projectTaskPT[] = $row['ProjectTaskID'];
+                                array_push($projectA, $row['ProjectID']);
+                                array_push($projectTaskA, $row['ProjectTaskID']);
 
                                 //Zählervariable nach jeder Tabellenzeile um ein erhöhen
                                 $countRow++;                                  
                             }
 
-                            $_SESSION['projectP'] = $projectP;
-                            $_SESSION['projectTaskPT'] = $projectTaskPT;
+                            $_SESSION['projectA'] = $projectA;
+                            $_SESSION['projectTaskA'] = $projectTaskA;
 
                         ?>                  
                     </table>
@@ -120,19 +114,25 @@
                 <input type="submit" name="button_save_workingTime" value="Speichern">
 
             </form>
-
+            <center> 
             <?php
 
             include_once 'includes/workingTimeRecordingFunctions.inc.php';
 
             if(isset($_GET["error"])){
-                if($_GET["error"] == "onlyBeginInput" OR $_GET["error"] == "onlyEndInput"){
-                echo "<p>Es müssen immer beide Zeiten eingetragen werden, Uhrzeit bei Beginn UND Uhrzeit bei Beendigung.</p>";
-                }                
-                elseif($_GET["error"] == "beginIsAfterEnd"){
-                echo "<p>Die Uhrzeit bei Beendigung darf nicht vor der Uhrzeit bei Beginn liegen!</p>";
+                if($_GET["error"] == "onlyBeginInput"){
+                echo "<p>Bei mindestens einer Projektzeit fehlt die Endzeit.</p>";
                 }
-                elseif($_GET["error"] == "allTimesEmpty"){
+                elseif($_GET["error"] == "onlyEndInput"){
+                    echo "<p>Bei mindestens einer Projektzeit fehlt die Beginnzeit.</p>";
+                    }                  
+                elseif($_GET["error"] == "beginIsAfterEnd"){
+                    echo "<p>Die Beginnzeit muss vor der Endzeit liegen!</p>";
+                } 
+                elseif($_GET["error"] == "overlappingProjects"){
+                    echo "<p>Bei mindestens zwei Projekten haben sich die eigetragenen Zeiten überlappt.</p>";
+                }
+                elseif($_GET["error"] == "emptyArray"){
                     echo "<p>Es wurde erfasst, dass der Mitarbeiter an diesem Tag an keinem Projekt gearbeitet hat.</p>";
                 }
                 elseif($_GET["error"] == "stmtfailed"){
@@ -140,9 +140,10 @@
                 }
                 elseif($_GET["error"] == "none"){
                     echo "<p>Die Projektzeit(en) wurde(n) erfolgreich erfasst.</p>";
+
                 }
             }
             ?>
-
+            </center>
     </body>
 </html>
