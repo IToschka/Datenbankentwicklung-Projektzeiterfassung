@@ -37,12 +37,16 @@ function evaluateWeeklyWorkingsHoursTotal($conn, $evaluationFrom, $evaluationTo)
   mysqli_stmt_execute($stmt);
 
   $resultData = mysqli_stmt_get_result($stmt);
-  $sum=0;
-  $numberOfValues=0;
-  $average=0;
-  $max=0;
-  $min=0;
-  $deviationInSec=0;
+  $deviationInSec = 0;
+  $sum = 0;
+  $numberOfValues = 0;
+  $average = 0;
+  $max = 0;
+  $min = 0;
+  $allDeviationsInSec = array();
+  //$standardDeviation =0;
+
+
 
   while($row=mysqli_fetch_assoc($resultData)){
     $deviation =$row['Deviation'];
@@ -58,10 +62,14 @@ function evaluateWeeklyWorkingsHoursTotal($conn, $evaluationFrom, $evaluationTo)
       $max = abs((int)$deviationInSec);
     }
 
+    //array_push($allDeviationsInSec, $deviationInSec);
+
   }
 
 $numberOfValues = getNumberOfEmployees($conn);
 $average = getAverage($sum, $numberOfValues);
+
+//$standardDeviation = getStandardDeviationMax($allDeviationsInSec);
 
 $resultWeeklyWorkingHoursTotal = formatEvaluatedResults($sum, $average, $min, $max);
 return $resultWeeklyWorkingHoursTotal;
@@ -245,7 +253,7 @@ function getAllProjectIds($conn, $evaluationFrom){
 }
 
 
-function evaluateWeeklyWorkingsHoursPerProject($conn, $evaluationFrom, $evaluationTo,$element){
+function evaluateWeeklyWorkingsHoursPerProject($conn, $evaluationFrom, $evaluationTo,$projectId ){
 
   $sql = "SELECT timerecording.PNR, WEEKOFYEAR(RecordingDate) AS RecordingWeek,
           YEAR(RecordingDate) AS RecordingYear,
@@ -263,7 +271,7 @@ function evaluateWeeklyWorkingsHoursPerProject($conn, $evaluationFrom, $evaluati
       exit();
   }
 
-  mysqli_stmt_bind_param($stmt, "sss", $evaluationFrom, $evaluationTo, $element);
+  mysqli_stmt_bind_param($stmt, "sss", $evaluationFrom, $evaluationTo, $projectId );
   mysqli_stmt_execute($stmt);
 
   $resultData = mysqli_stmt_get_result($stmt);
@@ -290,7 +298,7 @@ function evaluateWeeklyWorkingsHoursPerProject($conn, $evaluationFrom, $evaluati
 
   }
 
-$numberOfValues = getEmployeesPerProject($conn, $element);
+$numberOfValues = getEmployeesPerProject($conn, $projectId );
 $average = getAverage($sum, $numberOfValues);
 
 $resultWeeklyWorkingHoursPerProject = formatEvaluatedResults($sum, $average, $min, $max);
@@ -298,7 +306,7 @@ return $resultWeeklyWorkingHoursPerProject;
 }
 
 
-function getEmployeesPerProject($conn, $element){
+function getEmployeesPerProject($conn, $projectId){
   $sql = "SELECT COUNT(PNR) AS NumberOfEmployeesPerProject FROM employeeproject WHERE ProjectID = ?;";
   $stmt = mysqli_stmt_init($conn);
   if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -307,7 +315,7 @@ function getEmployeesPerProject($conn, $element){
 
   }
 
-  mysqli_stmt_bind_param($stmt, "s", $element);
+  mysqli_stmt_bind_param($stmt, "s", $projectId );
   mysqli_stmt_execute($stmt);
   $resultData = mysqli_stmt_get_result($stmt);
   $row= mysqli_fetch_assoc($resultData);
@@ -321,14 +329,14 @@ function getEmployeesPerProject($conn, $element){
 
 
 
-function evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo,$element){
+function evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo,$projectId ){
 
-  $resultCoreWorkingHoursFrom = evaluateCoreWorkingTimeFromPerProject($conn, $evaluationFrom, $evaluationTo, $element);
-  $resultCoreWorkingHoursTo = evaluateCoreWorkingTimeToPerProject($conn, $evaluationFrom, $evaluationTo, $element);
+  $resultCoreWorkingHoursFrom = evaluateCoreWorkingTimeFromPerProject($conn, $evaluationFrom, $evaluationTo, $projectId );
+  $resultCoreWorkingHoursTo = evaluateCoreWorkingTimeToPerProject($conn, $evaluationFrom, $evaluationTo, $projectId );
 
   $sum = $resultCoreWorkingHoursFrom["SumFrom"] + $resultCoreWorkingHoursTo["SumTo"];
 
-  $numberOfValues = getEmployeesPerProject($conn, $element);
+  $numberOfValues = getEmployeesPerProject($conn, $projectId );
   $average = getAverage($sum, $numberOfValues);
 
   if($resultCoreWorkingHoursFrom["MinFrom"]< $resultCoreWorkingHoursTo["MinTo"]){
@@ -353,7 +361,7 @@ return $resultCoreWorkingHoursPerProject;
 //Evaluiiert die Summe, den Durchschnitt, das Minimum, das Maxmimum und die Standardabweichung
 //für die Abweichungen, die vor der Kernarbeitszeit liegen
 
-function evaluateCoreWorkingTimeFromPerProject($conn, $evaluationFrom, $evaluationTo, $element){
+function evaluateCoreWorkingTimeFromPerProject($conn, $evaluationFrom, $evaluationTo, $projectId ){
 
   $sql = "SELECT TIMEDIFF(CoreWorkingTimeFrom, TaskBegin) AS Deviation
           FROM timerecording, employee
@@ -368,7 +376,7 @@ function evaluateCoreWorkingTimeFromPerProject($conn, $evaluationFrom, $evaluati
       exit();
   }
 
-  mysqli_stmt_bind_param($stmt, "sss", $evaluationFrom, $evaluationTo,$element);
+  mysqli_stmt_bind_param($stmt, "sss", $evaluationFrom, $evaluationTo,$projectId );
   mysqli_stmt_execute($stmt);
 
   $resultData = mysqli_stmt_get_result($stmt);
@@ -399,7 +407,7 @@ return $resultCoreWorkingHoursFrom;
 
 //Evaluiiert die Summe, den Durchschnitt, das Minimum, das Maxmimum und die Standardabweichung
 //für die Abweichungen die nach der Kernarbeitszeit liegen
-function evaluateCoreWorkingTimeToPerProject($conn, $evaluationFrom, $evaluationTo, $element){
+function evaluateCoreWorkingTimeToPerProject($conn, $evaluationFrom, $evaluationTo, $projectId ){
 
   $sql = "SELECT TIMEDIFF(TaskEnd, CoreWorkingTimeTo) AS Deviation
   FROM timerecording, employee
@@ -414,7 +422,7 @@ function evaluateCoreWorkingTimeToPerProject($conn, $evaluationFrom, $evaluation
       exit();
   }
 
-  mysqli_stmt_bind_param($stmt, "sss", $evaluationFrom, $evaluationTo, $element);
+  mysqli_stmt_bind_param($stmt, "sss", $evaluationFrom, $evaluationTo, $projectId );
   mysqli_stmt_execute($stmt);
   $resultData = mysqli_stmt_get_result($stmt);
 

@@ -58,6 +58,10 @@
     </form>
     <br>
     <br>
+    <?php
+    include_once '../includes/footer.inc.php';
+     ?>
+
 
     <?php
     if(isset($_GET["error"])){
@@ -84,6 +88,7 @@
         }
 
     }
+
 
     ?>
 
