@@ -43,22 +43,25 @@ function getMax($deviationInSec, $max){
 }
 
 function getStandardDeviationMax($allDeviationsInSec){
-  $average = array_sum($allDeviationsInSec) / count($allDeviationsInSec);
+  $stddev=0;
+  if(!empty($allDeviationsInSec)){
+    $average = array_sum($allDeviationsInSec) / count($allDeviationsInSec);
 
-  $sum = 0;
-  foreach ($allDeviationsInSec as $element) {
-		$sum += pow($element - $average, 2);
-	}
+    $sum = 0;
+    foreach ($allDeviationsInSec as $element) {
+  		$sum += pow($element - $average, 2);
+  	}
+    echo $sum . "<br>";
+  	$stddev = sqrt($sum / count($allDeviationsInSec));
 
-	$stddev = sqrt($sum / count($allDeviationsInSec));
+  }
 
 	return $stddev;
-
 }
 
 //Die Funktion formatiert die evaluierten Ergebnisse im Sekundenformat
 //zur Ausgabe wieder in das Zeitformat hh:mm:ss um
-function formatEvaluatedResults($sum, $average, $min, $max){
+function formatEvaluatedResults($sum, $average, $min, $max, $standardDeviation){
   $formattedSum = sprintf('%02d:%02d:%02d',
                     ($sum/ 3600),
                     ($sum / 60 % 60),
@@ -80,13 +83,13 @@ $formattedAverage = sprintf('%02d:%02d:%02d',
                     ($max / 60 % 60),
                     $max % 60);
 
-/*$formattedStandardDeviation = sprintf('%02d:%02d:%02d',
-                    $standardDeviation/ 3600),
+$formattedStandardDeviation = sprintf('%02d:%02d:%02d',
+                    ($standardDeviation/ 3600),
                     ($standardDeviation / 60 % 60),
                     $standardDeviation % 60);
-*/
 
 
-  $formattedResults = array("Sum"=>$formattedSum, "Average"=>$formattedAverage, "Min"=>$formattedMin, "Max"=>$formattedMax/*, "StandardDeviation"=>$formattedStandardDeviation*/);
+
+  $formattedResults = array("Sum"=>$formattedSum, "Average"=>$formattedAverage, "Min"=>$formattedMin, "Max"=>$formattedMax,"StandardDeviation"=>$formattedStandardDeviation);
   return $formattedResults;
 }

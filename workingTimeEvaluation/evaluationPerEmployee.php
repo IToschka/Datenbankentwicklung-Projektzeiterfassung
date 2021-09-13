@@ -36,9 +36,10 @@
 
       if (isset($_POST['button_Evaluate'])){
 
-        $evaluationFrom= $_POST['evaluationFrom'];
+        $evaluationFrom = $_POST['evaluationFrom'];
         $evaluationTo = $_POST['evaluationTo'];
         $evaluatedPnr = $_POST['evaluatedPnr'];
+
 
 
         if(invalidEvaluationDate($evaluationFrom, $evaluationTo) !== false){
