@@ -1,3 +1,4 @@
+<!--Von Irena Toschka-->
 <?php
 //Funktion zur Bestimmung des Erfassungsdatum
 function recordingDate($conn) {
@@ -91,7 +92,6 @@ function bothTimesEmpty($beginTime, $endTime){
         $result = false;
     }
     return $result;
-    return $countEmptyInput;
 }
 
 function emptyArray($beginTimeA, $endTimeA){
@@ -115,7 +115,9 @@ function saveTimeRecoring($conn, $pnr, $projectID, $projectTaskID, $recordingDat
     if(!mysqli_stmt_prepare($stmt, $sql)){
       header("location: ../workingTimeRecording.php?error=stmtfailed");
       exit();
-    }else{
+    }
+    //Statement funktioniert 
+    else{
         //Parameter binden
         mysqli_stmt_bind_param($stmt, "ssssss", $pnr, $projectID, $projectTaskID, $recordingDate, $beginTime, $endTime);
         //Parameter in DB ausführen
@@ -135,10 +137,13 @@ function updateLastDateEntered($conn, $recordingDate, $pnr){
     //Verbindung zu DB
     $stmt = mysqli_stmt_init($conn);
     //Statement wird vorbereitet
+    //Statement funktioniert nicht
     if(!mysqli_stmt_prepare($stmt, $sql)){
       header("location: ../workingTimeRecording.php?error=stmtfailed");
       exit();
-    }else{
+    }
+    //Statement funktioniert
+    else{
         //Parameter binden
         mysqli_stmt_bind_param($stmt, "ss",$recordingDate,  $_SESSION['pnr']);
         //Parameter in DB ausführen
