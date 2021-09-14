@@ -1,4 +1,5 @@
 <?php
+session_start();
         if (isset($_POST['button_BackToMenu'])){
           echo "gedrückt";
           if (isset($_SESSION['projectManager'])){

@@ -22,6 +22,8 @@ if (isset($_POST['button_createEmployee'])) {
         $projectManager = false;
     }
 
+    $lastDateEntered= getLastDateEntered($hiringDate);
+
     if(invalidFirstname($firstname) !== false){
         header("location: ../createEmployee.php?error=invalidFirstname");
         exit();
@@ -49,7 +51,7 @@ if (isset($_POST['button_createEmployee'])) {
 
 
     createEmployee($conn, $pnr, $firstname, $lastname, $coreTimeFrom, $coreTimeTo,
-    $hiringDate, $weeklyWorkingHours, $projectManager);
+    $hiringDate, $weeklyWorkingHours, $projectManager, $lastDateEntered);
 
     createLogin($conn, $pnr, $password);
 

@@ -58,18 +58,33 @@ function invalidWeeklyWorkingHours($weeklyWorkingHours){
     return $result;
 }
 
+
+function getLastDateEntered($hiringDate){
+
+  if(date('l', strtotime($hiringDate)) == 'Monday') {
+      $lastDateEntered = date('Y-m-d', strtotime("-3 day", strtotime($hiringDate)));
+  }elseif(date('l', strtotime($hiringDate)) == 'Sunday') {
+      $lastDateEntered = date('Y-m-d', strtotime("-2 day", strtotime($hiringDate)));
+  }else {
+      $lastDateEntered = date('Y-m-d', strtotime("-1 day", strtotime($hiringDate)));
+  }
+  return $lastDateEntered;
+}
+
+
+
 function createEmployee($conn, $pnr, $firstname, $lastname, $coreTimeFrom, $coreTimeTo,
-$hiringDate, $weeklyWorkingHours, $projectManager){
+$hiringDate, $weeklyWorkingHours, $projectManager, $lastDateEntered){
     $sql = "INSERT INTO employee (PNR, Firstname, Lastname, CoreWorkingTimeFrom,
-    CoreWorkingTimeTo, HiringDate, WeeklyWorkingHours, ProjectManager) VALUES (?, ?, ?, ?, ?, ?, ?,?);";
+    CoreWorkingTimeTo, HiringDate, WeeklyWorkingHours, ProjectManager, LastDateEntered) VALUES (?, ?, ?, ?, ?, ?, ?,?,?);";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         header("location: ../createEmployee.php?error=stmtfailed");
         exit();
     }
 
-    mysqli_stmt_bind_param($stmt, "ssssssss",$pnr, $firstname, $lastname, $coreTimeFrom, $coreTimeTo,
-    $hiringDate, $weeklyWorkingHours, $projectManager);
+    mysqli_stmt_bind_param($stmt, "sssssssss",$pnr, $firstname, $lastname, $coreTimeFrom, $coreTimeTo,
+    $hiringDate, $weeklyWorkingHours, $projectManager, $lastDateEntered);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
