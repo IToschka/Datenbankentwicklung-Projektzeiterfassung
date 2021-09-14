@@ -1,4 +1,3 @@
-<!--Von Irena Toschka-->
 <?php
 //Funktion zur Bestimmung des Erfassungsdatum
 function recordingDate($conn) {

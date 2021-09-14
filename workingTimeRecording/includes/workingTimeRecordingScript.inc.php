@@ -1,4 +1,3 @@
-<!--Von Irena Toschka-->
 <?php
 
 session_start();
@@ -55,8 +54,10 @@ if (isset($_POST['button_save_workingTime'])) {
         //Für das Projekt wurde keine gar keine Zeit eingetragen --> kein Fehler, aber auch trotzdem keine Speicherung im Array
         elseif(bothTimesEmpty($beginTime, $endTime) == true){
             $exitCode = 0;
-            unset($projectIDArray[$i]);
-            unset($projectTaskIDArray[$i]);
+            $projectIDArray[$i] = null;
+            $projectTaskIDArray[$i] = null;
+            //unset($projectIDArray[$i]);
+            //unset($projectTaskIDArray[$i]);
         }
 
         //Kein Fehler --> Speicherung in Array
@@ -67,7 +68,19 @@ if (isset($_POST['button_save_workingTime'])) {
 
     } //hier endet die for-Schleife
 
-        
+    //Lücken aus demm Projekt-Array und dem Projektaufgaben-Array raus, indem die Arrays neu in ein zweites Array gepeichert werden
+    $projectIDArray2 = array();
+    for($i = 0; $i < count($projectIDArray); $i++){
+        if ($projectIDArray[$i] != null) {
+            array_push($projectIDArray2, $projectIDArray[$i]);
+        }
+    }
+    $projectTaskIDArray2 = array();
+    for($i = 0; $i < count($projectTaskIDArray); $i++){
+        if ($projectTaskIDArray[$i] != null) {
+            array_push($projectTaskIDArray2, $projectTaskIDArray[$i]);
+        }
+    }
 
     //Es wurde gar keine Zeit eingetragen (Array leer) --> nur updateLastDateEntered
     if(emptyArray($beginTimeA, $endTimeA) == true && $exitCode == 0 ){
@@ -87,8 +100,8 @@ if (isset($_POST['button_save_workingTime'])) {
     }
     //Zeiten aus Array abspeichern 
     elseif($exitCode == 0){
-        for($i=0; $i < count($projectIDArray); $i++){
-          saveTimeRecoring($conn, $pnr, $projectIDArray[$i], $projectTaskIDArray[$i], $recordingDate,
+        for($i=0; $i < count($projectIDArray2); $i++){
+          saveTimeRecoring($conn, $pnr, $projectIDArray2[$i], $projectTaskIDArray2[$i], $recordingDate,
                            $beginTimeA[$i] = str_replace(':', '', $beginTimeA[$i])."00", $endTimeA[$i]= str_replace(':', '', $endTimeA[$i])."00");
           //echo "<br>".$beginTimeA[$i]; 
           //echo "<br>".$endTimeA[$i];
