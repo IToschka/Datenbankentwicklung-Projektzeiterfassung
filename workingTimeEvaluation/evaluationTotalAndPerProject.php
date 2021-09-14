@@ -53,7 +53,6 @@
 
 
 
-
         $resultCoreWorkingHoursTotal = evaluateCoreWorkingTimeTotal($conn, $evaluationFrom, $evaluationTo);
         $totalSumCoreWorkingHours = $resultCoreWorkingHoursTotal["Sum"];
         $totalAverageCoreWorkingHours = $resultCoreWorkingHoursTotal["Average"];
@@ -95,10 +94,12 @@
                 </tr>
                 <tr>
                     <td>Durchschnitt</td>
-                    <td><input type="text" textarea readonly="readonly" name="totalAverageWeeklyWorkingHours"
-                    value= '<?php
-                    echo $totalAverageWeeklyWorkingHours; ?>'></td>
-                    <td><input type="text" textarea readonly="readonly" name="totalAverageCoreWorkingHours"
+                    <td>
+                      <input type="text" textarea readonly="readonly" name="totalAverageWeeklyWorkingHours"
+                      value= '<?php
+                      echo $totalAverageWeeklyWorkingHours; ?>'></td>
+                    <td>
+                      <input type="text" textarea readonly="readonly" name="totalAverageCoreWorkingHours"
                     value= '<?php
                     echo $totalAverageCoreWorkingHours; ?>'></td>
                 </tr>
@@ -108,7 +109,8 @@
                       <input type="text" textarea readonly="readonly" name="totalMinWeeklyWorkingHours"
                       value= '<?php
                       echo $totalMinWeeklyWorkingHours; ?>'></td>
-                    <td><input type="text" textarea readonly="readonly" name="totalMinCoreWorkingHours"
+                    <td>
+                      <input type="text" textarea readonly="readonly" name="totalMinCoreWorkingHours"
                       value= '<?php
                       echo $totalMinCoreWorkingHours; ?>'></td>
                 </tr>
@@ -118,7 +120,8 @@
                       <input type="text" textarea readonly="readonly" name="totalMaxWeeklyWorkingHours"
                       value= '<?php
                       echo $totalMaxWeeklyWorkingHours; ?>'></td>
-                    <td><input type="text" textarea readonly="readonly" name="totalMaxCoreWorkingHours"
+                    <td>
+                      <input type="text" textarea readonly="readonly" name="totalMaxCoreWorkingHours"
                       value= '<?php
                       echo  $totalMaxCoreWorkingHours; ?>'></td>
                 </tr>
@@ -227,7 +230,8 @@
             $perProjectAverageCoreWorkingHours = $resultCoreWorkingHoursPerProject["Average"];
             $perProjectMinCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Min"];
             $perProjectMaxCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Max"];
-            $perProjectStandardDeviationWeeklyWorkingHours = $resultCoreWorkingHoursPerProject["StandardDeviation"];
+            $perProjectStandardDeviationCoreWorkingHours = $resultCoreWorkingHoursPerProject["StandardDeviation"];
+
 
 
           }
@@ -243,7 +247,7 @@
                       <td>'. $perProjectAverageCoreWorkingHours  .'</td>
                       <td>'. $perProjectMinCoreWorkingHours .'</td>
                       <td>'. $perProjectMaxCoreWorkingHours .'</td>
-                      <td>'. $perProjectStandardDeviationWeeklyWorkingHours .'</td>
+                      <td>'. $perProjectStandardDeviationCoreWorkingHours .'</td>
                   </tr>';
 
           }

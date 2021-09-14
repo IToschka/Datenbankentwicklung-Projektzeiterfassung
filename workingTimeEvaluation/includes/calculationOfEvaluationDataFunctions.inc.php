@@ -42,19 +42,21 @@ function getMax($deviationInSec, $max){
   }
 }
 
-function getStandardDeviationMax($allDeviationsInSec){
-  $stddev=0;
-  if(!empty($allDeviationsInSec)){
-    $average = array_sum($allDeviationsInSec) / count($allDeviationsInSec);
+function getStandardDeviation($allDeviationsInSec){
 
-    $sum = 0;
-    foreach ($allDeviationsInSec as $element) {
-  		$sum += pow($element - $average, 2);
-  	}
-    echo $sum . "<br>";
-  	$stddev = sqrt($sum / count($allDeviationsInSec));
+    if(count($allDeviationsInSec) > 1){
+      $stddev=0;
+      $average = array_sum($allDeviationsInSec) / count($allDeviationsInSec);
 
-  }
+      $sum = 0;
+      foreach ($allDeviationsInSec as $element) {
+  		    $sum += pow($element - $average, 2);
+  	  }
+
+  	   $stddev = sqrt($sum / (count($allDeviationsInSec)-1));
+    }else{
+      $stddev = 0;
+    }
 
 	return $stddev;
 }
