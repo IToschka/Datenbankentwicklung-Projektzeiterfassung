@@ -2,12 +2,17 @@
 include_once '../../includes/dbh.inc.php';
 include_once 'projectManagementFunctions.inc.php';
 
+
+
 if (isset($_POST['button_createProject'])) {
 
   $projectName = $_POST['projectname'];
   $beginDate = $_POST['beginDate'];
   $amountTasks= $_POST['amountTasks'];
   $projectManager = $_POST['projectManager'];
+
+  $date = date("d.m.Y");
+        
   
   //$task = $_POST['task'];
 
@@ -21,38 +26,58 @@ if(invalidDate($date, $beginDate) !== false) {
     exit();
 }
 
-if(numericProjectManagerPNR($projectManager) !== false) {
-    header("location: ../projectsAndTasksNew.php?error=numericProjectManagerPNR");
+if(noNegativeProjectManagerPNR($projectManager) !== false) {
+    header("location: ../projectsAndTasksNew.php?error=noNegativeProjectManagerPNR");
+    exit();
+} 
+
+if(noNegativeAmountTasks($amountTasks) !== false) {
+    header("location: ../projectsAndTasksNew.php?error=noNegativeAmountTasks");
     exit();
 } 
 
 createProject($conn, $projectName, $beginDate, $projectManager);
-countTasks($amountTasks);
+
 }
 
 
 elseif (isset($_POST['button_createTasks'])) {
-    //createTasks($task); 
+    $task = array();
+    
+    createTasks($task); 
 } 
 
 //----------------------------------------------------------------
 
-//Projekt kopieren
+//Projekt ändern
+elseif(isset($_POST['button_choose'])) {
+    $projectID = $_SESSION[$_POST['projectID']]; //sessionvariable
+    
+
+    /*if (invalidProjectID($conn, $projectID) !== false) {
+        header("location: ../projectsAndTasksChange.php?error=invalidProjectID");
+    } */ //Fehler schlägt immer an
+    
+        header("location: ../projectsAndTasksChange2.php");
+    
+}
+
+
 elseif(isset($_POST['button_change'])) {
-    $projectName = $_POST['projectname'];
+    $projectName = $_POST['projectName'];
   $beginDate = $_POST['beginDate'];
   $amountTasks= $_POST['amountTasks'];
   $projectManager = $_POST['projectManager'];
 
-  changeProject($conn, $projectName, $beginDate, $projectManager);
+    header("location: ../projectsAndTasksChange3.php");
+
+  
 
 }
 
 //----------------------------------------------------------------
 
-elseif(isset($_POST['button_change'])) {
-    $projectID = $_POST['projectID'];
-}
+
 
 //----------------------------------------------------------------
 
@@ -72,8 +97,8 @@ if(invalidProjectID($conn, $projectID) !== false) {
     header("location: ../employeesAndProjects.php?error=invalidProjectID");
     exit();
 } 
-if(numericPNR($pnr) !== false) {
-    header("location: ../employeesAndProjects.php?error=inumericPNR");
+if(noNegativePNR($pnr) !== false) {
+    header("location: ../employeesAndProjects.php?error=noNegativePNR");
     exit();
 } 
 

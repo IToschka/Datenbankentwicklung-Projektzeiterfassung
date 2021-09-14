@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!--Von Irena Toschka-->
        <meta charset="utf-8">
        <link rel="stylesheet" href="../css/style.css">
        <title>Arbeitszeiterfassung</title>
@@ -55,10 +56,13 @@
                     //Verbindung zu DB
                     $stmt = mysqli_stmt_init($conn);
                     //Statement wird vorbereitet
+                    //Statement funktioniert nicht
                     if(!mysqli_stmt_prepare($stmt, $sql)){
                         header("location: workingTimerRecording.php?error=stmtfailed");
                         exit();
-                    }else{
+                    }
+                    //Statement funktioniert nicht
+                    else{
                         //Parameter binden
                         mysqli_stmt_bind_param($stmt, "ss", $pnr, $recordingDate);
                         //Paramter in DB ausführen
@@ -104,7 +108,8 @@
                                 //Zählervariable nach jeder Tabellenzeile um ein erhöhen
                                 $countRow++;                                  
                             }
-
+                            
+                            //Projekte und Projektaufgaben in Array
                             $_SESSION['projectA'] = $projectA;
                             $_SESSION['projectTaskA'] = $projectTaskA;
 
@@ -118,7 +123,7 @@
             <?php
 
             include_once 'includes/workingTimeRecordingFunctions.inc.php';
-
+            //Abfangen der einzelnen Fehlermeldungen 
             if(isset($_GET["error"])){
                 if($_GET["error"] == "onlyBeginInput"){
                 echo "<p>Bei mindestens einer Projektzeit fehlt die Endzeit.</p>";
@@ -131,9 +136,6 @@
                 } 
                 elseif($_GET["error"] == "overlappingProjects"){
                     echo "<p>Bei mindestens zwei Projekten haben sich die eigetragenen Zeiten überlappt.</p>";
-                }
-                elseif($_GET["error"] == "emptyArray"){
-                    echo "<p>Es wurde erfasst, dass der Mitarbeiter an diesem Tag an keinem Projekt gearbeitet hat.</p>";
                 }
                 elseif($_GET["error"] == "stmtfailed"){
                     echo "<p>Etwas ist schief gelaufen!</p>";

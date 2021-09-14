@@ -1,3 +1,4 @@
+<!--Von Irena Toschka-->
 <?php
 
 session_start();
@@ -26,39 +27,36 @@ if (isset($_POST['button_save_workingTime'])) {
 
         //Es wurde nur eine Beginzeit bei (min) einer Projektaufgabe eigetragen
         if(onlyBeginInput($beginTime, $endTime) == true){
-            header("location: ../workingTimeRecording.php?error=onlyBeginInput");
             $exitCode = 1;
-            break;
+            header("location: ../workingTimeRecording.php?error=onlyBeginInput");
+            
         }
 
         //Es wurde nur eine Endzeit bei (min) einer Projektaufgabe eigetragen
         elseif(onlyEndInput($beginTime, $endTime) == true){
-            header("location: ../workingTimeRecording.php?error=onlyEndInput");
             $exitCode = 1;
-            break;
+            header("location: ../workingTimeRecording.php?error=onlyEndInput");
         }
         
         //Die Endzeit liegt vor der Startzeit
         elseif(beginIsAfterEnd($beginTime, $endTime) == true){
-            header("location: ../workingTimeRecording.php?error=beginIsAfterEnd");
             $exitCode = 1;
-            break;
+            header("location: ../workingTimeRecording.php?error=beginIsAfterEnd");
+            
         }
 
         //Es liegt eine Überlappung bei (min) zwei Projekten vor --> hier mit Array arbeiten
         elseif(overlappingProjects($beginTime, $endTime, $beginTimeA, $endTimeA) == true){
-            header("location: ../workingTimeRecording.php?error=overlappingProjects");
             $exitCode = 1;
-            break;
+            header("location: ../workingTimeRecording.php?error=overlappingProjects");
+            
         }
 
         //Für das Projekt wurde keine gar keine Zeit eingetragen --> kein Fehler, aber auch trotzdem keine Speicherung im Array
         elseif(bothTimesEmpty($beginTime, $endTime) == true){
             $exitCode = 0;
-            //echo "Davor:" .count($projectIDArray);
             unset($projectIDArray[$i]);
             unset($projectTaskIDArray[$i]);
-            //echo "Danach:" .count($projectIDArray);
         }
 
         //Kein Fehler --> Speicherung in Array
@@ -69,12 +67,11 @@ if (isset($_POST['button_save_workingTime'])) {
 
     } //hier endet die for-Schleife
 
-
+        
 
     //Es wurde gar keine Zeit eingetragen (Array leer) --> nur updateLastDateEntered
     if(emptyArray($beginTimeA, $endTimeA) == true && $exitCode == 0 ){
         echo "Test Empty Array";
-        //header("location: ../workingTimeRecording.php?error=emptyArray");
         updateLastDateEntered($conn, $recordingDate, $pnr);
         if($recordingDate <= $datum = date("Y-m-d",$timestamp)) {
             header("location: ../workingTimeRecording.php"); 
@@ -88,17 +85,17 @@ if (isset($_POST['button_save_workingTime'])) {
             
         }
     }
-    //Zeiten aus Array abspeichern  --> $i geht hier nicht mehr, da außerhalb der for-Schleife
+    //Zeiten aus Array abspeichern 
     elseif($exitCode == 0){
         for($i=0; $i < count($projectIDArray); $i++){
-          saveTimeRecoring($conn, $pnr, $projectIDArray[$i], $projectTaskIDArray[$i], $recordingDate, $beginTimeA[$i], $endTimeA[$i]);
-          echo "<br>".$beginTimeA[$i]; 
-          //->format('His')
-          //replace : mit nichts und zwei 0 hinten zwei 0
+          saveTimeRecoring($conn, $pnr, $projectIDArray[$i], $projectTaskIDArray[$i], $recordingDate,
+                           $beginTimeA[$i] = str_replace(':', '', $beginTimeA[$i])."00", $endTimeA[$i]= str_replace(':', '', $endTimeA[$i])."00");
+          //echo "<br>".$beginTimeA[$i]; 
+          //echo "<br>".$endTimeA[$i];
+          
         }
         updateLastDateEntered($conn, $recordingDate, $pnr);
-        exit();
-        if($recordingDate <= $datum = date("Y-m-d",$timestamp)) {
+        if($recordingDate < $datum = date("Y-m-d",$timestamp)) {
             header("location: ../workingTimeRecording.php"); 
         }
         else{
@@ -112,7 +109,6 @@ if (isset($_POST['button_save_workingTime'])) {
 
     }
     else{
-        echo "Test else";
-        //do nothing, denn es wird bereits Fehler ausgegeben
+        //do nothing, denn es wird bereits Fehler ausgegeben, wenn exitCode = 1
     }
 } 
