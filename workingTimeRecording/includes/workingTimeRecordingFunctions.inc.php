@@ -37,38 +37,37 @@ function recordingDate($conn) {
 }
 
 //Funktionien für die Validierung für eine evtl. Fehlermeldung
+//Wenn nur eine Beginnzeit eingetragen wurde
 function onlyBeginInput($beginTime, $endTime){
-    $result;
     if($beginTime != null && $endTime == null){
-        $result = true;
+        return true;
     }
     else{
-        $result = false;
+        return false;
     }
-    return $result;
 }
 
+//Wenn nur eine Enzeit eingetragen wurde
 function onlyEndInput($beginTime, $endTime){
-    $result;
     if($beginTime == null && $endTime != null) {
-        $result = true;
+        return true;
     }
     else {
-        $result = false;
+        return false;
     }
-    return $result;
 }
 
+//Wenn die Endzeit vor der Beginnzeit liegt
 function beginIsAfterEnd($beginTime, $endTime){
     if($beginTime > $endTime) {
-        $result = true;
+        return true;
     }
     else {
-        $result = false;
+        return false;
     }
-    return $result;
 }
 
+//Wenn sich min. zwei Prjekte überlappen
 function overlappingProjects($beginTime, $endTime, $beginTimeA, $endTimeA){
     for($i = 0; $i < count($beginTimeA); $i++) {
         if($beginTime > $beginTimeA[$i] && $beginTime < $endTimeA[$i]) {
@@ -77,34 +76,32 @@ function overlappingProjects($beginTime, $endTime, $beginTimeA, $endTimeA){
         elseif($endTime < $endTimeA[$i] && $endTime > $beginTimeA[$i]){
             return true;  
         }
-
     }
-    
     return false;
 }
 
+//Wenn bei einem Projekt nichts eingetragen wurde
 function bothTimesEmpty($beginTime, $endTime){
     if($beginTime == null && $endTime == null) {
-        $result = true;
+        return true;
     }
     else {
-        $result = false;
+        return false;
     }
-    return $result;
 }
-
+//Wenn gar nichts eingetragen wurde
 function emptyArray($beginTimeA, $endTimeA){
     if(count($beginTimeA) == 0) {
-        $result = true;
+        return true;
     }
     else {
-        $result = false;
+        return false;
     }
-    return $result;
 }
 
 
 //Funktion zum Speichern der Einträge
+//Diese Funktion darf nur aufgerufen werden, wenn alles richtig ist eingetragen wurde
 function saveTimeRecoring($conn, $pnr, $projectID, $projectTaskID, $recordingDate, $beginTime, $endTime){
     //Manipulation in DB
     $sql = "INSERT INTO timeRecording (PNR, ProjectID, ProjectTaskID, RecordingDate, TaskBegin, TaskEnd) VALUES (?, ?, ?, ?, ?, ?);";
@@ -123,13 +120,10 @@ function saveTimeRecoring($conn, $pnr, $projectID, $projectTaskID, $recordingDat
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
-
- 
-
 }
 
 //Funktion zum Ändern des LastDateEntered
-//Diese Funktion darf nur aufgerufen werden, wenn alles richtig (ErrorCode=0) ist oder nichts eingetragen wurde
+//Diese Funktion darf nur aufgerufen werden, wenn alles richtig ist oder nichts eingetragen wurde
 function updateLastDateEntered($conn, $recordingDate, $pnr){
     //Manipulation in DB
     $sql = "UPDATE employee SET LastDateEntered = ? WHERE PNR = ?;";
