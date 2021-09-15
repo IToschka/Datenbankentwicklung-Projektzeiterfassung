@@ -1,6 +1,8 @@
 <?php
-include_once '../includes/loginHeader.inc.php';
-include_once '../includes/projectRoleHeader.inc.php';
+//Autor der Datei Tamara Romer
+
+    include_once '../includes/loginHeader.inc.php';
+    include_once '../includes/projectRoleHeader.inc.php';
  ?>
 
 <!DOCTYPE html>
@@ -12,6 +14,7 @@ include_once '../includes/projectRoleHeader.inc.php';
     </head>
 
     <body>
+    <center>
     <h1>Auswertung der Arbeitszeiten</h1>
     <nav>
     <ul>
@@ -19,6 +22,13 @@ include_once '../includes/projectRoleHeader.inc.php';
       <li><a href="../workingTimeEvaluation/evaluationPerEmployee.php">Mitarbeiterbezogene Auswertung</a></li>
     </ul>
     </nav>
+
+    <!--Buttons für zurück ins Menu und Abmeldung-->
+    <form action="../includes/footer.inc.php" method="POST" >
+    <input type="submit" name="button_BackToMenu" value="Zurück zum Menü">
+    <input type="submit" name="button_LogOut" value = "Abmelden">
+    </form>
+    </center>
 
     </body>
 </html>
