@@ -139,8 +139,8 @@ function evaluateWeeklyWorkingsHoursPerEmployee($conn, $evaluationFrom, $evaluat
 
 
 //Evaluiiert die Summe, den Durchschnitt, das Minimum, das Maxmimum und die Standardabweichung der Abweichungen
-//der Kernarbeitzeiten eines Mitarbeiters über alle Projekte
-//In der Funktion werden die Abfrageergebnisse für Abweichungen vor der Kernarbeitzeit und für Abweichungen nach der Kernarbeitzeit zusammengeführt
+//der Kernarbeitzeiten eines Mitarbeiters über alle seine Projekte
+//In der Funktion werden die Abfrageergebnisse für Abweichungen von Kernarbeitszeit-Von und für Abweichungen von Kernarbeitszeit-Bis zusammengeführt
 function evaluateCoreWorkingTimePerEmployee($conn, $evaluationFrom, $evaluationTo,$evaluatedPnr){
 
     $sum = 0;
@@ -183,7 +183,7 @@ function evaluateCoreWorkingTimePerEmployee($conn, $evaluationFrom, $evaluationT
 }
 
 
-//Ermitteln alle Abweichungen (in Sek) vor der Kernarbeitszeit für einen Mitarbeiter
+//Ermitteln alle Abweichungen (in Sek) von Kernarbeitszeit-Von für einen Mitarbeiter
 function evaluateCoreWorkingTimeFromPerEmployee($conn, $evaluationFrom, $evaluationTo, $evaluatedPnr){
 
     $sql = "SELECT TIMEDIFF(CoreWorkingTimeFrom, TaskBegin) AS Deviation
@@ -215,7 +215,7 @@ function evaluateCoreWorkingTimeFromPerEmployee($conn, $evaluationFrom, $evaluat
 }
 
 
-//Ermitteln alle Abweichungen (in Sek) nach der Kernarbeitszeit für einen Mitarbeiter
+//Ermitteln alle Abweichungen (in Sek) von Kernarbeitszeit-Bis für einen Mitarbeiter
 function evaluateCoreWorkingTimeToPerEmployee($conn, $evaluationFrom, $evaluationTo, $evaluatedPnr){
 
     $sql = "SELECT TIMEDIFF(TaskEnd, CoreWorkingTimeTo) AS Deviation
@@ -369,7 +369,7 @@ function evaluateWeeklyWorkingsHoursPerProject($conn, $evaluationFrom, $evaluati
 
 //Evaluiiert die Summe, den Durchschnitt, das Minimum, das Maxmimum und die Standardabweichung der Abweichungen
 //der Kernarbeitzeiten eines Mitarbeiters für ein einzelnes Projekt
-//In der Funktion werden die Abfrageergebnisse für Abweichungen vor der Kernarbeitzeit und für Abweichungen nach der Kernarbeitzeit zusammengeführt
+//In der Funktion werden die Abfrageergebnisse für Abweichungen von Kernarbeitszeit-Von und für Abweichungen von Kernarbeitszeit-Bis zusammengeführt
 function evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo,$projectId , $evaluatedPnr){
 
     $sum = 0;
@@ -409,7 +409,7 @@ function evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo
 }
 
 
-//Ermitteln alle Abweichungen (in Sek) vor der Kernarbeitszeit für einen Mitarbeiter für ein einzelnes Projekt
+//Ermitteln alle Abweichungen (in Sek) von Kernarbeitszeit-Von für einen Mitarbeiter für die einzelnen Projekte
 function evaluateCoreWorkingTimeFromPerProject($conn, $evaluationFrom, $evaluationTo, $projectId , $evaluatedPnr){
 
     $sql = "SELECT TIMEDIFF(CoreWorkingTimeFrom, TaskBegin) AS Deviation
@@ -442,7 +442,7 @@ function evaluateCoreWorkingTimeFromPerProject($conn, $evaluationFrom, $evaluati
 }
 
 
-//Ermitteln alle Abweichungen (in Sek) nach der Kernarbeitszeit für einen Mitarbeiter für ein Projekt
+//Ermitteln alle Abweichungen (in Sek) von Kernarbeitszeit-Bis für einen Mitarbeiter für ein Projekt
 function evaluateCoreWorkingTimeToPerProject($conn, $evaluationFrom, $evaluationTo, $projectId , $evaluatedPnr){
 
     $sql = "SELECT TIMEDIFF(TaskEnd, CoreWorkingTimeTo) AS Deviation

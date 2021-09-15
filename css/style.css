@@ -8,10 +8,6 @@
   width: 100%;
 }
 
-.evaluationTable table, th, td {
-  border: thin solid black;
-  border-collapse: separate;
-}
 
 .evaluationTable thead th {
   background-color: #ffebe6;
