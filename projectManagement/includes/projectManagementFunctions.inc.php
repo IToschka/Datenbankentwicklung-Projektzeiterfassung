@@ -105,7 +105,7 @@ else {
         mysqli_stmt_bind_param($stmt, "sss", $projectName, $beginDate, $projectManager);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-        header("location: ../tasks.php");
+        header("location: ../projectsAndTasksNew.php?error=none");
         exit();
 
 }
@@ -113,7 +113,7 @@ else {
 // wird vermutlich nur einmal aufgerufen für die erste Aufgabe
 // Verbindung von Projekt und Aufgabe
 // Nummerierung der Aufgaben
-function createTasks($conn, $task) { 
+function createTasks($conn, $tasks) { //projectID mit übergeben und schauen ob es projectTaskID mit Auto Increment hochzählt
         $sql= "INSERT INTO projecttask (Description) VALUES (?);";
         $stmt = mysqli_stmt_init($conn);
 if(!mysqli_stmt_prepare($stmt, $sql)) {
@@ -122,7 +122,7 @@ if(!mysqli_stmt_prepare($stmt, $sql)) {
         exit();
 }
 else {
-        mysqli_stmt_bind_param($stmt, "s", $amountTasks);
+        mysqli_stmt_bind_param($stmt, "s", $tasks);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         header("location: ../projectsAndTasksNew.php?error=none");
@@ -135,7 +135,7 @@ else {
 
 function fillProject($conn, $projectID){
 
-        $sql = "SELECT ProjectName, BeginDate, Description FROM project, projecttask WHERE ProjectID = ?;"; 
+        $sql = "SELECT ProjectName, BeginDate FROM project WHERE ProjectID = ?;"; 
         $stmt = mysqli_stmt_init($conn);
         
         if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -151,14 +151,16 @@ function fillProject($conn, $projectID){
 
         if($resultCheck > 0) {
                 while($row = mysqli_fetch_assoc($result)) {
-                    $projectName = $row['ProjectName'];
-                    $beginDate = $row['BeginDate'];
+                    $_SESSION['projectName'] = $row['ProjectName'];
+                    $_SESSION['beginDate'] = $row['BeginDate'];
                     //$beginDate = $_POST['beginDate']; oder so?
                     //Aufgaben
-                    $tasks = array($row['Description']);
+                   // $tasks = array($row['Description']);
                 }
             } 
         }
+
+        //Aufgaben ausgeben in extra SQL Statement
 
 function noAccess($conn, $projectID, $projectManager) {
         $sql = "SELECT * FROM project WHERE ProjectID = ? AND ProjectManagerPNR = ?;";

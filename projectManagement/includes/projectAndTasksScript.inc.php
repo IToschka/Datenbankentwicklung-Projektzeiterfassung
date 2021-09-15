@@ -1,50 +1,22 @@
 <?php
+session_start();
 include_once '../../includes/dbh.inc.php';
 include_once 'projectManagementFunctions.inc.php';
 
 
 
-if (isset($_POST['button_createProject'])) {
-
-  $projectName = $_POST['projectname'];
-  $beginDate = $_POST['beginDate'];
-  $amountTasks= $_POST['amountTasks'];
-  $projectManager = $_POST['projectManager'];
-
-  $date = date("d.m.Y");
-        
-  
-  //$task = $_POST['task'];
-
-
-if(invalidDate($date, $beginDate) !== false) {
-    header("location: ../projectsAndTasksNew.php?error=invalidDate");
-    exit();
-}
- if(invalidProjectManagerPNR($conn, $projectManager) !== false) {
-    header("location: ../projectsAndTasksNew.php?error=invalidProjectManagerPNR");
-    exit();
-}
-
-if(noNegativeProjectManagerPNR($projectManager) !== false) {
-    header("location: ../projectsAndTasksNew.php?error=noNegativeProjectManagerPNR");
-    exit();
-} 
-
-if(noNegativeAmountTasks($amountTasks) !== false) {
-    header("location: ../projectsAndTasksNew.php?error=noNegativeAmountTasks");
-    exit();
-} 
-
-createProject($conn, $projectName, $beginDate, $projectManager);
-
-}
 
 
 elseif (isset($_POST['button_createTasks'])) {
-    $task = array();
+    $tasks = array();
+    for ($i = 0; $i < $_SESSION['amountTasks']; $i++) {
+        array_push($tasks, $_POST["task{$i}"]);
+    }
+    //$tasks = array($_POST['task']);
     
-    createTasks($task); 
+    for($i = 0; $i < count($tasks); $i++) {
+        createTasks($conn, $tasks[$i]); 
+    }
 } 
 
 //----------------------------------------------------------------
@@ -58,7 +30,7 @@ elseif(isset($_POST['button_choose'])) {
         header("location: ../projectsAndTasksChange.php?error=invalidProjectID");
     } */ //Fehler schlägt immer an
     
-        header("location: ../projectsAndTasksChange2.php");
+        header("location: ../projectsAndTasksChange.php");
     
 }
 
@@ -69,7 +41,7 @@ elseif(isset($_POST['button_change'])) {
   $amountTasks= $_POST['amountTasks'];
   $projectManager = $_POST['projectManager'];
 
-    header("location: ../projectsAndTasksChange3.php");
+    header("location: ../projectsAndTasksChange.php");
 
   
 

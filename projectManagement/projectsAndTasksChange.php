@@ -18,11 +18,13 @@
 
         <?php include_once '../includes/dbh.inc.php';
                 include_once 'includes/projectManagementFunctions.inc.php';
-        if(isset($_POST['button_choose'])) {
-         $projectID = $_SESSION['projectID']; 
+        
 
-         $projectName = $_POST['projectName'];
-         $beginDate = $_POST['beginDate'];
+        if(isset($_POST['button_choose'])) {
+         $projectID = $_POST['projectID']; 
+
+         $projectName = $_SESSION['projectName'];
+        $beginDate = $_SESSION['beginDate'];
            
            /* if(invalidProjectID($conn, $projectID) !== false) {
                 header("location: ../projectsAndTasksChange.php?error=invalidProjectID");
@@ -38,7 +40,7 @@
             exit(); 
          } */
         
-        fillProject($conn, $projectName, $beginDate); // Aufgaben
+        fillProject($conn, $projectID); // Aufgaben
         }
                 
                      ?>
@@ -66,6 +68,10 @@
                       <td><input type="text" texarea readonly ="readonly" name="projectManager" value= <?php $projectManager = $_SESSION['pnr']; echo $projectManager ?> ></td> 
                       
                       </tr>
+
+                      <tr>
+                      <td><?php echo "Aufgabe:"; ?></td>
+                      <textarea name="task"  maxlength="50" cols="50" value='<?php ?>'> </textarea></td> 
                   </tbody>
               </table>
 
