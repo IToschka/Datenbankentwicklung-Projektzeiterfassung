@@ -34,9 +34,6 @@ if(isset($_GET["error"])){
     elseif ($_GET["error"] == "stmtfailed") {
         echo "<p>Etwas ist schief gelaufen!</p>";
     }
-    elseif ($_GET["error"] == "stmtfailed") {
-        echo "<p>Etwas ist schief gelaufen!</p>";
-    }
     elseif ($_GET["error"] == "incorrectLoginData") {
       echo "<p>Login leider nicht erfolgreiche. Die Personanummer und das Passwort stimmen nicht überein.</p>";
 
