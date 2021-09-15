@@ -18,11 +18,12 @@
 
         <?php include_once '../includes/dbh.inc.php';
                 include_once 'includes/projectManagementFunctions.inc.php';
-        if(isset($_POST['button_choose'])) {
-         $projectID = $_SESSION['projectID']; 
+        
 
-         $projectName = $_POST['projectName'];
-         $beginDate = $_POST['beginDate'];
+        if(isset($_POST['button_choose'])) {
+         $projectID = $_POST['projectID']; 
+
+    
            
            /* if(invalidProjectID($conn, $projectID) !== false) {
                 header("location: ../projectsAndTasksChange.php?error=invalidProjectID");
@@ -38,7 +39,13 @@
             exit(); 
          } */
         
-        fillProject($conn, $projectName, $beginDate); // Aufgaben
+        fillProject($conn, $projectID); 
+        $projectName = $_SESSION['projectName'];
+        $beginDate = $_SESSION['beginDate'];
+
+        fillTasks($conn, $projectID);
+        $tasks = $_SESSION['tasks'];
+
         }
                 
                      ?>
@@ -54,7 +61,7 @@
                   <tbody>
                       <tr>
                           <td>Projekttitel:</td>
-                          <td><textarea name="projectName"  maxlength="50" cols="50" value='<?php echo $projectName; ?>'> </textarea></td>
+                          <td><textarea name="projectName"  maxlength="50" cols="50"><?php echo $projectName; ?></textarea></td>
                       </tr>
                       <tr>
                           <td>Starttermin:</td>
@@ -66,6 +73,19 @@
                       <td><input type="text" texarea readonly ="readonly" name="projectManager" value= <?php $projectManager = $_SESSION['pnr']; echo $projectManager ?> ></td> 
                       
                       </tr>
+
+    <?php 
+
+            if ($tasks != null) {
+               for($i=0; $i < count($tasks); $i++) { ?>          
+                <tr> <td><?php
+                $i2 = $i + 1;
+                echo "Aufgabe $i2:"; ?></td>
+                    <?php
+                    echo '<td> <textarea name="task'.$i.'" maxlength="50" cols="50" required>'.$tasks[$i].'</textarea></td>';
+               }}?>
+                </tr>
+
                   </tbody>
               </table>
 

@@ -1,6 +1,8 @@
 <?php
     session_start();
     include_once '../menu/projectsAndTasksMenu.php';
+    include_once '../includes/dbh.inc.php';
+    include_once 'includes/projectManagementFunctions.inc.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,6 +14,41 @@
     </head>
 
     <body>
+        <?php 
+            
+
+            if(isset($_POST['button_createProject'])) {
+
+                $projectName = $_POST['projectname'];
+                $beginDate = $_POST['beginDate'];
+                $amountTasks= $_POST['amountTasks'];
+                $projectManager = $_POST['projectManager'];
+              
+                $date = date("d.m.Y");
+                $dateTimestamp = strtotime($date);
+                $beginDateTimestamp = strtotime($beginDate);
+
+                echo 'Datum: '.$dateTimestamp;
+                echo '<br>Beginn Datum: '.$beginDateTimestamp;
+                           
+              if(invalidDate($dateTimestamp, $beginDateTimestamp) !== false) {
+                  header("location: ../projectsAndTasksNew.php?error=invalidDate");
+                  exit();
+              }
+               if(invalidProjectManagerPNR($conn, $projectManager) !== false) {
+                  header("location: ../projectsAndTasksNew.php?error=invalidProjectManagerPNR");
+                  exit();
+              }
+              
+              if(noNegativeAmountTasks($amountTasks) !== false) {
+                  header("location: ../projectsAndTasksNew.php?error=noNegativeAmountTasks");
+                  exit();
+              } 
+              
+              createProject($conn, $projectName, $beginDate, $projectManager);
+              
+              } 
+        ?>
         <form action="projectsAndTasksNew.php" method="POST" > 
           <table>
                   <tbody>
@@ -38,14 +75,21 @@
             
          </form>
          <br>
+         
          <form action="includes/projectAndTasksScript.inc.php" method="POST" > <table> <tbody>
                <?php 
+               // Trigger für tasks in die Tabelle projecttask
                if(isset($_POST['button_createProject'])) {
                $amountTasks = $_POST['amountTasks'];
+               $_SESSION['amountTasks'] = $amountTasks;
 
-               for($i=1; $i <=$amountTasks; $i++) { ?>          
-                <tr> <td><?php echo "Aufgabe $i:" ?></td>
-                    <td> <textarea name='task' maxlength='50' cols='50' required></textarea></td>
+               for($i=0; $i < $amountTasks; $i++) { ?>          
+                <tr> <td><?php
+                $i2 = $i + 1;
+                echo "Aufgabe $i2:"; ?></td>
+                    <?php
+                    echo '<td> <textarea name="task'.$i.'" maxlength="50" cols="50" required></textarea></td>';
+                    ?>
                 </tr>
                 
 
@@ -54,8 +98,7 @@
     <body>
 
          <?php
-        // beim Anlegen des Projekts muss der Projektleiter dem Projekt zugeorndet werden
-        //tasks nicht einzeln sondenr wie in Change
+        
         if(isset($_GET["error"])){
              if ($_GET["error"] == "invalidDate") {
                  echo "<p>Das angegebene Datum liegt in der Vergangenheit!</p>";

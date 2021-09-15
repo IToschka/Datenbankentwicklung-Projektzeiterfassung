@@ -91,7 +91,7 @@
                             while($row = mysqli_fetch_assoc($result)) {
                             echo '<tbody>
                                         <tr>
-                                            <td><input type="sentence" textarea readonly="readonly" style="width:200px; text-overflow:ellipsis;" name="projectID"
+                                            <td><input type="text" textarea readonly="readonly" style="width:200px; text-overflow:ellipsis;" name="projectID"
                                                 value=' .$row['ProjectName'] = str_replace(' ', '_', $row['ProjectName']).'></td>
                                             <td><input type="text" textarea readonly="readonly" style="width:300px; text-overflow:ellipsis;" name="projectTaskID"
                                                 value=' .$row['TaskDescription'] = str_replace(' ', '_', $row['TaskDescription']).'></td>
@@ -125,22 +125,22 @@
             //Abfangen der einzelnen Fehlermeldungen 
             if(isset($_GET["error"])){
                 if($_GET["error"] == "onlyBeginInput"){
-                echo "<p>Bei mindestens einer Projektzeit fehlt die Endzeit.</p>";
+                echo "Bei mindestens einer Projektzeit fehlt die Endzeit.";
                 }
                 elseif($_GET["error"] == "onlyEndInput"){
-                    echo "<p>Bei mindestens einer Projektzeit fehlt die Beginnzeit.</p>";
+                    echo "Bei mindestens einer Projektzeit fehlt die Beginnzeit.";
                     }                  
                 elseif($_GET["error"] == "beginIsAfterEnd"){
-                    echo "<p>Die Beginnzeit muss vor der Endzeit liegen!</p>";
+                    echo "Die Beginnzeit muss vor der Endzeit liegen!";
                 } 
                 elseif($_GET["error"] == "overlappingProjects"){
-                    echo "<p>Bei mindestens zwei Projekten haben sich die eigetragenen Zeiten überlappt.</p>";
+                    echo "Bei mindestens zwei Projekten haben sich die eigetragenen Zeiten überlappt.";
                 }
                 elseif($_GET["error"] == "stmtfailed"){
-                    echo "<p>Etwas ist schief gelaufen!</p>";
+                    echo "Etwas ist schief gelaufen!";
                 }
                 elseif($_GET["error"] == "none"){
-                    echo "<p>Die Projektzeit(en) wurde(n) erfolgreich erfasst.</p>";
+                    echo "Die Projektzeit(en) wurde(n) erfolgreich erfasst.";
 
                 }
             }

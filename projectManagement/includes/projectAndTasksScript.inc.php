@@ -1,79 +1,67 @@
 <?php
+session_start();
 include_once '../../includes/dbh.inc.php';
 include_once 'projectManagementFunctions.inc.php';
 
 
 
-if (isset($_POST['button_createProject'])) {
+//Create
 
-  $projectName = $_POST['projectname'];
-  $beginDate = $_POST['beginDate'];
-  $amountTasks= $_POST['amountTasks'];
-  $projectManager = $_POST['projectManager'];
-
-  $date = date("d.m.Y");
-        
-  
-  //$task = $_POST['task'];
-
-
-if(invalidDate($date, $beginDate) !== false) {
-    header("location: ../projectsAndTasksNew.php?error=invalidDate");
-    exit();
-}
- if(invalidProjectManagerPNR($conn, $projectManager) !== false) {
-    header("location: ../projectsAndTasksNew.php?error=invalidProjectManagerPNR");
-    exit();
-}
-
-if(noNegativeProjectManagerPNR($projectManager) !== false) {
-    header("location: ../projectsAndTasksNew.php?error=noNegativeProjectManagerPNR");
-    exit();
-} 
-
-if(noNegativeAmountTasks($amountTasks) !== false) {
-    header("location: ../projectsAndTasksNew.php?error=noNegativeAmountTasks");
-    exit();
-} 
-
-createProject($conn, $projectName, $beginDate, $projectManager);
-
-}
-
-
-elseif (isset($_POST['button_createTasks'])) {
-    $task = array();
+if (isset($_POST['button_createTasks'])) {
+    $tasks = array();
+    for ($i = 0; $i < $_SESSION['amountTasks']; $i++) {
+        array_push($tasks, $_POST["task{$i}"]);
+    }
+    //$tasks = array($_POST['task']);
     
-    createTasks($task); 
+    for($i = 0; $i < count($tasks); $i++) {
+        createTasks($conn, $tasks[$i]); 
+    }
 } 
 
 //----------------------------------------------------------------
 
-//Projekt ändern
-elseif(isset($_POST['button_choose'])) {
-    $projectID = $_SESSION[$_POST['projectID']]; //sessionvariable
-    
-
-    /*if (invalidProjectID($conn, $projectID) !== false) {
-        header("location: ../projectsAndTasksChange.php?error=invalidProjectID");
-    } */ //Fehler schlägt immer an
-    
-        header("location: ../projectsAndTasksChange2.php");
-    
-}
+//Update
 
 
 elseif(isset($_POST['button_change'])) {
     $projectName = $_POST['projectName'];
-  $beginDate = $_POST['beginDate'];
-  $amountTasks= $_POST['amountTasks'];
-  $projectManager = $_POST['projectManager'];
+    $beginDate = $_POST['beginDate'];
+    $amountTasks= $_POST['amountTasks'];
+    $projectManager = $_POST['projectManager'];
 
-    header("location: ../projectsAndTasksChange3.php");
+    $date = date("d.m.Y");
+                           
+              if(invalidDate($date, $beginDate) !== false) {
+                  header("location: ../projectsAndTasksNew.php?error=invalidDate");
+                  exit();
+              }
+               if(invalidProjectManagerPNR($conn, $projectManager) !== false) {
+                  header("location: ../projectsAndTasksNew.php?error=invalidProjectManagerPNR");
+                  exit();
+              }
+              
+              if(noNegativeAmountTasks($amountTasks) !== false) {
+                  header("location: ../projectsAndTasksNew.php?error=noNegativeAmountTasks");
+                  exit();
+              } r
+
+    updateProject($conn, $projectName, $beginDate, $projectManager);
 
   
 
 }
+
+elseif(isset($_POST['button_change'])) {
+    $tasks = array();
+    for ($i = 0; $i < $_SESSION['amountTasks']; $i++) {
+        array_push($tasks, $_POST["task{$i}"]);
+    }
+    
+    for($i = 0; $i < count($tasks); $i++) {
+        createTasks($conn, $tasks[$i]); 
+    }
+} 
 
 //----------------------------------------------------------------
 

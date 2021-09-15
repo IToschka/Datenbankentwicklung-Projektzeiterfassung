@@ -28,27 +28,28 @@ if (isset($_POST['button_save_workingTime'])) {
         if(onlyBeginInput($beginTime, $endTime) == true){
             $exitCode = 1;
             header("location: ../workingTimeRecording.php?error=onlyBeginInput");
-            
+            break;
         }
 
         //Es wurde nur eine Endzeit bei (min) einer Projektaufgabe eigetragen
         elseif(onlyEndInput($beginTime, $endTime) == true){
             $exitCode = 1;
             header("location: ../workingTimeRecording.php?error=onlyEndInput");
+            break;
         }
         
         //Die Endzeit liegt vor der Startzeit
         elseif(beginIsAfterEnd($beginTime, $endTime) == true){
             $exitCode = 1;
             header("location: ../workingTimeRecording.php?error=beginIsAfterEnd");
-            
+            break;
         }
 
         //Es liegt eine Überlappung bei (min) zwei Projekten vor --> hier mit Array arbeiten
         elseif(overlappingProjects($beginTime, $endTime, $beginTimeA, $endTimeA) == true){
             $exitCode = 1;
             header("location: ../workingTimeRecording.php?error=overlappingProjects");
-            
+            break;
         }
 
         //Für das Projekt wurde keine gar keine Zeit eingetragen --> kein Fehler, aber auch trotzdem keine Speicherung im Array
@@ -56,8 +57,6 @@ if (isset($_POST['button_save_workingTime'])) {
             $exitCode = 0;
             $projectIDArray[$i] = null;
             $projectTaskIDArray[$i] = null;
-            //unset($projectIDArray[$i]);
-            //unset($projectTaskIDArray[$i]);
         }
 
         //Kein Fehler --> Speicherung in Array
@@ -68,6 +67,7 @@ if (isset($_POST['button_save_workingTime'])) {
 
     } //hier endet die for-Schleife
 
+    
     //Lücken aus demm Projekt-Array und dem Projektaufgaben-Array raus, indem die Arrays neu in ein zweites Array gepeichert werden
     $projectIDArray2 = array();
     for($i = 0; $i < count($projectIDArray); $i++){
@@ -81,6 +81,8 @@ if (isset($_POST['button_save_workingTime'])) {
             array_push($projectTaskIDArray2, $projectTaskIDArray[$i]);
         }
     }
+
+
 
     //Es wurde gar keine Zeit eingetragen (Array leer) --> nur updateLastDateEntered
     if(emptyArray($beginTimeA, $endTimeA) == true && $exitCode == 0 ){
@@ -103,8 +105,7 @@ if (isset($_POST['button_save_workingTime'])) {
         for($i=0; $i < count($projectIDArray2); $i++){
           saveTimeRecoring($conn, $pnr, $projectIDArray2[$i], $projectTaskIDArray2[$i], $recordingDate,
                            $beginTimeA[$i] = str_replace(':', '', $beginTimeA[$i])."00", $endTimeA[$i]= str_replace(':', '', $endTimeA[$i])."00");
-          //echo "<br>".$beginTimeA[$i]; 
-          //echo "<br>".$endTimeA[$i];
+
           
         }
         updateLastDateEntered($conn, $recordingDate, $pnr);
