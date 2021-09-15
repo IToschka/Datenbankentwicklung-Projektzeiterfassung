@@ -24,14 +24,14 @@
       $perEmployeeAverageWeeklyWorkingHours = 0;
       $perEmployeeMinWeeklyWorkingHours = 0;
       $perEmployeeMaxWeeklyWorkingHours = 0;
-      $perEmployeeWeeklyWorkingHours = 0;
-
+      $perEmployeeStandardDeviationWeeklyWorkingHours = 0;
 
 
       $perEmployeeSumCoreWorkingHours = 0;
       $perEmployeeAverageCoreWorkingHours = 0;
       $perEmployeeMinCoreWorkingHours = 0;
       $perEmployeeMaxCoreWorkingHours = 0;
+      $perEmployeeStandardDeviationCoreWorkingHours = 0;
 
 
       if (isset($_POST['button_Evaluate'])){
@@ -39,8 +39,6 @@
         $evaluationFrom = $_POST['evaluationFrom'];
         $evaluationTo = $_POST['evaluationTo'];
         $evaluatedPnr = $_POST['evaluatedPnr'];
-
-
 
         if(invalidEvaluationDate($evaluationFrom, $evaluationTo) !== false){
             header("location: evaluationPerEmployee.php?error=evaluationDate");
@@ -63,7 +61,7 @@
         $perEmployeeAverageWeeklyWorkingHours = $resultWeeklyWorkingHoursPerEmployee["Average"];
         $perEmployeeMinWeeklyWorkingHours = $resultWeeklyWorkingHoursPerEmployee["Min"];
         $perEmployeeMaxWeeklyWorkingHours = $resultWeeklyWorkingHoursPerEmployee["Max"];
-
+        $perEmployeeStandardDeviationWeeklyWorkingHours = $resultWeeklyWorkingHoursPerEmployee["StandardDeviation"];
 
 
 
@@ -72,6 +70,7 @@
         $perEmployeeAverageCoreWorkingHours = $resultCoreWorkingHoursPerEmployee["Average"];
         $perEmployeeMinCoreWorkingHours = $resultCoreWorkingHoursPerEmployee["Min"];
         $perEmployeeMaxCoreWorkingHours = $resultCoreWorkingHoursPerEmployee["Max"];
+        $perEmployeeStandardDeviationCoreWorkingHours = $resultCoreWorkingHoursPerEmployee["StandardDeviation"];
       }
        ?>
 
@@ -140,9 +139,17 @@
                 </tr>
                 <tr>
                     <td>Standardabweichung:</td>
-                    <td></td>
+                    <td>
+                      <input type="text" textarea readonly="readonly" name="perEmployeeStandardDeviationWeeklyWorkingHours"
+                      value= '<?php
+                      echo $perEmployeeStandardDeviationWeeklyWorkingHours; ?>'></td>
+                    <td>
+                      <input type="text" textarea readonly="readonly" name="perEmployeeStandardDeviationCoreWorkingHours"
+                      value= '<?php
+                      echo  $perEmployeeStandardDeviationCoreWorkingHours; ?>'></td>
                 </tr>
           </tbody>
+
       </table>
       <br>
       <br>
@@ -174,7 +181,7 @@
      <h2>Abweichungen des Mitarbeiters pro Projekt</h2>
 
      <br>
-     <table>
+     <table style="width: 100%">
        <thead>
          <tr>
              <th></th>
@@ -185,12 +192,12 @@
        </thead>
        <tbody>
          <tr>
-             <td style="border: 1px solid #CF261E">ProjectID</th>
-             <td style="border: 1px solid #CF261E">Summe</td>
-             <td style="border: 1px solid #CF261E">Durchschnitt</td>
-             <td style="border: 1px solid #CF261E">Minimum</td>
-             <td style="border: 1px solid #CF261E">Maximum</td>
-             <td style="border: 1px solid #CF261E">Standardabweichung</td>
+             <td>ProjectID</th>
+             <td>Summe</td>
+             <td>Durchschnitt</td>
+             <td>Minimum</td>
+             <td>Maximum</td>
+             <td>Standardabweichung</td>
 
              <td>Summe</td>
              <td>Durchschnitt</td>
@@ -212,11 +219,13 @@
             $perProjectAverageWeeklyWorkingHours = 0;
             $perProjectMinWeeklyWorkingHours = 0;
             $perProjectMaxWeeklyWorkingHours = 0;
+            $perProjectStandardDeviationWeeklyWorkingHours = 0;
 
             $perProjectSumCoreWorkingHours = 0;
             $perProjectAverageCoreWorkingHours = 0;
             $perProjectMinCoreWorkingHours = 0;
             $perProjectMaxCoreWorkingHours = 0;
+            $perProjectStandardDeviationCoreWorkingHours = 0;
 
 
 
@@ -225,11 +234,13 @@
               $perProjectAverageWeeklyWorkingHours = "-";
               $perProjectMinWeeklyWorkingHours = "-";
               $perProjectMaxWeeklyWorkingHours = "-";
+              $perProjectStandardDeviationWeeklyWorkingHours = "-";
 
               $perProjectSumCoreWorkingHours = "-";
               $perProjectAverageCoreWorkingHours = "-";
               $perProjectMinCoreWorkingHours = "-";
               $perProjectMaxCoreWorkingHours = "-";
+              $perProjectStandardDeviationCoreWorkingHours = "-";
             }else{
 
               $resultWeeklyWorkingHoursPerProject = evaluateWeeklyWorkingsHoursPerProject($conn, $evaluationFrom, $evaluationTo,$projectId , $evaluatedPnr);
@@ -237,13 +248,15 @@
               $perProjectAverageWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Average"];
               $perProjectMinWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Min"];
               $perProjectMaxWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Max"];
+              $perProjectStandardDeviationWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["StandardDeviation"];
 
 
               $resultCoreWorkingHoursPerProject = evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo,$projectId,$evaluatedPnr);
-              $perProjectSumCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Sum"];
+              $perProjectSumCoreWorkingHours = $resultCoreWorkingHoursPerProject["Sum"];
               $perProjectAverageCoreWorkingHours = $resultCoreWorkingHoursPerProject["Average"];
-              $perProjectMinCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Min"];
-              $perProjectMaxCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Max"];
+              $perProjectMinCoreWorkingHours = $resultCoreWorkingHoursPerProject["Min"];
+              $perProjectMaxCoreWorkingHours = $resultCoreWorkingHoursPerProject["Max"];
+              $perProjectStandardDeviationCoreWorkingHours = $resultCoreWorkingHoursPerProject["StandardDeviation"];
 
             }
 
@@ -255,12 +268,12 @@
                       <td>'. $perProjectAverageWeeklyWorkingHours  .'</td>
                       <td>'. $perProjectMinWeeklyWorkingHours .'</td>
                       <td>'. $perProjectMaxWeeklyWorkingHours .'</td>
-                      <td>'. 0 .'</td>
+                      <td>'. $perProjectStandardDeviationWeeklyWorkingHours .'</td>
                       <td>'. $perProjectSumCoreWorkingHours .'</td>
                       <td>'. $perProjectAverageCoreWorkingHours  .'</td>
                       <td>'. $perProjectMinCoreWorkingHours .'</td>
                       <td>'. $perProjectMaxCoreWorkingHours .'</td>
-                      <td>'. 0 .'</td>
+                      <td>'. $perProjectStandardDeviationCoreWorkingHours .'</td>
                   </tr>';
 
           }

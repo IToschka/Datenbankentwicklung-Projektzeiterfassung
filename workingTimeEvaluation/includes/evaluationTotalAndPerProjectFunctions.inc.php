@@ -15,9 +15,6 @@ function invalidEvaluationDate($evaluationFrom, $evaluationTo){
 }
 
 
-
-
-
 //Ermittelt für die Durchschnittsberechnung die Anzahl aller Mitarbeiter
 //Mit der Ausnahme PNR = 0: Ein Admin sollte keine Arbeitszeitbuchung haben
 function getNumberOfEmployees($conn){
@@ -97,7 +94,7 @@ $result = mysqli_query($conn, $sql);
 $row= mysqli_fetch_assoc($result);
 $average = $row['Average'];
 
-$standardDeviation= getStandardDeviationMax($allDeviationsInSec);
+$standardDeviation= getStandardDeviation($allDeviationsInSec);
 }
 
 $resultWeeklyWorkingHoursTotal = formatEvaluatedResults($sum, $average, $min, $max, $standardDeviation);
@@ -111,7 +108,6 @@ return $resultWeeklyWorkingHoursTotal;
 //In der Funktion werden die Evaluationsergenisse für Abweichungen vor der Kernarbeitzeit und für Abweichungen nach der Kernarbeitzeit zusammengeführt
 function evaluateCoreWorkingTimeTotal($conn, $evaluationFrom, $evaluationTo){
 
-
   $resultCoreWorkingHoursFrom = evaluateCoreWorkingTimeFromTotal($conn, $evaluationFrom, $evaluationTo);
   $resultCoreWorkingHoursTo = evaluateCoreWorkingTimeToTotal($conn, $evaluationFrom, $evaluationTo);
 
@@ -122,10 +118,18 @@ function evaluateCoreWorkingTimeTotal($conn, $evaluationFrom, $evaluationTo){
   $row= mysqli_fetch_assoc($result);
   $average = $row['Average'];
 
-  if($resultCoreWorkingHoursFrom["MinFrom"]< $resultCoreWorkingHoursTo["MinTo"]){
-      $min=$resultCoreWorkingHoursFrom["MinFrom"];
-  }else{
+  if($resultCoreWorkingHoursFrom["MinFrom"] == 0 && $resultCoreWorkingHoursTo["MinTo"] == 0){
+    $min = 0;
+  }elseif($resultCoreWorkingHoursFrom["MinFrom"] != 0 && $resultCoreWorkingHoursTo["MinTo"] == 0){
+    $min=$resultCoreWorkingHoursFrom["MinFrom"];
+  }elseif($resultCoreWorkingHoursFrom["MinFrom"] == 0 && $resultCoreWorkingHoursTo["MinTo"] != 0){
     $min=$resultCoreWorkingHoursTo["MinTo"];
+  }else{
+    if($resultCoreWorkingHoursFrom["MinFrom"] <= $resultCoreWorkingHoursTo["MinTo"]){
+      $min=$resultCoreWorkingHoursFrom["MinFrom"];
+    }else{
+      $min=$resultCoreWorkingHoursTo["MinTo"];
+    }
   }
 
 
@@ -137,7 +141,11 @@ function evaluateCoreWorkingTimeTotal($conn, $evaluationFrom, $evaluationTo){
 
   $allDeviationsInSec = array();
   $allDeviationsInSec = array_merge($resultCoreWorkingHoursFrom["AllDeviationsInSecFrom"], $resultCoreWorkingHoursTo["AllDeviationsInSecTo"]);
-  $standardDeviation = getStandardDeviationMax($allDeviationsInSec);
+  if(!empty($allDeviationsInSec)){
+      $standardDeviation = getStandardDeviation($allDeviationsInSec);
+  }else{
+      $standardDeviation = 0;
+  }
 
 
 $resultCoreWorkingHoursTotal = formatEvaluatedResults($sum,$average, $min, $max, $standardDeviation);
@@ -268,8 +276,7 @@ function getAllProjectIds($conn, $evaluationFrom){
   if(!mysqli_stmt_prepare($stmt, $sql)){
       header("location: ../evaluationTotalAndPerProject.php?error=stmtfailed");
       exit();
-
-  }
+    }
 
   mysqli_stmt_bind_param($stmt, "s", $evaluationFrom);
 
@@ -288,7 +295,7 @@ function getEmployeesPerProject($conn, $projectId){
   $sql = "SELECT COUNT(PNR) AS NumberOfEmployeesPerProject FROM employeeproject WHERE ProjectID = ?;";
   $stmt = mysqli_stmt_init($conn);
   if(!mysqli_stmt_prepare($stmt, $sql)){
-      header("location: ../evaluationPerEmployee.php?error=stmtfailed");
+      header("location: ../evaluationTotalAndPerProject.php?error=stmtfailed");
       exit();
 
   }
@@ -300,8 +307,6 @@ function getEmployeesPerProject($conn, $projectId){
   $numberOfEmployeesPerProject = $row['NumberOfEmployeesPerProject'];
 
   return $numberOfEmployeesPerProject;
-
-
 }
 
 
@@ -362,13 +367,14 @@ $result = mysqli_query($conn, $sql);
 $row= mysqli_fetch_assoc($result);
 $average = $row['Average'];
 
-$standardDeviation= getStandardDeviationMax($allDeviationsInSec);
+
+$standardDeviation= getStandardDeviation($allDeviationsInSec);
 }
 
 $resultWeeklyWorkingHoursPerProject = formatEvaluatedResults($sum, $average, $min, $max, $standardDeviation);
+
 return $resultWeeklyWorkingHoursPerProject;
 }
-
 
 
 function evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo,$projectId ){
@@ -383,14 +389,18 @@ function evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo
   $row= mysqli_fetch_assoc($result);
   $average = $row['Average'];
 
-  if($resultCoreWorkingHoursFrom["MinFrom"] == 0 && $resultCoreWorkingHoursTo["MinTo"] ==0){
+  if($resultCoreWorkingHoursFrom["MinFrom"] == 0 && $resultCoreWorkingHoursTo["MinTo"] == 0){
     $min = 0;
-  }
-  elseif($resultCoreWorkingHoursFrom["MinFrom"] <= $resultCoreWorkingHoursTo["MinTo"] && $resultCoreWorkingHoursFrom["MinFrom"] !=0){
-      $min=$resultCoreWorkingHoursFrom["MinFrom"];
-  }
-  else{
+  }elseif($resultCoreWorkingHoursFrom["MinFrom"] != 0 && $resultCoreWorkingHoursTo["MinTo"] == 0){
+    $min=$resultCoreWorkingHoursFrom["MinFrom"];
+  }elseif($resultCoreWorkingHoursFrom["MinFrom"] == 0 && $resultCoreWorkingHoursTo["MinTo"] != 0){
     $min=$resultCoreWorkingHoursTo["MinTo"];
+  }else{
+    if($resultCoreWorkingHoursFrom["MinFrom"] <= $resultCoreWorkingHoursTo["MinTo"]){
+      $min=$resultCoreWorkingHoursFrom["MinFrom"];
+    }else{
+      $min=$resultCoreWorkingHoursTo["MinTo"];
+    }
   }
 
 
@@ -402,7 +412,13 @@ function evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo
 
   $allDeviationsInSec = array();
   $allDeviationsInSec = array_merge($resultCoreWorkingHoursFrom["AllDeviationsInSecFrom"], $resultCoreWorkingHoursTo["AllDeviationsInSecTo"]);
-  $standardDeviation = getStandardDeviationMax($allDeviationsInSec);
+
+  if(!empty($allDeviationsInSec)){
+
+      $standardDeviation= getStandardDeviation($allDeviationsInSec);
+  }else{
+      $standardDeviation = 0;
+  }
 
 
 $resultCoreWorkingHoursPerProject = formatEvaluatedResults($sum,$average, $min, $max, $standardDeviation);
@@ -456,8 +472,10 @@ if($checkResult>0){
     array_push($allDeviationsInSec, $deviationInSec);
 
   }
-}
 
+
+}
+echo $min;
 $resultCoreWorkingHoursFrom = array("SumFrom"=>$sum, "MinFrom"=>$min, "MaxFrom"=>$max, "AllDeviationsInSecFrom"=>$allDeviationsInSec);
 return $resultCoreWorkingHoursFrom;
 }
@@ -510,6 +528,7 @@ if($checkResult>0){
   }
 
 }
+echo $min;
 
 
 $resultCoreWorkingHoursTo = array("SumTo"=>$sum, "MinTo"=>$min, "MaxTo"=>$max, "AllDeviationsInSecTo"=>$allDeviationsInSec);
