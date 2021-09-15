@@ -1,4 +1,8 @@
 <?php
+  //Autor der Datei Tamara Romer
+    include_once '../includes/loginHeader.inc.php';
+    include_once '../includes/projectRoleHeader.inc.php';
+    include_once '../includes/projectRoleHeader.inc.php';
     include_once '../menu/workingTimeEvaluationMenu.php';
     include_once '../includes/dbh.inc.php';
     include_once 'includes/evaluationTotalAndPerProjectFunctions.inc.php'
@@ -12,19 +16,14 @@
     </head>
 
     <body>
-
       <br>
       <br>
-
       <?php
-
       $totalSumWeeklyWorkingHours = 0;
       $totalAverageWeeklyWorkingHours = 0;
       $totalMaxWeeklyWorkingHours = 0;
       $totalMinWeeklyWorkingHours = 0;
       $totalStandardDeviationWeeklyWorkingHours = 0;
-
-
 
       $totalSumCoreWorkingHours = 0;
       $totalAverageCoreWorkingHours = 0;
@@ -63,202 +62,210 @@
        ?>
 
     <form action="evaluationTotalAndPerProject.php" method="POST" >
+
       Von: <input type="date" name="evaluationFrom" value= '<?php
       echo $evaluationFrom; ?>' required>
       Bis: <input type="date" name="evaluationTo"  value= '<?php
       echo $evaluationTo; ?>' required>
 
-    <br>
-    <br>
-    <h2>Übersicht über alle Abweichungen</h2>
-    <table class="formTable">
-      <thead>
-        <tr>
-            <th></th>
-            <th>Abweichung der Wochenarbeitsstunden</th>
-            <th>Abweichung der Kernarbeitszeit</th>
-        </tr>
-
-      </thead>
+      <br>
+      <br>
+      <h2>Übersicht über alle Abweichungen</h2>
+      <table class="formTable">
+        <thead>
+          <tr>
+              <th></th>
+              <th>Abweichung der Wochenarbeitsstunden</th>
+              <th>Abweichung der Kernarbeitszeit</th>
+            </tr>
+          </thead>
         <tbody>
+            <tr>
+                <td>Summe:</td>
+                <td>
+                  <input type="text" textarea readonly="readonly" name="totalSumWeeklyWorkingHours"
+                    value= '<?php echo $totalSumWeeklyWorkingHours; ?>'>
+                </td>
+                <td>
+                  <input type="text" textarea readonly="readonly" name="totalSumCoreWorkingHours"
+                    value= '<?php echo $totalSumCoreWorkingHours; ?>'></td>
+            </tr>
+            <tr>
+                <td>Durchschnitt</td>
+                <td>
+                  <input type="text" textarea readonly="readonly" name="totalAverageWeeklyWorkingHours"
+                      value= '<?php echo $totalAverageWeeklyWorkingHours; ?>'>
+                </td>
+                <td>
+                  <input type="text" textarea readonly="readonly" name="totalAverageCoreWorkingHours"
+                    value= '<?php echo $totalAverageCoreWorkingHours; ?>'></td>
+            </tr>
+            <tr>
+                <td>Minimum:</td>
+                <td>
+                  <input type="text" textarea readonly="readonly" name="totalMinWeeklyWorkingHours"
+                    value= '<?php echo $totalMinWeeklyWorkingHours; ?>'>
+                </td>
+                <td>
+                  <input type="text" textarea readonly="readonly" name="totalMinCoreWorkingHours"
+                    value= '<?php echo $totalMinCoreWorkingHours; ?>'>
+                </td>
+            </tr>
+            <tr>
+                <td>Maxmimum:</td>
+                <td>
+                  <input type="text" textarea readonly="readonly" name="totalMaxWeeklyWorkingHours"
+                    value= '<?php echo $totalMaxWeeklyWorkingHours; ?>'>
+                </td>
+                <td>
+                  <input type="text" textarea readonly="readonly" name="totalMaxCoreWorkingHours"
+                    value= '<?php echo  $totalMaxCoreWorkingHours; ?>'>
+                </td>
+              </tr>
                 <tr>
-                    <td>Summe:</td>
-                    <td>
-                      <input type="text" textarea readonly="readonly" name="totalSumWeeklyWorkingHours"
-                      value= '<?php
-                      echo $totalSumWeeklyWorkingHours; ?>'>
-                    </td>
-                    <td><input type="text" textarea readonly="readonly" name="totalSumCoreWorkingHours"
-                    value= '<?php
-                    echo $totalSumCoreWorkingHours; ?>'></td>
-                </tr>
-                <tr>
-                    <td>Durchschnitt</td>
-                    <td>
-                      <input type="text" textarea readonly="readonly" name="totalAverageWeeklyWorkingHours"
-                      value= '<?php
-                      echo $totalAverageWeeklyWorkingHours; ?>'></td>
-                    <td>
-                      <input type="text" textarea readonly="readonly" name="totalAverageCoreWorkingHours"
-                    value= '<?php
-                    echo $totalAverageCoreWorkingHours; ?>'></td>
-                </tr>
-                <tr>
-                    <td>Minimum:</td>
-                    <td>
-                      <input type="text" textarea readonly="readonly" name="totalMinWeeklyWorkingHours"
-                      value= '<?php
-                      echo $totalMinWeeklyWorkingHours; ?>'></td>
-                    <td>
-                      <input type="text" textarea readonly="readonly" name="totalMinCoreWorkingHours"
-                      value= '<?php
-                      echo $totalMinCoreWorkingHours; ?>'></td>
-                </tr>
-                <tr>
-                    <td>Maxmimum:</td>
-                    <td>
-                      <input type="text" textarea readonly="readonly" name="totalMaxWeeklyWorkingHours"
-                      value= '<?php
-                      echo $totalMaxWeeklyWorkingHours; ?>'></td>
-                    <td>
-                      <input type="text" textarea readonly="readonly" name="totalMaxCoreWorkingHours"
-                      value= '<?php
-                      echo  $totalMaxCoreWorkingHours; ?>'></td>
-                </tr>
-                <tr>
-                    <td>Standardabweichung:</td>
-                    <td>
-                      <input type="text" textarea readonly="readonly" name="totalStandardDeviationWeeklyWorkingHours"
-                      value= '<?php
-                      echo $totalStandardDeviationWeeklyWorkingHours; ?>'></td>
-                    <td><input type="text" textarea readonly="readonly" name="totalStandardDeviationCoreWorkingHours"
-                      value= '<?php
-                      echo  $totalStandardDeviationCoreWorkingHours; ?>'></td>
-                </tr>
+                <td>Standardabweichung:</td>
+                <td>
+                  <input type="text" textarea readonly="readonly" name="totalStandardDeviationWeeklyWorkingHours"
+                    value= '<?php echo $totalStandardDeviationWeeklyWorkingHours; ?>'>
+                </td>
+                <td>
+                  <input type="text" textarea readonly="readonly" name="totalStandardDeviationCoreWorkingHours"
+                      value= '<?php echo  $totalStandardDeviationCoreWorkingHours; ?>'>
+                </td>
+              </tr>
           </tbody>
       </table>
 
 
-        <input type="submit" name="button_Evaluate" value = "Auswerten">
+      <input type="submit" name="button_Evaluate" value = "Auswerten">
 
 
     </form>
     <br>
     <br>
+
     <?php
-    if(isset($_GET["error"])){
+      if(isset($_GET["error"])){
 
-      if($_GET["error"] == "evaluationDate") {
-          echo "<p>Die zu evaluierende Datum ist nicht zulässig. Das Von-Datum sollte nicht nach dem Bis-Datum liegen!</p>";
-      }
-    }
-     ?>
-     <br>
-     <h2>Abweichung pro Projekt</h2>
+        if($_GET["error"] == "evaluationDate") {
+            echo "<p>Die zu evaluierende Datum ist nicht zulässig. Das Von-Datum sollte nicht nach dem Bis-Datum liegen!</p>";
+        }
+      } 
+    ?>
 
-     <br>
-     <table style="width: 100%">
-       <thead>
-         <tr>
+    <br>
+    <h2>Abweichung pro Projekt</h2>
+
+    <br>
+    <div class="evaluationTable">
+      <table style="border: thin solid black; width: 100%">
+        <thead>
+          <tr>
              <th></th>
              <th  colspan ="5">Abweichung der Wochenarbeitsstunden</th>
              <th colspan ="5">Abweichung der Kernarbeitszeiten</th>
-         </tr>
-
+          </tr>
        </thead>
        <tbody>
-         <tr>
-             <td>ProjectID</th>
-             <td>Summe</td>
-             <td>Durchschnitt</td>
-             <td>Minimum</td>
-             <td>Maximum</td>
-             <td>Standardabweichung</td>
+          <tr>
+            <td>ProjectID</th>
+            <td>Summe</td>
+            <td>Durchschnitt</td>
+            <td>Minimum</td>
+            <td>Maximum</td>
+            <td>Standardabweichung</td>
 
-             <td>Summe</td>
-             <td>Durchschnitt</td>
-             <td>Minimum</td>
-             <td>Maximum</td>
-             <td>Standardabweichung</td>
+            <td>Summe</td>
+            <td>Durchschnitt</td>
+            <td>Minimum</td>
+            <td>Maximum</td>
+            <td>Standardabweichung</td>
          </tr>
+        <?php
+          if (isset($_POST['button_Evaluate'])){
+             $projectIds = getAllProjectIds($conn, $evaluationFrom);
 
-     <?php
-        if (isset($_POST['button_Evaluate'])){
-          $projectIds = getAllProjectIds($conn, $evaluationFrom);
+            foreach ($projectIds as $element){
 
-          foreach ($projectIds as $element){
+              $projectId  = $element;
+              $perProjectSumWeeklyWorkingHours = 0;
+              $perProjectAverageWeeklyWorkingHours = 0;
+              $perProjectMinWeeklyWorkingHours = 0;
+              $perProjectMaxWeeklyWorkingHours = 0;
+              $perProjectStandardDeviationWeeklyWorkingHours = 0;
 
-            $projectId  = $element;
-            $perProjectSumWeeklyWorkingHours = 0;
-            $perProjectAverageWeeklyWorkingHours = 0;
-            $perProjectMinWeeklyWorkingHours = 0;
-            $perProjectMaxWeeklyWorkingHours = 0;
-            $perProjectStandardDeviationWeeklyWorkingHours = 0;
+              $perProjectSumCoreWorkingHours = 0;
+              $perProjectAverageCoreWorkingHours = 0;
+              $perProjectMinCoreWorkingHours = 0;
+              $perProjectMaxCoreWorkingHours = 0;
+              $perProjectStandardDeviationWeeklyWorkingHours = 0;
 
-            $perProjectSumCoreWorkingHours = 0;
-            $perProjectAverageCoreWorkingHours = 0;
-            $perProjectMinCoreWorkingHours = 0;
-            $perProjectMaxCoreWorkingHours = 0;
-            $perProjectStandardDeviationWeeklyWorkingHours = 0;
+              $anzahl = getEmployeesPerProject($conn, $projectId);
 
-            $anzahl = getEmployeesPerProject($conn, $projectId);
+              if(getEmployeesPerProject($conn, $projectId ) == 0){
+                //Wird ausgegeben wenn kein Mitarbeiter für das Projekt eingetragen ist
+                $perProjectSumWeeklyWorkingHours = "kein MA";
+                $perProjectAverageWeeklyWorkingHours = "kein MA";
+                $perProjectMinWeeklyWorkingHours = "kein MA";
+                $perProjectMaxWeeklyWorkingHours = "kein MA";
+                $perProjectStandardDeviationWeeklyWorkingHours = "kein MA";
 
-          if(getEmployeesPerProject($conn, $projectId ) == 0){
-            $perProjectSumWeeklyWorkingHours = "-";
-            $perProjectAverageWeeklyWorkingHours = "-";
-            $perProjectMinWeeklyWorkingHours = "-";
-            $perProjectMaxWeeklyWorkingHours = "-";
-            $perProjectStandardDeviationWeeklyWorkingHours = "-";
+                $perProjectSumCoreWorkingHours = "kein MA";
+                $perProjectAverageCoreWorkingHours = "kein MA";
+                $perProjectMinCoreWorkingHours = "kein MA";
+                $perProjectMaxCoreWorkingHours = "kein MA";
+                $perProjectStandardDeviationWeeklyWorkingHours = "kein MA";
 
-            $perProjectSumCoreWorkingHours = "-";
-            $perProjectAverageCoreWorkingHours = "-";
-            $perProjectMinCoreWorkingHours = "-";
-            $perProjectMaxCoreWorkingHours = "-";
-            $perProjectStandardDeviationWeeklyWorkingHours = "-";
-
-          }else{
-            $resultWeeklyWorkingHoursPerProject = evaluateWeeklyWorkingsHoursPerProject($conn, $evaluationFrom, $evaluationTo,$projectId );
-            $perProjectSumWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Sum"];
-            $perProjectAverageWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Average"];
-            $perProjectMinWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Min"];
-            $perProjectMaxWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Max"];
-            $perProjectStandardDeviationWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["StandardDeviation"];
-
-
-            $resultCoreWorkingHoursPerProject = evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo,$projectId );
-            $perProjectSumCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Sum"];
-            $perProjectAverageCoreWorkingHours = $resultCoreWorkingHoursPerProject["Average"];
-            $perProjectMinCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Min"];
-            $perProjectMaxCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Max"];
-            $perProjectStandardDeviationCoreWorkingHours = $resultCoreWorkingHoursPerProject["StandardDeviation"];
+              }else{
+                $resultWeeklyWorkingHoursPerProject = evaluateWeeklyWorkingsHoursPerProject($conn, $evaluationFrom, $evaluationTo,$projectId );
+                $perProjectSumWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Sum"];
+                $perProjectAverageWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Average"];
+                $perProjectMinWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Min"];
+                $perProjectMaxWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["Max"];
+                $perProjectStandardDeviationWeeklyWorkingHours = $resultWeeklyWorkingHoursPerProject["StandardDeviation"];
 
 
+                $resultCoreWorkingHoursPerProject = evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo,$projectId );
+                $perProjectSumCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Sum"];
+                $perProjectAverageCoreWorkingHours = $resultCoreWorkingHoursPerProject["Average"];
+                $perProjectMinCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Min"];
+                $perProjectMaxCoreWorkingHours =   $resultCoreWorkingHoursPerProject["Max"];
+                $perProjectStandardDeviationCoreWorkingHours = $resultCoreWorkingHoursPerProject["StandardDeviation"];
 
-          }
+              }
 
-            echo ' <tr>
-                      <td>'. $projectId  .'</td>
-                      <td>'. $perProjectSumWeeklyWorkingHours .'</td>
-                      <td>'. $perProjectAverageWeeklyWorkingHours  .'</td>
-                      <td>'. $perProjectMinWeeklyWorkingHours .'</td>
-                      <td>'. $perProjectMaxWeeklyWorkingHours .'</td>
-                      <td>'. $perProjectStandardDeviationWeeklyWorkingHours .'</td>
-                      <td>'. $perProjectSumCoreWorkingHours .'</td>
-                      <td>'. $perProjectAverageCoreWorkingHours  .'</td>
-                      <td>'. $perProjectMinCoreWorkingHours .'</td>
-                      <td>'. $perProjectMaxCoreWorkingHours .'</td>
-                      <td>'. $perProjectStandardDeviationCoreWorkingHours .'</td>
-                  </tr>';
+               echo ' <tr>
+                        <td>'. $projectId  .'</td>
+                        <td>'. $perProjectSumWeeklyWorkingHours .'</td>
+                        <td>'. $perProjectAverageWeeklyWorkingHours  .'</td>
+                        <td>'. $perProjectMinWeeklyWorkingHours .'</td>
+                        <td>'. $perProjectMaxWeeklyWorkingHours .'</td>
+                        <td>'. $perProjectStandardDeviationWeeklyWorkingHours .'</td>
+                        <td>'. $perProjectSumCoreWorkingHours .'</td>
+                        <td>'. $perProjectAverageCoreWorkingHours  .'</td>
+                        <td>'. $perProjectMinCoreWorkingHours .'</td>
+                        <td>'. $perProjectMaxCoreWorkingHours .'</td>
+                        <td>'. $perProjectStandardDeviationCoreWorkingHours .'</td>
+                      </tr>';
 
-          }
+            }
 
-        }
+          } 
 
-      ?>
-      </tbody>
-    </table>
+        ?>
+        </tbody>
+      </table>
+      <br>
+      <em>k.M. = kein Mitarbeiter ist für das Projekt eingetragen</em>
 
 
+      </div>
+      <br>
+
+      <form action="../includes/footer.inc.php" method="POST" >
+        <input type="submit" name="button_BackToMenu" value="Zurück zum Menü">
+        <input type="submit" name="button_LogOut" value = "Abmelden">
+      </form>
 
     </body>
 </html>

@@ -1,4 +1,5 @@
 <?php
+//Autor der Datei Tamara Romer
 //Berechnungsfunktionen für die Abfragen
 
 //Die Funktion wandelt die Abweichung im Zeitformat in Sekunden um
@@ -42,21 +43,22 @@ function getMax($deviationInSec, $max){
   }
 }
 
+//Ermittelt die Standardabweichung in Sekunden
 function getStandardDeviation($allDeviationsInSec){
 
-    if(count($allDeviationsInSec) > 1){
-      $stddev=0;
-      $average = array_sum($allDeviationsInSec) / count($allDeviationsInSec);
+  if(count($allDeviationsInSec) > 1){
+    $stddev=0;
+    $average = array_sum($allDeviationsInSec) / count($allDeviationsInSec);
 
-      $sum = 0;
-      foreach ($allDeviationsInSec as $element) {
-  		    $sum += pow($element - $average, 2);
-  	  }
+     $sum = 0;
+    foreach ($allDeviationsInSec as $element) {
+  		 $sum += pow($element - $average, 2);
+  	}
 
-  	   $stddev = sqrt($sum / (count($allDeviationsInSec)-1));
-    }else{
-      $stddev = 0;
-    }
+    $stddev = sqrt($sum / (count($allDeviationsInSec)-1));
+  }else{
+    $stddev = 0;
+  }
 
 	return $stddev;
 }

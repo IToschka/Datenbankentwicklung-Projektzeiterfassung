@@ -1,3 +1,8 @@
+<?php
+include_once '../includes/loginHeader.inc.php';
+include_once '../includes/projectRoleHeader.inc.php';
+ ?>
+
 <!DOCTYPE html>
 <html>
     <head>

@@ -1,5 +1,5 @@
 <?php
-//Autor Tamara Romer
+//Autor der Datei Tamara Romer
 include_once '../../includes/dbh.inc.php';
 include_once 'employeeManagement_Functions.inc.php';
 

@@ -1,5 +1,5 @@
 <?php
-// Autor Tamara Romer
+//Autor der Datei Tamara Romer
 
 //Funktionen für Mitarbeiter anlegen
 function invalidFirstname($firstname){

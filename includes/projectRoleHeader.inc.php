@@ -1,7 +1,6 @@
 <?php
 
-    session_start();
     if (!isset($_SESSION['projectManager'])){
-        header('Location: http://localhost:8080/Datenbankentwicklung-Projektzeiterfassung/startMenu/employeeMenu.php');
+        header('Location:  http://localhost/Datenbankentwicklung-Projektzeiterfassung/menu/employeeMenu.php');
         exit;
     }

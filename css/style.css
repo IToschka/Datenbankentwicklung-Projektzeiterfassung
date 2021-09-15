@@ -1,20 +1,28 @@
-.formTable tr{
+.formTable td{
   font-family: arial;
   height: 40px;
   width: 20%;
-  border: 1px solid #CF261E;
+}
 
+.evaluationTable table {
+  width: 100%;
+}
+
+.evaluationTable table, th, td {
+  border: thin solid black;
+  border-collapse: separate;
+}
+
+.evaluationTable thead th {
+  background-color: #ffebe6;
+  color: #c32e04;
 }
 
 
-
-.evaluationTable tr {
-
+.evaluationTable td {
   font-family: arial;
-  height: 40px;
-  width: 20%;
-  border: 1px solid #CF261E;
-
+  border: thin solid black;
+  padding: 5px;
 }
 
 
