@@ -1,4 +1,5 @@
 <?php
+//Autor der Datei Irena Toschka
 
 session_start();
 include_once '../../includes/dbh.inc.php';
@@ -67,7 +68,7 @@ if (isset($_POST['button_save_workingTime'])) {
 
     } //hier endet die for-Schleife
 
-    
+
     //Lücken aus demm Projekt-Array und dem Projektaufgaben-Array raus, indem die Arrays neu in ein zweites Array gepeichert werden
     $projectIDArray2 = array();
     for($i = 0; $i < count($projectIDArray); $i++){
@@ -88,39 +89,36 @@ if (isset($_POST['button_save_workingTime'])) {
     if(emptyArray($beginTimeA, $endTimeA) == true && $exitCode == 0 ){
         echo "Test Empty Array";
         updateLastDateEntered($conn, $recordingDate, $pnr);
-        if($recordingDate <= $datum = date("Y-m-d",$timestamp)) {
+        if($recordingDate < $datum = date("Y-m-d", $timestamp)) {
             header("location: ../workingTimeRecording.php"); 
         }
         else{
-            if($_SESSION['projectManager'] = "projektManager")
-            header("location: ../../projectManagerMenu.php");
+            if(!isset($_SESSION['projectManager'])){
+                header("location: ../../menu/employeeMenu.php");
+            }            
             else{
-                header("location: ../../employeeMenu.php");
-            }
-            
+                header("location: ../../menu/projectManagerMenu.php");
+            }    
         }
     }
-    //Zeiten aus Array abspeichern 
+    //Zeiten aus Array abspeichern + update
     elseif($exitCode == 0){
         for($i=0; $i < count($projectIDArray2); $i++){
           saveTimeRecoring($conn, $pnr, $projectIDArray2[$i], $projectTaskIDArray2[$i], $recordingDate,
                            $beginTimeA[$i] = str_replace(':', '', $beginTimeA[$i])."00", $endTimeA[$i]= str_replace(':', '', $endTimeA[$i])."00");
-
-          
         }
         updateLastDateEntered($conn, $recordingDate, $pnr);
-        if($recordingDate < $datum = date("Y-m-d",$timestamp)) {
+        if($recordingDate < $datum = date("Y-m-d", $timestamp)) {
             header("location: ../workingTimeRecording.php"); 
         }
         else{
-            if($_SESSION['projectManager'] = "projektManager"){
-                header("location: ../../menu/projectManagerMenu.php");
+            if(!isset($_SESSION['projectManager'])){
+                header("location: ../../menu/employeeMenu.php");
             }            
             else{
-                header("location: ../../menu/employeeMenu.php");
+                header("location: ../../menu/projectManagerMenu.php");
             }    
         }
-
     }
     else{
         //do nothing, denn es wird bereits Fehler ausgegeben, wenn exitCode = 1

@@ -1,4 +1,6 @@
 <?php
+//Autor der Datei Irena Toschka
+  
 //Funktion zur Bestimmung des Erfassungsdatum
 function recordingDate($conn) {
     //Abruf in DB
@@ -35,6 +37,8 @@ function recordingDate($conn) {
         return $recordingDate;
      }
 }
+
+
 
 //Funktionien für die Validierung für eine evtl. Fehlermeldung
 //Wenn nur eine Beginnzeit eingetragen wurde

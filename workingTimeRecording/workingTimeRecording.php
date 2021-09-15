@@ -1,3 +1,9 @@
+<?php
+//Autor der Datei Irena Toschka
+
+    include_once '../includes/loginHeader.inc.php';
+    include_once '../includes/dbh.inc.php';
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,11 +13,6 @@
     </head>
 
     <body>
-        <?php
-            session_start();
-            include_once '../includes/dbh.inc.php';
-        ?>
-
         <h1>Erfassungsbereich der Projektarbeitszeiten</h1>
             <form action="includes/workingTimeRecordingScript.inc.php" method="POST">
                     <br>
@@ -119,8 +120,15 @@
 
             </form>
             <center> 
-            <?php
+            
 
+            <!--Buttons für zurück ins Menu und Abmeldung-->
+            <form action="../includes/footer.inc.php" method="POST" >
+            <input type="submit" name="button_BackToMenu" value="Zurück zum Menü">
+            <input type="submit" name="button_LogOut" value = "Abmelden">
+            </form>
+
+            <?php
             include_once 'includes/workingTimeRecordingFunctions.inc.php';
             //Abfangen der einzelnen Fehlermeldungen 
             if(isset($_GET["error"])){
