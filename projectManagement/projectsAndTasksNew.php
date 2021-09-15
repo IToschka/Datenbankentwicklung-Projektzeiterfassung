@@ -1,6 +1,8 @@
 <?php
     session_start();
     include_once '../menu/projectsAndTasksMenu.php';
+    include_once '../includes/dbh.inc.php';
+    include_once 'includes/projectManagementFunctions.inc.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,10 +15,9 @@
 
     <body>
         <?php 
-            include_once '../includes/dbh.inc.php';
-            include_once 'includes/projectManagementFunctions.inc.php';
+            
 
-            if (isset($_POST['button_createProject'])) {
+            if(isset($_POST['button_createProject'])) {
 
                 $projectName = $_POST['projectname'];
                 $beginDate = $_POST['beginDate'];
@@ -24,12 +25,13 @@
                 $projectManager = $_POST['projectManager'];
               
                 $date = date("d.m.Y");
-                      
-                
-                //$task = $_POST['task'];
-              
-              
-              if(invalidDate($date, $beginDate) !== false) {
+                $dateTimestamp = strtotime($date);
+                $beginDateTimestamp = strtotime($beginDate);
+
+                echo 'Datum: '.$dateTimestamp;
+                echo '<br>Beginn Datum: '.$beginDateTimestamp;
+                           
+              if(invalidDate($dateTimestamp, $beginDateTimestamp) !== false) {
                   header("location: ../projectsAndTasksNew.php?error=invalidDate");
                   exit();
               }
@@ -38,11 +40,6 @@
                   exit();
               }
               
-              if(noNegativeProjectManagerPNR($projectManager) !== false) {
-                  header("location: ../projectsAndTasksNew.php?error=noNegativeProjectManagerPNR");
-                  exit();
-              } 
-              
               if(noNegativeAmountTasks($amountTasks) !== false) {
                   header("location: ../projectsAndTasksNew.php?error=noNegativeAmountTasks");
                   exit();
@@ -50,7 +47,7 @@
               
               createProject($conn, $projectName, $beginDate, $projectManager);
               
-              }
+              } 
         ?>
         <form action="projectsAndTasksNew.php" method="POST" > 
           <table>
@@ -101,8 +98,7 @@
     <body>
 
          <?php
-        // beim Anlegen des Projekts muss der Projektleiter dem Projekt zugeorndet werden
-        //tasks nicht einzeln sondenr wie in Change
+        
         if(isset($_GET["error"])){
              if ($_GET["error"] == "invalidDate") {
                  echo "<p>Das angegebene Datum liegt in der Vergangenheit!</p>";

@@ -23,8 +23,7 @@
         if(isset($_POST['button_choose'])) {
          $projectID = $_POST['projectID']; 
 
-         $projectName = $_SESSION['projectName'];
-        $beginDate = $_SESSION['beginDate'];
+    
            
            /* if(invalidProjectID($conn, $projectID) !== false) {
                 header("location: ../projectsAndTasksChange.php?error=invalidProjectID");
@@ -40,7 +39,13 @@
             exit(); 
          } */
         
-        fillProject($conn, $projectID); // Aufgaben
+        fillProject($conn, $projectID); 
+        $projectName = $_SESSION['projectName'];
+        $beginDate = $_SESSION['beginDate'];
+
+        fillTasks($conn, $projectID);
+        $tasks = $_SESSION['tasks'];
+
         }
                 
                      ?>
@@ -56,7 +61,7 @@
                   <tbody>
                       <tr>
                           <td>Projekttitel:</td>
-                          <td><textarea name="projectName"  maxlength="50" cols="50" value='<?php echo $projectName; ?>'> </textarea></td>
+                          <td><textarea name="projectName"  maxlength="50" cols="50"><?php echo $projectName; ?></textarea></td>
                       </tr>
                       <tr>
                           <td>Starttermin:</td>
@@ -69,9 +74,18 @@
                       
                       </tr>
 
-                      <tr>
-                      <td><?php echo "Aufgabe:"; ?></td>
-                      <textarea name="task"  maxlength="50" cols="50" value='<?php ?>'> </textarea></td> 
+    <?php 
+
+            if ($tasks != null) {
+               for($i=0; $i < count($tasks); $i++) { ?>          
+                <tr> <td><?php
+                $i2 = $i + 1;
+                echo "Aufgabe $i2:"; ?></td>
+                    <?php
+                    echo '<td> <textarea name="task'.$i.'" maxlength="50" cols="50" required>'.$tasks[$i].'</textarea></td>';
+               }}?>
+                </tr>
+
                   </tbody>
               </table>
 
