@@ -4,15 +4,14 @@
 include_once 'calculationOfEvaluationDataFunctions.inc.php';
 
 
-//Fehlermeldungen 
+//Fehlermeldungen
 function invalidEvaluationDate($evaluationFrom, $evaluationTo){
     if($evaluationFrom>$evaluationTo) {
-            $result = true;
+          return true;
     }
     else{
-         $result = false;
+         return false;
         }
-  return $result;
 }
 
 
@@ -73,8 +72,8 @@ function evaluateWeeklyWorkingsHoursTotal($conn, $evaluationFrom, $evaluationTo)
 
     //Von Irena Toschka
     $sql = "SELECT GetAverageTotal($sum) AS Average;";
-    $result = mysqli_query($conn, $sql);
-    $row= mysqli_fetch_assoc($result);
+    $resultData = mysqli_query($conn, $sql);
+    $row= mysqli_fetch_assoc($resultData);
     $average = $row['Average'];
 
     $standardDeviation= getStandardDeviation($allDeviationsInSec);
@@ -121,8 +120,8 @@ function evaluateCoreWorkingTimeTotal($conn, $evaluationFrom, $evaluationTo){
 
       //Irena Toschka
       $sql = "SELECT GetAverageTotal($sum) AS Average;";
-      $result = mysqli_query($conn, $sql);
-      $row= mysqli_fetch_assoc($result);
+      $resultData = mysqli_query($conn, $sql);
+      $row= mysqli_fetch_assoc($resultData);
       $average = $row['Average'];
 
       $standardDeviation= getStandardDeviation($allDeviationsInSec);
@@ -182,7 +181,7 @@ function evaluateCoreWorkingTimeToTotal($conn, $evaluationFrom, $evaluationTo){
     mysqli_stmt_bind_param($stmt, "ss", $evaluationFrom, $evaluationTo);
     mysqli_stmt_execute($stmt);
     $resultData = mysqli_stmt_get_result($stmt);
-    
+
     $allDeviationsInSecTo = array();
 
     while($row=mysqli_fetch_assoc($resultData)){
@@ -236,7 +235,7 @@ function getEmployeesPerProject($conn, $projectId){
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         header("location: ../evaluationTotalAndPerProject.php?error=stmtfailed");
-        exit(); 
+        exit();
     }
 
     mysqli_stmt_bind_param($stmt, "s", $projectId );
@@ -304,8 +303,8 @@ function evaluateWeeklyWorkingsHoursPerProject($conn, $evaluationFrom, $evaluati
 
       //Irena Toschka
       $sql = "SELECT GetAveragePerProject($sum, $projectId) AS Average;";
-      $result = mysqli_query($conn, $sql);
-      $row= mysqli_fetch_assoc($result);
+      $resultData = mysqli_query($conn, $sql);
+      $row= mysqli_fetch_assoc($resultData);
       $average = $row['Average'];
 
       $standardDeviation= getStandardDeviation($allDeviationsInSec);
@@ -349,8 +348,8 @@ function evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo
 
       //Irena Toschka
       $sql = "SELECT GetAveragePerProject($sum, $projectId) AS Average;";
-      $result = mysqli_query($conn, $sql);
-      $row= mysqli_fetch_assoc($result);
+      $resultData = mysqli_query($conn, $sql);
+      $row= mysqli_fetch_assoc($resultData);
       $average = $row['Average'];
 
       $standardDeviation= getStandardDeviation($allDeviationsInSec);

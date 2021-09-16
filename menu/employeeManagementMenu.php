@@ -13,22 +13,26 @@ include_once '../includes/projectRoleHeader.inc.php';
     </head>
 
     <body>
-    <center> 
+    <center>
     <h1>Mitarbeiterverwaltung</h1>
     <nav>
     <ul>
       <li><a href="../employeeManagement/createEmployee.php">Mitarbeiter erfassen </a></li>
       <li><a href="../employeeManagement/updateEmployee.php">Mitarbeiter ändern</a></li>
       <li><a href="../employeeManagement/deleteEmployee.php">Mitarbeiter löschen </a></li>
+      <form action="../includes/footer.inc.php" method="POST" >
+      <li style="margin-right: 10px"><input type="submit" name="button_BackToMenu" value="Zurück zum Menü"></li>
+      <li><input type="submit" name="button_LogOut" value = "Abmelden"></li>
+      </form>
     </ul>
     </nav>
 
     <!--Buttons für zurück ins Menu und Abmeldung-->
-    <form action="../includes/footer.inc.php" method="POST" >
-    <input type="submit" name="button_BackToMenu" value="Zurück zum Menü">
-    <input type="submit" name="button_LogOut" value = "Abmelden">
-    </form>
-    </center> 
+
+
+
+
+    </center>
 
     </body>
 </html>

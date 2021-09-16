@@ -10,8 +10,10 @@
 
 
 .evaluationTable thead th {
+  font-family: arial;
+  border: thin solid black;
   background-color: #ffebe6;
-  color: #c32e04;
+  color: black;
 }
 
 

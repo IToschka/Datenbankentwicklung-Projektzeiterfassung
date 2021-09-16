@@ -12,6 +12,7 @@ if (isset($_POST['button_createEmployee'])) {
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $password = $_POST['password'];
+    $passwordRepeat = $_POST['passwordRepeat'];
     $coreTimeFrom = $_POST['coreTimeFrom'];
     $coreTimeTo = $_POST['coreTimeTo'];
     $hiringDate = $_POST['hiringDate'];
@@ -39,6 +40,11 @@ if (isset($_POST['button_createEmployee'])) {
         exit();
     }
 
+    if(passwordMatch($password, $passwordRepeat) !== false){
+      header("location: ../createEmployee.php?error=passwordsDontMatch");
+      exit();
+    }
+
     if(invalidCoreTime($coreTimeFrom, $coreTimeTo) !== false){
         header("location: ../createEmployee.php?error=invalidCoreTime");
         exit();
@@ -61,7 +67,7 @@ if (isset($_POST['button_createEmployee'])) {
     $coreTimeTo = $_POST['coreTimeTo'];
     $weeklyWorkingHours = $_POST['weeklyWorkingHours'];
 
-    if(PnrNotExistsUpdate($conn, $pnr) !== false){
+    if(pnrNotExistsUpdate($conn, $pnr) !== false){
       header("location: ../updateEmployee.php?error=pnrNotExists");
       exit();
     }
@@ -75,11 +81,29 @@ if (isset($_POST['button_createEmployee'])) {
 
 } elseif(isset($_POST['button_deleteEmployee'])) {
     $pnr = $_POST['pnr'];
+    session_start();
 
-    if(PnrNotExistsDelete($conn, $pnr) !== false){
-      header("location: ../deleteEmployee.php?error=pnrNotExists");
+
+    if(pnrNotExistsDelete($conn, $pnr) !== false){
+      //header("location: ../deleteEmployee.php?error=pnrNotExists");
       exit();
     }
 
-    deleteEmployee($conn, $pnr);
+    if(pnrNotExistsDelete($conn, $pnr) !== false){
+      //header("location: ../deleteEmployee.php?error=pnrNotExists");
+      exit();
+    }
+
+    if(pnrNotExistsDelete($conn, $pnr) !== false){
+      //header("location: ../deleteEmployee.php?error=pnrNotExists");
+      exit();
+    }
+
+    //deleteEmployee($conn, $pnr);
+
+    echo $_Session['pnr'];
+    if(deletedEmployeeIsLoggedEmployee($pnr, $loggedPnr) !== false){
+      header("location: ../../login.php");
+      exit();
+    }
 }

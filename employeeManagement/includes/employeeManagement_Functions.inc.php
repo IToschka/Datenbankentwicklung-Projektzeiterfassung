@@ -3,59 +3,59 @@
 
 //Funktionen für Mitarbeiter anlegen
 function invalidFirstname($firstname){
-    $result;
     if(!preg_match("/^[a-zA-ZäöüÄÖÜß \-]+$/", $firstname)) {
-            $result = true;
+        return true;
     }
     else{
-         $result = false;
+        return false;
         }
-    return $result;
 }
 
 function invalidLastname($lastname){
-    $result;
     if(!preg_match("/^[a-zA-ZäöüÄÖÜß \-]+$/", $lastname)) {
-            $result = true;
+          return true;
     }
     else{
-         $result = false;
+         return false;
         }
-    return $result;
 }
 
 function invalidPassword($password){
-    $result;
     if(strlen($password)<8 || !preg_match("/[0-9]/", $password) || !preg_match("/[A-Z]/", $password) ||
-        !preg_match("/[a-z]/", $password) || !preg_match("/[^\w]/", $password)) {
-            $result = true;
+      !preg_match("/[a-z]/", $password) || !preg_match("/[^\w]/", $password)) {
+        return true;
     }else{
-        $result = false;
+        return false;
     }
-
-    return $result;
 }
 
-function invalidCoreTime($coreTimeFrom, $coreTimeTo){
-    $result;
-    if($coreTimeFrom>$coreTimeTo) {
-        $result = true;
-    }else{
-        $result = false;
-    }
 
-    return $result;
+function passwordMatch($password, $passwordRepeat){
+  if($password !== $passwordRepeat){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+
+
+
+
+function invalidCoreTime($coreTimeFrom, $coreTimeTo){
+    if($coreTimeFrom>$coreTimeTo) {
+        return true;
+    }else{
+        return false;
+    }
 }
 
 function invalidWeeklyWorkingHours($weeklyWorkingHours){
-    $result;
     if($weeklyWorkingHours<10) {
-            $result = true;
+        return true;
     }else{
-        $result = false;
+        return false;
     }
-
-    return $result;
 }
 
 
@@ -97,11 +97,12 @@ function createLogin($conn, $pnr, $password){
         exit();
     }
 
-    mysqli_stmt_bind_param($stmt, "ss",$pnr, $password);
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    mysqli_stmt_bind_param($stmt, "ss",$pnr, $hashedPassword);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../createEmployee.php?error=none");
-    exit();
 }
 
 
@@ -109,7 +110,7 @@ function createLogin($conn, $pnr, $password){
 
 //Funktionen für Mitarbeiter Ändern
 function pnrNotExistsUpdate($conn, $pnr){
-    $sql = "SELECT * FROM employee WHERE PNR = ?;";
+    $sql = "SELECT PNR FROM employee WHERE PNR = ?;";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         header("location: ../updateEmployee.php?error=stmtfailed");
@@ -120,13 +121,12 @@ function pnrNotExistsUpdate($conn, $pnr){
     $resultData = mysqli_stmt_get_result($stmt);
 
     if(!mysqli_fetch_assoc($resultData)) {
-      $result = true;
+      mysqli_stmt_close($stmt);
+      return true;
     }else{
-      $result = false;
+      mysqli_stmt_close($stmt);
+      return false;
     }
-
-    return $result;
-    mysqli_stmt_close($stmt);
 }
 
 function updateEmployee($conn, $coreTimeFrom, $coreTimeTo, $weeklyWorkingHours, $pnr){
@@ -167,11 +167,9 @@ function updateEmployee($conn, $coreTimeFrom, $coreTimeTo, $weeklyWorkingHours, 
     mysqli_stmt_bind_param($stmt, "ss", $weeklyWorkingHours, $pnr);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-
     }
 
     header("location: ../updateEmployee.php?error=none");
-    exit();
 }
 
 
@@ -179,7 +177,7 @@ function updateEmployee($conn, $coreTimeFrom, $coreTimeTo, $weeklyWorkingHours, 
 
 //Funktionen für Mitarbeiter löschen
 function pnrNotExistsDelete($conn, $pnr){
-    $sql = "SELECT * FROM employee WHERE PNR = ?;";
+    $sql = "SELECT PNR FROM employee WHERE PNR = ?;";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         header("location: ../deleteEmployee.php?error=stmtfailed");
@@ -190,13 +188,12 @@ function pnrNotExistsDelete($conn, $pnr){
     $resultData = mysqli_stmt_get_result($stmt);
 
     if(!mysqli_fetch_assoc($resultData)) {
-      $result = true;
+      mysqli_stmt_close($stmt);
+      return  true;
     }else{
-      $result = false;
+      mysqli_stmt_close($stmt);
+      return  false;
     }
-
-    return $result;
-    mysqli_stmt_close($stmt);
 }
 
 function deleteEmployee($conn, $pnr){
@@ -211,5 +208,13 @@ function deleteEmployee($conn, $pnr){
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../deleteEmployee.php?error=none");
-    exit();
+}
+
+
+function deletedEmployeeIsLoggedEmployee($pnr,$loggedPnr){
+  if($pnr == $loggedPnr){
+      return true;
+  }else{
+      return false;
+  }
 }

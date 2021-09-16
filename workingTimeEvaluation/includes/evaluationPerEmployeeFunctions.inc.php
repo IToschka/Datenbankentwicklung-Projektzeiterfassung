@@ -5,27 +5,23 @@ include_once 'calculationOfEvaluationDataFunctions.inc.php';
 //Fehermeldungen
 function invalidEvaluationDate($evaluationFrom, $evaluationTo){
     if($evaluationFrom>$evaluationTo) {
-        $result = true;
+        return true;
     }else{
-        $result = false;
+        return false;
     }
-
-  return $result;
 }
 
 
 function invalidPnr($evaluatedPnr){
     if(!preg_match("/[0-9]/", $evaluatedPnr)) {
-        $result = true;
+        return true;
     }else{
-        $result = false;
+        return false;
     }
-      
-  return $result;
 }
 
 function pnrNotExists($conn, $evaluatedPnr){
-    $sql = "SELECT * FROM employee WHERE PNR = ?;";
+    $sql = "SELECT PNR FROM employee WHERE PNR = ?;";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         header("location: ../updateEmployee.php?error=stmtfailed");
@@ -38,13 +34,14 @@ function pnrNotExists($conn, $evaluatedPnr){
 
 
     if(!mysqli_fetch_assoc($resultData)) {
-            $result = true;
+        mysqli_stmt_close($stmt);
+          return true;
     }
     else{
-         $result = false;
-        }
-  return $result;
-  mysqli_stmt_close($stmt);
+        mysqli_stmt_close($stmt);
+         return false;
+    }
+
 }
 
 
@@ -61,7 +58,6 @@ function getWorkingDays($conn, $evaluationFrom, $evaluationTo, $evaluatedPnr){
     if(!mysqli_stmt_prepare($stmt, $sql)){
         header("location: ../evaluationPerEmployee.php?error=stmtfailed");
         exit();
-
     }
 
     mysqli_stmt_bind_param($stmt, "sss", $evaluationFrom, $evaluationTo, $evaluatedPnr);
@@ -404,7 +400,7 @@ function evaluateCoreWorkingTimePerProject($conn, $evaluationFrom, $evaluationTo
         $standardDeviation= getStandardDeviation($allDeviationsInSec);
     }
     $resultCoreWorkingHoursPerProject = formatEvaluatedResults($sum,$average, $min, $max, $standardDeviation);
-    
+
   return $resultCoreWorkingHoursPerProject;
 }
 

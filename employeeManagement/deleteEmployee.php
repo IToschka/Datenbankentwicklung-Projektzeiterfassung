@@ -26,10 +26,7 @@
         <input type="submit" name="button_deleteEmployee" value="Löschen">
     </form>
     <br>
-    <form action="../includes/footer.inc.php" method="POST" >
-      <input type="submit" name="button_BackToMenu" value="Zurück zum Menü">
-      <input type="submit" name="button_LogOut" value = "Abmelden">
-    </form>
+
 
     <?php
     if(isset($_GET["error"])){

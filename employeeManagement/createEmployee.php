@@ -17,6 +17,7 @@
       <br>
     <form action="includes/employeeManagement_Script.inc.php" method="POST" >
     <h3>Bitte füllen sie die Felder aus</h3>
+
     <table class="formTable">
             <tbody>
                 <tr>
@@ -30,6 +31,10 @@
                 <tr>
                     <td>Passwort:</td>
                     <td><input type="password" size="30" name="password" placeholder="Passwort" minlength="8" maxlength="20" required></td>
+                </tr>
+                <tr>
+                    <td>Wiederholen Sie das Passwort:</td>
+                    <td><input type="password" size="30" name="passwordRepeat" placeholder="Passwort wiederholen" minlength="8" maxlength="20" required></td>
                 </tr>
                 <tr>
                     <td>Kernarbeitszeit von:</td>
@@ -58,10 +63,6 @@
     </form>
     <br>
 
-    <form action="../includes/footer.inc.php" method="POST" >
-      <input type="submit" name="button_BackToMenu" value="Zurück zum Menü">
-      <input type="submit" name="button_LogOut" value = "Abmelden">
-    </form>
 
     <?php
     //Anzeige der Fehlermeldeung
@@ -75,6 +76,9 @@
         elseif ($_GET["error"] == "invalidPassword") {
             echo "<p>Das Passwort ist nicht zulässig! Es benötigt mindestens 8 Zeichen, einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen!</p>";
         }
+        elseif ($_GET["error"] == "passwordsDontMatch") {
+            echo "<p>Die eingegebenen Passwörter stimmen nicht überein!</p>";
+        }
         elseif ($_GET["error"] == "invalidCoreTime") {
             echo "<p>Die Kernarbeitszeit ist unzulässig! Der Beginn der Kernarbeitszeit kann nicht nach dem Ende sein!</p>";
         }
@@ -87,7 +91,6 @@
         elseif ($_GET["error"] == "none") {
             echo "<p>Der Mitarbeiter wurde erfolgreich angelegt!</p>";
         }
-
     }
     ?>
     </body>

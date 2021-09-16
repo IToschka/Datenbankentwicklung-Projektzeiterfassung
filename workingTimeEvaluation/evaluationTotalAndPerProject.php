@@ -150,7 +150,7 @@
         if($_GET["error"] == "evaluationDate") {
             echo "<p>Die zu evaluierende Datum ist nicht zulässig. Das Von-Datum sollte nicht nach dem Bis-Datum liegen!</p>";
         }
-      } 
+      }
     ?>
 
     <br>
@@ -250,7 +250,7 @@
 
             }
 
-          } 
+          }
 
         ?>
         </tbody>
@@ -262,10 +262,6 @@
       </div>
       <br>
 
-      <form action="../includes/footer.inc.php" method="POST" >
-        <input type="submit" name="button_BackToMenu" value="Zurück zum Menü">
-        <input type="submit" name="button_LogOut" value = "Abmelden">
-      </form>
 
     </body>
 </html>
