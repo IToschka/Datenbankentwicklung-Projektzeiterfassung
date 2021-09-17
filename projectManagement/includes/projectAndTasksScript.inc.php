@@ -33,14 +33,7 @@ if (isset($_POST['button_createTasks'])) {
 //----------------------------------------------------------------
 
 //Change
-if(isset($_POST['button_change'])) {
-    $task = $_POST['task'];
 
-    $projectID  = getProjectID($conn);
-    echo $projectID;
-
-    updateTask($conn, $task, $projectID);
-}
 
 //----------------------------------------------------------------
 
@@ -49,30 +42,44 @@ if(isset($_POST['button_change'])) {
 $error ="";
 if(isset($_POST['button_copyProject'])) {
 
-    $projectName = $_POST['projectName'];
-    $beginDate = $_POST['beginDate'];
-    $amountTasks= $_POST['amountTasks'];
-    $projectManager = $_POST['projectManager'];
 
-    $date = date("d.m.Y");
-    $dateTimestamp = strtotime($date);
-    $beginDateTimestamp = strtotime($beginDate);
+  $projectName = $_POST['projectName'];
+  $beginDate = $_POST['beginDate'];
+  $amountTasks= $_POST['amountTasks'];
+  $projectManager = $_POST['projectManager'];
+
+  $date = date("d.m.Y");
+  $dateTimestamp = strtotime($date);
+  $beginDateTimestamp = strtotime($beginDate);
 
 
   $error = invalidDate($dateTimestamp, $beginDateTimestamp);
 
-
-
-if($error == "") {
-$error = titleAlreadyExists($conn, $projectName);
-
-}
-
+    if ($error == "") {
+        $error = titleAlreadyExists($conn, $projectName);
+    }
+    // Projekt speichern
     if ($error == "") {
         $error = createProject($conn, $projectName, $beginDate, $projectManager);
+    }
+
+    $taskID = 0;
+    $tasks = array();
+    $projektID = getProjectID($conn);
+
+
+    for ($i = 0; $i < $_SESSION['amountTasks']; $i++) {
+        array_push($tasks, $_POST["task{$i}"]);
 
     }
+
+    foreach($tasks as $task){
+      $taskID++;
+      createTasks($conn, $taskID, $projektID, $task);
+    }
 }
+
+
 
 //----------------------------------------------------------------
 

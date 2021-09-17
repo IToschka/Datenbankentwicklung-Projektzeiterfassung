@@ -83,14 +83,12 @@ else {
         mysqli_stmt_bind_param($stmt, "sss", $taskID, $projektID, $task);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-       header("location: ../projectsAndTasksNew.php?error=none");
-
-
+        //header("location: ../projectsAndTasksNew.php?error=none");
 }
 }
 // neue Aufgabe anlegen in change
-function updateTask($conn, $task, $projectID) {
-        $sql= "INSERT projecttask SET TaskDescription = ? WHERE ProjectID = ?;";
+/*function updateTask($conn, $projectTaskID, $projectID, $task) {
+        $sql= "INSERT INTO projecttask (ProjectTaskID, ProjectID, TaskDescription) VALUES (?, ?, ?);";
         $stmt = mysqli_stmt_init($conn);
 if(!mysqli_stmt_prepare($stmt, $sql)) {
         echo "SQL Statement failed";
@@ -106,6 +104,7 @@ else {
 
 }
 }
+*/
 //taskID für change Aufgabe zum hizufügen anzeigen
 function getTaskID($conn, $projectID) {
         $sql = "SELECT ProjectTaskID FROM projecttask WHERE ProjectID = ?;";
