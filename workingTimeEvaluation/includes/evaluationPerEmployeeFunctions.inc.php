@@ -1,5 +1,10 @@
 <?php
 //Autor der Datei Tamara Romer
+
+/*Die Datei enthält die Evaluation-Abfragen der Arbeitszeitabweichungen für einen Mitarbeiter.
+Zum einen gibt es Abfragen für alle Projekte eines Mitarbeits sowie für einzelne Projekte des Mitarbeiters.
+Aus der Datei werden die verschiedenen Berechungsfunktionen (calculationOfEvalutionDataFunctions.inc.php) für die Evaluation aufgerufen */
+
 include_once 'calculationOfEvaluationDataFunctions.inc.php';
 
 //Fehermeldungen

@@ -1,6 +1,6 @@
 <?php
 //Autor der Datei Tamara Romer
-//Berechnungsfunktionen für die Abfragen
+//Berechnungsfunktionen für die verschiedenen Evaluation-Abfragen
 
 //Die Funktion wandelt die Abweichung im Zeitformat in Sekunden um
 function deviationInSec($deviation){

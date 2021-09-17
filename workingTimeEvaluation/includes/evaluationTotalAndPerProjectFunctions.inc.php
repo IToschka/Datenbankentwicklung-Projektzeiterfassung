@@ -1,5 +1,11 @@
 <?php
 //Autor der Datei Tamara Romer
+
+/*Die Datei enthält die Evaluation-Abfragen der Arbeitszeitabweichungen im Gesamten.
+Zusätzlich werden hier auch die Evaluation-Abfragen für die einzelnen Projekte durchgeführt.
+Aus der Datei werden die verschiedenen Berechungsfunktionen (calculationOfEvalutionDataFunctions.inc.php) für die Evaluation aufgerufen */
+
+
 //Mit Ausnahme der Stored Functions GetAverageTotal und GetAveragePerProject: Autor Irena Toschka
 include_once 'calculationOfEvaluationDataFunctions.inc.php';
 

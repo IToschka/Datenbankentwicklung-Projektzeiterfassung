@@ -1,5 +1,8 @@
 <?php
 //Autor der Datei Tamara Romer
+/* Die Datei enhält die Funktionen und Fehlermeldungen zum Anlegen, zum Ändern und Löschen eines Mitarbeiters
+Iin der Datenbank ist ein Trigger  von Katja hinterlegt, der beim Löschen eines Projektleiters, die betroffenen Projekte dem Admin zuweist*/
+
 
 //Funktionen für Mitarbeiter anlegen
 function invalidFirstname($firstname){

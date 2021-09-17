@@ -1,5 +1,9 @@
 <?php
 //Autor der Datei Tamara Romer
+
+/*Die Datei ist das zentrale Skript, das die Eingaben von de Formularen CreateEmployee, updateEmployee und
+deleteEmployee entgegen nimmt und die jeweiligen Funktionen aufruft*/
+
 include_once '../../includes/dbh.inc.php';
 include_once 'employeeManagement_Functions.inc.php';
 
