@@ -201,7 +201,7 @@
 
           <?php
             if (isset($_POST['button_Evaluate'])){
-              $projectIds =  getAllProjectIdsFromEmployee($conn, $evaluatedPnr);
+              $projectIds =  getAllProjectIdsFromEmployee($conn, $evaluatedPnr, $evaluationFrom);
 
               foreach ($projectIds as $element){
                   $projectId = $element;

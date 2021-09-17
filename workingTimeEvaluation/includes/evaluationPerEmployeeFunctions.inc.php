@@ -13,7 +13,7 @@ function invalidEvaluationDate($evaluationFrom, $evaluationTo){
 
 
 function invalidPnr($evaluatedPnr){
-    if(!preg_match("/[0-9]/", $evaluatedPnr)) {
+    if(preg_match("/[^0-9]/", $evaluatedPnr)) {
         return true;
     }else{
         return false;
@@ -251,16 +251,18 @@ function evaluateCoreWorkingTimeToPerEmployee($conn, $evaluationFrom, $evaluatio
 
 
 //Ermittelt die Projekte des Mitarbeiters
-function getAllProjectIdsFromEmployee($conn, $evaluatedPnr){
+function getAllProjectIdsFromEmployee($conn, $evaluatedPnr, $evaluationFrom){
 
-    $sql = "SELECT ProjectID FROM `employeeproject` WHERE PNR = ? ORDER BY ProjectID;";
+    $sql = "SELECT employeeproject.ProjectID FROM employeeproject, project
+            WHERE employeeproject.ProjectID = project.ProjectID
+            AND  PNR = ? AND BeginDate <= ? ORDER BY ProjectID;";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         header("location: ../evaluationPerEmployee.php?error=stmtfailed");
         exit();
     }
 
-    mysqli_stmt_bind_param($stmt, "s", $evaluatedPnr);
+    mysqli_stmt_bind_param($stmt, "ss", $evaluatedPnr, $evaluationFrom);
     mysqli_stmt_execute($stmt);
     $resultData = mysqli_stmt_get_result($stmt);
     $allProjectIds = array();

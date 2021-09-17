@@ -39,9 +39,6 @@ function passwordMatch($password, $passwordRepeat){
 }
 
 
-
-
-
 function invalidCoreTime($coreTimeFrom, $coreTimeTo){
     if($coreTimeFrom>$coreTimeTo) {
         return true;
