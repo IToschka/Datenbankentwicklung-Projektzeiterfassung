@@ -101,7 +101,8 @@ if (isset($_POST['button_createEmployee'])) {
 
     //deleteEmployee($conn, $pnr);
 
-    echo $_Session['pnr'];
+    $loggedPnr = $_SESSION['pnr'];
+    //loggedpnr füllen
     if(deletedEmployeeIsLoggedEmployee($pnr, $loggedPnr) !== false){
       header("location: ../../login.php");
       exit();

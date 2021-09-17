@@ -1,6 +1,6 @@
 <?php
-    session_start();
-    include_once '../menu/projectsAndTasksMenu.php';
+   //Autor: Katja Frei
+   include_once '../menu/projectsAndTasksMenu.php';
     
 
 ?>
@@ -19,26 +19,11 @@
         <?php include_once '../includes/dbh.inc.php';
                 include_once 'includes/projectManagementFunctions.inc.php';
         
-
+                $projectName ="";
         if(isset($_POST['button_choose'])) {
-         $projectID = $_POST['projectID']; 
-
-    
-           
-           /* if(invalidProjectID($conn, $projectID) !== false) {
-                header("location: ../projectsAndTasksChange.php?error=invalidProjectID");
-                exit();
-            } 
-         if(noNegativeProjectID($projectID) !== false) {
-            header("location: ../projectsAndTasksChange.php?error=noNegativeProjectID");
-            exit();
-         }
-         
-         if(noAccess($conn, $projectID, $projectManager) !== false) {
-            header("location: ../projectsAndTasksChange.php?error=noAccess");
-            exit(); 
-         } */
         
+
+        $projectID = $_POST['projectID'];
         fillProject($conn, $projectID); 
         $projectName = $_SESSION['projectName'];
         $beginDate = $_SESSION['beginDate'];
@@ -49,14 +34,13 @@
         }
                 
                      ?>
-        <form method="post" action="projectsAndTasksChange.php">
-        <p>ProjektID:<input type="number" name="projectID" required ></p>
+        <form method="post" action="projectsAndTasksCopy.php">
+        <p>ProjektID:<input type="number" name="projectID" required min="1"></p>
             <input type="submit" name="button_choose" value="Bestätigen">
-            <input type="submit" name="button_projectManagerMenu" value="Zurück zum Hauptmenü">
             </form>
         <br>
         <br>
-       <form method="POST" action="projectsAndTasksSkript.inc.php">
+       <form method="POST" action="includes/projectAndTasksSkript.inc.php">
         <table>
                   <tbody>
                       <tr>
@@ -75,21 +59,21 @@
                       </tr>
 
     <?php 
-
+            $tasks ="";
             if ($tasks != null) {
                for($i=0; $i < count($tasks); $i++) { ?>          
                 <tr> <td><?php
                 $i2 = $i + 1;
                 echo "Aufgabe $i2:"; ?></td>
                     <?php
-                    echo '<td> <textarea name="task'.$i.'" maxlength="50" cols="50" required>'.$tasks[$i].'</textarea></td>';
+                    echo '<td> <textarea name="task'.$i.'" maxlength="2000" cols="50" required>'.$tasks[$i].'</textarea></td>';
                }}?>
                 </tr>
 
                   </tbody>
               </table>
 
-            <input type="submit" name="button_change" value="Eingaben speichern">
+            <input type="submit" name="button_copy" value="Eingaben speichern">
             
          </form>
          </body>
@@ -99,12 +83,15 @@
         if(isset($_GET["error"])){
              if ($_GET["error"] == "invalidProjectID") {
                  echo "<p>Zur angegebenen Projekt ID besteht kein Projekt!</p>";
-             }
-           elseif ($_GET["error"] == "noNegativeProjectID") {
-                echo "<p>Die Projekt ID muss einen numerischen Wert enthalten!</p>"; 
-            } 
+             } 
             elseif ($_GET["error"] == "noAccess") {
                 echo "<p>Die PNR des Projektleiters muss darf nur nummerische Werte enthalten!</p>";
+            }
+            elseif ($_GET["error"] == "titleAlreadyExists") {
+                echo "<p>Es existiert bereits ein Projekt mit diesem Titel!</p>";
+            }
+            elseif ($_GET["error"] == "invalidDate") {
+                echo "<p>Es existiert bereits ein Projekt mit diesem Titel!</p>";
             }
              elseif ($_GET["error"] == "none") {
                  echo "<p>Das Projekt wurde erfolgreich angelegt!</p>";

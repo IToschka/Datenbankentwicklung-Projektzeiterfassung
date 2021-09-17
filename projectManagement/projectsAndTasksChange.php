@@ -1,5 +1,5 @@
 <?php
-    session_start();
+//Autor: Katja Frei
     include_once '../menu/projectsAndTasksMenu.php';
     
 
@@ -19,7 +19,7 @@
         <?php include_once '../includes/dbh.inc.php';
                 include_once 'includes/projectManagementFunctions.inc.php';
         
-
+        $projectName = "";
         if(isset($_POST['button_choose'])) {
          $projectID = $_POST['projectID']; 
 
@@ -43,9 +43,6 @@
         $projectName = $_SESSION['projectName'];
         $beginDate = $_SESSION['beginDate'];
 
-        fillTasks($conn, $projectID);
-        $tasks = $_SESSION['tasks'];
-
         }
                 
                      ?>
@@ -56,7 +53,7 @@
             </form>
         <br>
         <br>
-       <form method="POST" action="projectsAndTasksSkript.inc.php">
+       <form method="POST" action="projectsAndTasksChange.php">
         <table>
                   <tbody>
                       <tr>
@@ -74,21 +71,25 @@
                       
                       </tr>
 
-    <?php 
 
-            if ($tasks != null) {
-               for($i=0; $i < count($tasks); $i++) { ?>          
-                <tr> <td><?php
-                $i2 = $i + 1;
-                echo "Aufgabe $i2:"; ?></td>
-                    <?php
-                    echo '<td> <textarea name="task'.$i.'" maxlength="50" cols="50" required>'.$tasks[$i].'</textarea></td>';
-               }}?>
-                </tr>
+                <?php 
+        if(isset($_POST['button_addTask'])) {
+            $projectID = $_POST['projectID'];
+            $_SESSION['projectID'] = $projectID;
+            
+            getTaskID($conn, $projectID);
+            $projectTaskID = $row['ProjectTaskID'];
+            $id = $projectTaskID +1;
+
+
+            echo '<tr><td>Aufgabe ' .$id. ':</td><td><textarea name="task"  maxlength="2000" cols="50"></textarea></td></tr>';
+        }
+                ?>
+               
 
                   </tbody>
               </table>
-
+            <input type="submit" name="button_addTask" value="Aufgabe hinzufügen">
             <input type="submit" name="button_change" value="Eingaben speichern">
             
          </form>
@@ -99,15 +100,15 @@
         if(isset($_GET["error"])){
              if ($_GET["error"] == "invalidProjectID") {
                  echo "<p>Zur angegebenen Projekt ID besteht kein Projekt!</p>";
-             }
-           elseif ($_GET["error"] == "noNegativeProjectID") {
-                echo "<p>Die Projekt ID muss einen numerischen Wert enthalten!</p>"; 
-            } 
+             } 
             elseif ($_GET["error"] == "noAccess") {
-                echo "<p>Die PNR des Projektleiters muss darf nur nummerische Werte enthalten!</p>";
+                echo "<p>Projektleiter dürfen nur ihre eingenen Projekte ändern!</p>";
+            }
+            elseif ($_GET["error"] == "invalidDate") {
+                echo "<p>Das angegebene Datum liegt in der Vergangenheit!</p>";
             }
              elseif ($_GET["error"] == "none") {
-                 echo "<p>Das Projekt wurde erfolgreich angelegt!</p>";
+                 echo "<p>Das Projekt wurde erfolgreich geändert!</p>";
              }
 
          }
