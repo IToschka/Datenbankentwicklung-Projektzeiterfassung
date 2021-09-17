@@ -1,6 +1,20 @@
 <?php
 //Autor der Datei Irena Toschka
 
+//Das ist die Skript-Datei, welche vom Formular der Arbeitszeiterfassungsseite aufgerufen wird
+//Zu Beginn werden die aus Formular übergebenen Einträge über ein POST-Befehl in das Skript geladen
+//Anschließend werden Arrays für die Beginn- und die Endzeit erstellt
+//Dann wird über alle die Projekteinträge iteriert, dazu werden die eingetragnene Zeiten aus der AHutseite geholt
+//Anschließend wird Eintrag für Eintrag geprüft ob dieser in Ordnung ist
+//Sobald ein Eintrag nicht konform ist, wird der Fehlercode der Hauptseite aufgerufen und der User muss die Daten neueingeben
+//Bei einem leeren Eintrag wird die ProjektID sowie die ProjektTaskID aus den entsprechenden Arrays gelöscht
+//Wenn alle Projekte ohne Fehler durchiteriert wurden, werden die Lücken aus beiden Arrays (von ProjektID und ProjektTaskID) rausgenommen
+//Dies wird gemacht indem diese in ein neues Array gespeichert werden, ohne die Lücken dabei zu berücksichtigen
+//Anschließend können die Eintröge gespeichert werden und das lastDateEndered geupdated werden
+//Wenn alle Zeiten leer sin, also der User an dem Tag an keinem Projekt gearbeitet hat, wird lediglich das lastDateEndered geupdated  
+//Ergänzung: Der ExitCode hat keine wesentliche Funktion, sondern dient der Übersichtlichkeit
+
+
 session_start();
 include_once '../../includes/dbh.inc.php';
 include_once 'workingTimeRecordingFunctions.inc.php';
