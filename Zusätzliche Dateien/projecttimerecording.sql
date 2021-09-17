@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 17. Sep 2021 um 12:03
+-- Erstellungszeit: 17. Sep 2021 um 13:07
 -- Server-Version: 10.4.19-MariaDB
 -- PHP-Version: 8.0.7
 
@@ -80,13 +80,13 @@ CREATE TABLE `employee` (
 
 INSERT INTO `employee` (`PNR`, `Firstname`, `Lastname`, `CoreWorkingTimeFrom`, `CoreWorkingTimeTo`, `HiringDate`, `WeeklyWorkingHours`, `LastDateEntered`, `ProjectManager`) VALUES
 (0, 'Admin', 'Admin', '00:00:00', '00:01:00', '1999-01-01', 20, '1998-12-31', 1),
-(1, 'Max', 'Mustermann', '08:00:00', '16:00:00', '2002-06-01', 40, '2002-05-31', 1),
-(2, 'Annika', 'Arnold', '06:00:00', '15:00:00', '2010-03-01', 30, '2010-02-26', 0),
-(3, 'Bernd', 'Buchmann', '08:00:00', '15:00:00', '2001-05-01', 35, '2001-04-30', 0),
+(1, 'Max', 'Mustermann', '08:00:00', '16:00:00', '2002-06-01', 40, '2021-09-01', 1),
+(2, 'Annika', 'Arnold', '06:00:00', '15:00:00', '2010-03-01', 30, '2021-09-03', 0),
+(3, 'Bernd', 'Buchmann', '08:00:00', '15:00:00', '2001-05-01', 35, '2021-09-06', 0),
 (4, 'Carolin', 'Chu', '07:00:00', '16:00:00', '2021-09-01', 35, '2021-08-31', 0),
-(5, 'Daniela', 'Dolderer', '08:00:00', '16:00:00', '2000-02-01', 40, '2000-01-31', 1),
-(6, 'Elmar', 'Ellinger', '10:00:00', '18:00:00', '1998-06-01', 25, '1998-05-29', 0),
-(7, 'Franziska', 'Fischbach', '08:00:00', '17:00:00', '2003-07-01', 30, '2003-06-30', 1);
+(5, 'Daniela', 'Dolderer', '08:00:00', '16:00:00', '2000-02-01', 40, '2021-09-10', 1),
+(6, 'Elmar', 'Ellinger', '10:00:00', '18:00:00', '1998-06-01', 25, '2021-09-14', 0),
+(7, 'Franziska', 'Fischbach', '08:00:00', '17:00:00', '2003-07-01', 30, '2021-08-27', 1);
 
 --
 -- Trigger `employee`
@@ -118,12 +118,16 @@ CREATE TABLE `employeeproject` (
 INSERT INTO `employeeproject` (`PNR`, `ProjectID`) VALUES
 (1, 1),
 (1, 2),
+(1, 5),
 (2, 1),
 (2, 2),
 (2, 3),
 (3, 2),
+(3, 3),
 (4, 3),
 (4, 4),
+(5, 4),
+(5, 5),
 (7, 4),
 (7, 5);
 
