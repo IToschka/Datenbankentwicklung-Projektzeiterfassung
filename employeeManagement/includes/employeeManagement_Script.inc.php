@@ -85,25 +85,27 @@ if (isset($_POST['button_createEmployee'])) {
 
 
     if(pnrNotExistsDelete($conn, $pnr) !== false){
-      //header("location: ../deleteEmployee.php?error=pnrNotExists");
+      header("location: ../deleteEmployee.php?error=pnrNotExists");
       exit();
     }
 
     if(pnrNotExistsDelete($conn, $pnr) !== false){
-      //header("location: ../deleteEmployee.php?error=pnrNotExists");
+      header("location: ../deleteEmployee.php?error=pnrNotExists");
       exit();
     }
 
     if(pnrNotExistsDelete($conn, $pnr) !== false){
-      //header("location: ../deleteEmployee.php?error=pnrNotExists");
+      header("location: ../deleteEmployee.php?error=pnrNotExists");
       exit();
     }
 
-    //deleteEmployee($conn, $pnr);
+    deleteEmployee($conn, $pnr);
 
     $loggedPnr = $_SESSION['pnr'];
-    //loggedpnr füllen
     if(deletedEmployeeIsLoggedEmployee($pnr, $loggedPnr) !== false){
+      session_start();
+      session_unset();
+      session_destroy();
       header("location: ../../login.php");
       exit();
     }
