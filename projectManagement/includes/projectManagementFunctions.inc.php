@@ -1,7 +1,8 @@
 <?php
 
-//Autor: Katja Frei
+//Autor der Datei Katja Frei
 
+// Datum liegt in der Vergangenheit
 function invalidDate($date, $beginDate) {
         if($beginDate < $date) {
             return "invalidDate";
@@ -36,7 +37,7 @@ function titleAlreadyExists($conn, $projectName) {
     }
 
 
-//New und copy greifen hier zu
+//New und copy greifen hier zu. Projekt in der Datenbank speichern
 function createProject($conn, $projectName, $beginDate, $projectManager) {
 $sql = "INSERT INTO project (ProjectName, BeginDate, ProjectManagerPNR) VALUES (?, ?, ?);";
 $stmt = mysqli_stmt_init($conn);
@@ -70,7 +71,7 @@ else {
         return $projectID;
   }
 
-//new und copy
+//Aufgaben werden in der Datenbank angelegt
 function createTasks($conn, $taskID, $projektID, $task) {
         $sql= "INSERT INTO projecttask (ProjectTaskID, ProjectID, TaskDescription) VALUES (?, ?, ?);";
         $stmt = mysqli_stmt_init($conn);
@@ -105,7 +106,7 @@ else {
 }
 }
 */
-//taskID für change Aufgabe zum hizufügen anzeigen
+//letzte Task ID auf der Datenbank bekommen
 function getTaskID($conn, $projectID) {
         $sql = "SELECT ProjectTaskID FROM projecttask WHERE ProjectID = ?;";
         $stmt = mysqli_stmt_init($conn);
@@ -132,7 +133,7 @@ function getTaskID($conn, $projectID) {
 
 //------------------------------------------------------------------------
 
-//change und copy
+//bestejendes Projekt mit Daten füllen
 function fillProject($conn, $projectID){
 
         $sql = "SELECT ProjectName, BeginDate FROM project WHERE ProjectID = ?;";
@@ -158,7 +159,7 @@ function fillProject($conn, $projectID){
         }
 }
 
- //copy
+ //Aufgaben mit Werten aus der Datenbank füllen
 function fillTasks($conn, $projectID){
 
                 $sql = "SELECT (TaskDescription) FROM projecttask WHERE ProjectID = ?;";
@@ -209,7 +210,7 @@ function noAccess($conn, $projectID, $projectManager) {
 }
 
 
-//delete
+
 function deleteProject($conn, $projectID) {
         $sql = "DELETE FROM project WHERE ProjectID = ?;";
         $stmt = mysqli_stmt_init($conn);
@@ -257,7 +258,7 @@ function invalidProjectID($conn, $projectID) {
 //------------------------------------------------------------------------
 
 
-// PNR nicht vorhanden
+// PNR nicht vorhanden in der Datenbank
 function invalidpnr($conn, $pnr) {
         $sql =  "SELECT * FROM employee WHERE PNR = ?;";
         $stmt = mysqli_stmt_init($conn);
@@ -332,7 +333,7 @@ function invalidpnr($conn, $pnr) {
                         mysqli_stmt_close($stmt);
                         }
 
-// PNR und ProjektID verknüpfen
+//PNR und ProjektID verknüpfen
 function createConnection($conn, $pnr, $projectID) {
         $sql = "INSERT INTO employeeproject (PNR, ProjectID) VALUES (?, ?);";
         $stmt = mysqli_stmt_init($conn);

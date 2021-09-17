@@ -1,13 +1,18 @@
 <?php
 //Autor: Katja Frei
 
+/**
+ * In dieser Datei wird festgelegt was passiert, wenn die einzelnen Buttons aus den unterschiedlichen Dateien 
+ * gedrückt worden sind.
+ */
+
 session_start();
 include_once '../../includes/dbh.inc.php';
 include_once 'projectManagementFunctions.inc.php';
 
 
 
-//Create
+//Aufgaben speichern
 if (isset($_POST['button_createTasks'])) {
     $taskID = 0;
     $tasks = array();
@@ -30,15 +35,11 @@ if (isset($_POST['button_createTasks'])) {
 
 }
 
-//----------------------------------------------------------------
-
-//Change
 
 
 //----------------------------------------------------------------
 
-//Copy
-
+//Kopiertes Projekt und Aufgaben speichern
 $error ="";
 if(isset($_POST['button_copyProject'])) {
 
@@ -58,7 +59,7 @@ if(isset($_POST['button_copyProject'])) {
     if ($error == "") {
         $error = titleAlreadyExists($conn, $projectName);
     }
-    // Projekt speichern
+    
     if ($error == "") {
         $error = createProject($conn, $projectName, $beginDate, $projectManager);
     }
@@ -67,7 +68,7 @@ if(isset($_POST['button_copyProject'])) {
     $tasks = array();
     $projektID = getProjectID($conn);
 
-
+    //Aufgaben in einen Array speichern
     for ($i = 0; $i < $_SESSION['amountTasks']; $i++) {
         array_push($tasks, $_POST["task{$i}"]);
 
@@ -75,6 +76,7 @@ if(isset($_POST['button_copyProject'])) {
 
     foreach($tasks as $task){
       $taskID++;
+      //Aufgaben speichern
       createTasks($conn, $taskID, $projektID, $task);
     }
 }
@@ -83,8 +85,7 @@ if(isset($_POST['button_copyProject'])) {
 
 //----------------------------------------------------------------
 
-//delete
-
+//Aufgaben werden gelöscht
 elseif(isset($_POST['button_delete'])) {
     $projectID = $_POST['projectID'];
 
@@ -101,7 +102,7 @@ elseif(isset($_POST['button_delete'])) {
 //Connect and disconnect
 
 
-
+// Verbindung zwischen Projekt und Mitarbeiter aufbauen
 elseif (isset($_POST['button_connect'])) {
     $pnr = $_POST["pnr"];
     $projectID = $_POST['projectID'];
@@ -123,6 +124,7 @@ if(alreadyExisting($conn, $pnr, $projectID) !== false) {
 createConnection($conn, $pnr, $projectID);
 }
 
+//Verbindung zwischen Projekt und Mitarbeiter aufheben
 elseif(isset($_POST['button_disconnect'])) {
     $pnr = $_POST["pnr"];
     $projectID = $_POST['projectID'];
