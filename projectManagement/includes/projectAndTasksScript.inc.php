@@ -9,30 +9,33 @@ include_once 'projectManagementFunctions.inc.php';
 
 //Create
 if (isset($_POST['button_createTasks'])) {
-    $projectID = $_SESSION['projectID'];
     $taskID = 0;
     $tasks = array();
+    $projektID = $_SESSION['ProjectID'];
+
+
     for ($i = 0; $i < $_SESSION['amountTasks']; $i++) {
         array_push($tasks, $_POST["task{$i}"]);
-        
+
     }
 
-    
-        for($i = 0; $i < count($tasks); $i++) {
-            $taskID++;
-           // createTasks($conn, $taskID, $projectID, $tasks[$i]); 
-            
-        }
-    
-    
-} 
+    foreach($tasks as $task){
+      $taskID++;
+      echo $projektID . "<br>";
+
+      echo $taskID . "<br>";
+      echo $task . "<br>";
+      createTasks($conn, $taskID, $projektID, $task);
+    }
+
+}
 
 //----------------------------------------------------------------
 
 //Change
 if(isset($_POST['button_change'])) {
     $task = $_POST['task'];
-    
+
     $projectID  = getProjectID($conn);
     echo $projectID;
 
@@ -50,25 +53,25 @@ if(isset($_POST['button_copyProject'])) {
     $beginDate = $_POST['beginDate'];
     $amountTasks= $_POST['amountTasks'];
     $projectManager = $_POST['projectManager'];
-  
+
     $date = date("d.m.Y");
     $dateTimestamp = strtotime($date);
     $beginDateTimestamp = strtotime($beginDate);
 
-               
+
   $error = invalidDate($dateTimestamp, $beginDateTimestamp);
-      
-  
-  
+
+
+
 if($error == "") {
 $error = titleAlreadyExists($conn, $projectName);
-  
+
 }
 
     if ($error == "") {
         $error = createProject($conn, $projectName, $beginDate, $projectManager);
-  
-    }  
+
+    }
 }
 
 //----------------------------------------------------------------
@@ -77,7 +80,7 @@ $error = titleAlreadyExists($conn, $projectName);
 
 elseif(isset($_POST['button_delete'])) {
     $projectID = $_POST['projectID'];
-    
+
     if(invalidProjectID($conn, $projectID) !== false) {
         header("location: ../projectsAndTasksDelete.php?error=invalidProjectID");
         exit();
@@ -103,11 +106,11 @@ if(invalidpnr($conn, $pnr) !== false) {
 if(invalidProjectID($conn, $projectID) !== false) {
     header("location: ../employeesAndProjects.php?error=invalidProjectID");
     exit();
-} 
+}
 if(alreadyExisting($conn, $pnr, $projectID) !== false) {
     header("location: ../employeesAndProjects.php?error=alreadyExisting");
     exit();
-} 
+}
 
 
 createConnection($conn, $pnr, $projectID);
@@ -124,7 +127,7 @@ if(invalidpnr($conn, $pnr) !== false) {
 if(invalidProjectID($conn, $projectID) !== false) {
     header("location: ../employeesAndProjects.php?error=invalidProjectID");
     exit();
-} 
+}
 if(noSuchCombination($conn, $pnr, $projectID) !== false) {
     header("location: ../employeesAndProjects.php?error=noSuchCombination");
     exit();

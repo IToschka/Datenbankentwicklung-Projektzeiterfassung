@@ -14,7 +14,7 @@
 </head>
 
     <body>
-        <?php 
+        <?php
            $error = "";
 
             if(isset($_POST['button_createProject'])) {
@@ -23,29 +23,30 @@
                 $beginDate = $_POST['beginDate'];
                 $amountTasks= $_POST['amountTasks'];
                 $projectManager = $_POST['projectManager'];
-              
+
                 $date = date("d.m.Y");
                 $dateTimestamp = strtotime($date);
                 $beginDateTimestamp = strtotime($beginDate);
 
 
-                           
+
               $error = invalidDate($dateTimestamp, $beginDateTimestamp);
-              
+
                 if ($error == "") {
                     $error = titleAlreadyExists($conn, $projectName);
                 }
                 // Projekt speichern
                 if ($error == "") {
                     $error = createProject($conn, $projectName, $beginDate, $projectManager);
-              
+
                 }
-                $_SESSION['projectID'] = getProjectID($conn);
-                
+
+                $_SESSION['ProjectID'] = getProjectID($conn);
+
             }
         ?>
         <!-- ruft sich selbst auf -->
-        <form action="projectsAndTasksNew.php" method="POST" > 
+        <form action="projectsAndTasksNew.php" method="POST" >
           <table>
                   <tbody>
                       <tr>
@@ -58,7 +59,7 @@
                       </tr>
                       <tr>
                       <td>PNR Projektleiter:</td>
-                      <td><input type="text" texarea readonly ="readonly" name="projectManager" value= <?php $projectManager = $_SESSION['pnr']; echo $projectManager ?>></td> 
+                      <td><input type="text" texarea readonly ="readonly" name="projectManager" value= <?php $projectManager = $_SESSION['pnr']; echo $projectManager ?>></td>
                       <tr>
                           <td>Anzahl der Aufgaben</td>
                           <td><input type="number" name="amountTasks" min="1"></td>
@@ -67,21 +68,21 @@
               </table>
 
             <input type="submit" name="button_createProject" value="Eingaben speichern">
-            
-            
+
+
          </form>
-         
+
 
          <br>
-         
+
          <form action="includes/projectAndTasksScript.inc.php" method="POST" > <table> <tbody>
-               <?php 
+               <?php
                //Übernimmt die amountTasks und gibt so viele Aufgabenfelder aus wie angegeben
                if(isset($_POST['button_createProject'])) {
                 $amountTasks = $_POST['amountTasks'];
                $_SESSION['amountTasks'] = $amountTasks;
 
-               for($i=0; $i < $amountTasks; $i++) { ?>          
+               for($i=0; $i < $amountTasks; $i++) { ?>
                 <tr> <td><?php
                 $i2 = $i + 1;
                 echo "Aufgabe $i2:"; ?></td>
@@ -89,7 +90,7 @@
                     echo '<td> <textarea name="task'.$i.'" maxlength="2000" cols="50" required></textarea></td>';
                     ?>
                 </tr>
-                
+
 
        <?php } } ?>
         </tbody> </table> <input type='submit' name='button_createTasks' value='Aufgaben anlegen'> </form>
@@ -99,14 +100,14 @@
 
             if ($error == "invalidDate") {
                 echo "<p>Das angegebene Datum liegt in der Vergangenheit!</p>";
-            } 
+            }
             elseif ($error == "titleAlreadyExists") {
                 echo "<p>Ein Projekt mit diesem Titel existiert bereits!</p>";
             }
             elseif ($error == "none") {
                 echo "<p>Das Projekt wurde erfolgreich angelegt!</p>";
             }
-        
+
 
          ?>
 
