@@ -8,7 +8,7 @@
 
     <body>
         <h1>Login Projektzeiterfassung</h1>
-        <form action="includes/login.inc.php" method="POST" class="formTable" >
+        <form  action="includes/login.inc.php" method="POST" class="formTable" >
           <table >
             <tbody>
                 <tr>

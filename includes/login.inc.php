@@ -1,4 +1,5 @@
 <?php
+//Autor der Datei Tamara Romer
 session_start();
 include_once 'dbh.inc.php';
 
@@ -8,11 +9,6 @@ if (isset($_POST['button_login'])) {
   $password = $_POST['password'];
 
   require_once 'functions.inc.php';
-
-  if(emptyInput($pnr, $password) !== false){
-      header("location: ../login.php?error=emptyInput");
-      exit();
-  }
 
   if(login($conn, $pnr, $password)!== false){
       header("location: ../login.php?error=incorrectLoginData");
@@ -25,9 +21,8 @@ if (isset($_POST['button_login'])) {
       }else{
         header("location: ../menu/employeeMenu.php");
       }
-  }
+    }
 
-} else {
-    header("location: ../login.php");
-    exit();
-}
+  } else {
+      header("location: ../login.php");
+  }

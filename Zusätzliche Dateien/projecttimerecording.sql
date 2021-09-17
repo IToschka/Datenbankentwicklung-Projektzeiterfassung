@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 16. Sep 2021 um 16:52
+-- Erstellungszeit: 17. Sep 2021 um 12:03
 -- Server-Version: 10.4.19-MariaDB
 -- PHP-Version: 8.0.7
 
@@ -79,11 +79,14 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`PNR`, `Firstname`, `Lastname`, `CoreWorkingTimeFrom`, `CoreWorkingTimeTo`, `HiringDate`, `WeeklyWorkingHours`, `LastDateEntered`, `ProjectManager`) VALUES
-(0, 'Admin', '', '00:00:00', '00:00:00', '2000-01-01', 0, NULL, 1),
-(1, 'Max', 'Mustermann', '08:00:00', '16:00:00', '2002-06-06', 42, '2021-09-03', 1),
-(2, 'Annika', 'Arnold', '06:00:00', '15:00:00', '2010-08-22', 25, '2021-09-02', 0),
-(4, 'Daniela', 'Dolderer', '09:00:00', '17:00:00', '2011-08-02', 32, '2021-09-01', 0),
-(5, 'Carolin', 'Chu', '12:00:00', '16:00:00', '2021-08-01', 20, '2021-07-30', 1);
+(0, 'Admin', 'Admin', '00:00:00', '00:01:00', '1999-01-01', 20, '1998-12-31', 1),
+(1, 'Max', 'Mustermann', '08:00:00', '16:00:00', '2002-06-01', 40, '2002-05-31', 1),
+(2, 'Annika', 'Arnold', '06:00:00', '15:00:00', '2010-03-01', 30, '2010-02-26', 0),
+(3, 'Bernd', 'Buchmann', '08:00:00', '15:00:00', '2001-05-01', 35, '2001-04-30', 0),
+(4, 'Carolin', 'Chu', '07:00:00', '16:00:00', '2021-09-01', 35, '2021-08-31', 0),
+(5, 'Daniela', 'Dolderer', '08:00:00', '16:00:00', '2000-02-01', 40, '2000-01-31', 1),
+(6, 'Elmar', 'Ellinger', '10:00:00', '18:00:00', '1998-06-01', 25, '1998-05-29', 0),
+(7, 'Franziska', 'Fischbach', '08:00:00', '17:00:00', '2003-07-01', 30, '2003-06-30', 1);
 
 --
 -- Trigger `employee`
@@ -114,7 +117,15 @@ CREATE TABLE `employeeproject` (
 
 INSERT INTO `employeeproject` (`PNR`, `ProjectID`) VALUES
 (1, 1),
-(1, 2);
+(1, 2),
+(2, 1),
+(2, 2),
+(2, 3),
+(3, 2),
+(4, 3),
+(4, 4),
+(7, 4),
+(7, 5);
 
 -- --------------------------------------------------------
 
@@ -124,7 +135,7 @@ INSERT INTO `employeeproject` (`PNR`, `ProjectID`) VALUES
 
 CREATE TABLE `login` (
   `PNR` mediumint(6) NOT NULL,
-  `Password` varchar(50) NOT NULL
+  `Password` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -132,10 +143,14 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`PNR`, `Password`) VALUES
-(1, 'Hallo'),
-(2, 'IchhabekeinenPlan'),
-(4, 'DHbw2019!'),
-(5, 'Hallo');
+(0, '$2y$10$qPOHjo7pX2WrfY9IHULEkOBORAUPQB.tgDhvZDdzsEJh9M3xc3jSy'),
+(1, '$2y$10$pU8fCcXgG9JbjY2BPHd9q.spPFzNbRLQ0qf7jfL6zSaqXXKyOxOwG'),
+(2, '$2y$10$f5YTQn7zNFJvWMUC1Hvyx.X2Xo/y7ScUETiwLiq3EZqj0km6bwMdm'),
+(3, '$2y$10$iOL5/eOHVmsBszLJowXTheUud1TfAct1FHZAL65PxXvkhp6Oy2UqC'),
+(4, '$2y$10$ze.xoARsb133IGD37wGH9.dgqfcEtBnB3DxGcM6UbtrrmCYNgJIXW'),
+(5, '$2y$10$lf3wH0mE3DZFxiy4ii92M./GIPMebOWI3RCdo6rjplpEuCnRimZhO'),
+(6, '$2y$10$PEVzjXYW7zf.2.i9AO4XI.IGlIMAH8dlO9ye1b.rSEj2bzHMFZVYK'),
+(7, '$2y$10$orSe0B/c.LH8KcY4W0zwLeGSRWYC4DoXf8IZq7YQODIPykb0i6426');
 
 -- --------------------------------------------------------
 
@@ -155,11 +170,11 @@ CREATE TABLE `project` (
 --
 
 INSERT INTO `project` (`ProjectID`, `ProjectName`, `ProjectManagerPNR`, `BeginDate`) VALUES
-(1, 'Gebäudesanierung', 2, '2021-09-02'),
-(2, 'S/4 HANA Conversion', 4, '2022-03-20'),
-(3, 'Entwicklung Bauteil X', 2, '2021-08-02'),
-(4, 'Testprojekt', 4, '2022-03-20'),
-(5, 'Softwareauswahl Einkaufsprozesse', 0, '2021-06-07');
+(1, 'Gebäudesanierung', 1, '2021-09-02'),
+(2, 'S/4 HANA Conversion', 5, '2022-03-20'),
+(3, 'Entwicklung Bauteil X', 7, '2021-08-02'),
+(4, 'Testprojekt', 5, '2022-03-20'),
+(5, 'Softwareauswahl Einkaufsprozesse', 1, '2021-06-07');
 
 -- --------------------------------------------------------
 
@@ -256,7 +271,18 @@ INSERT INTO `timerecording` (`PNR`, `ProjectID`, `ProjectTaskID`, `RecordingDate
 (1, 2, 2, '2021-09-08', '15:00:00', '16:00:00'),
 (1, 2, 2, '2021-09-13', '15:00:00', '16:00:00'),
 (1, 2, 2, '2021-09-14', '15:00:00', '16:00:00'),
-(2, 2, 1, '2021-09-06', '16:00:00', '17:00:00');
+(2, 2, 1, '2021-09-06', '16:00:00', '17:00:00'),
+(2, 3, 2, '2021-09-06', '10:00:00', '11:00:00'),
+(2, 3, 2, '2021-09-08', '06:00:00', '17:00:00'),
+(2, 3, 2, '2021-09-10', '07:00:00', '18:00:00'),
+(2, 3, 2, '2021-09-14', '05:00:00', '10:00:00'),
+(2, 3, 2, '2021-09-16', '07:00:00', '08:00:00'),
+(2, 3, 2, '2021-09-20', '07:00:00', '12:00:00'),
+(2, 3, 3, '2021-09-07', '07:00:00', '17:00:00'),
+(2, 3, 3, '2021-09-09', '07:00:00', '16:00:00'),
+(2, 3, 3, '2021-09-13', '06:00:00', '15:00:00'),
+(2, 3, 3, '2021-09-15', '07:00:00', '08:00:00'),
+(2, 3, 3, '2021-09-21', '07:00:00', '15:00:00');
 
 --
 -- Indizes der exportierten Tabellen
