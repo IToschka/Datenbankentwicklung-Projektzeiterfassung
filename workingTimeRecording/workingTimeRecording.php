@@ -1,6 +1,18 @@
 <?php
 //Autor der Datei Irena Toschka
 
+//Das ist die Hauptseite der Arbeitszeiterfassung, welche durch das Menü aufgerufen wird
+//Hierbei wird zuerst die PNR sowie die das Erfassungsdatum vom System eingetragen
+//Anschließend wird geprüft, ob der Mitarbeiter an dem Erfassungsdatum an einem oder mehreren Projekten beteiligt war
+//Dazu werden zuerst verschiedene Hilfsvariablen angelegt, die später noch benötigt werden
+//Falls es min. ein Projekt gibt, werden alle Projekte mit Projektaufgaben angezeigt
+//Dahinter ist es dem User möglich seine Zeiten einzutragen
+//Bei erfolgreicher Eingabe werden alle Projekte + Projektaufgaben Arrays gespeichert
+//Diese werden anschließend in eine Session übernommen
+//Bei ungültiger Eingabe (Prüfung wird im Skript vorgenommen) wird ein Fehlercode ausgegeben
+//Am Ende der Seite gibt es noch zwei Buttons. Einer für die Navigation zurück ins Menu un einer für die Abmeldung
+
+
     include_once '../includes/loginHeader.inc.php';
     include_once '../includes/dbh.inc.php';
 ?>

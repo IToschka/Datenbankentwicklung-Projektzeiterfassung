@@ -1,6 +1,14 @@
 <?php
 //Autor der Datei Irena Toschka
-  
+
+//Das ist die Datei, in welcher alle Funktionen ausgelagert wurden
+//Als erstes gibt es darin die Funktion das Generieren des Erfassungsdatums aus dem lastDateEntered
+//Anschließend folgen alle Funktionen für die Validierung der Zeiteneingabe (z.B. Überlappungen, Endzeit vor Beginnzeit, ...)
+//Ganz zum Schluss gibt es dann noch die zwei Funktionen für die Speicherung in der DB
+//Das ist zum einen die Speicherung der Projektarebitszeiten (falls Zeiten eingetragen wurden)
+//und zum andere die Speicherung bzw. das Updaten des lastDateEntered
+
+
 //Funktion zur Bestimmung des Erfassungsdatum
 function recordingDate($conn) {
     //Abruf in DB
