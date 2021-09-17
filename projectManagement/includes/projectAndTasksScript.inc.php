@@ -8,93 +8,76 @@ include_once 'projectManagementFunctions.inc.php';
 
 
 //Create
-
 if (isset($_POST['button_createTasks'])) {
-   
-   
+    $projectID = $_SESSION['projectID'];
+    $taskID = 0;
     $tasks = array();
     for ($i = 0; $i < $_SESSION['amountTasks']; $i++) {
         array_push($tasks, $_POST["task{$i}"]);
         
     }
-    $projectID = getProjectID($conn);
-    //$projectID = $row['ProjectID'];
 
-    if ($projectID > 0) {
+    
         for($i = 0; $i < count($tasks); $i++) {
-            createTasks($conn, $tasks[$i], $projectID); 
+            $taskID++;
+           // createTasks($conn, $taskID, $projectID, $tasks[$i]); 
+            
         }
-    }
+    
     
 } 
 
 //----------------------------------------------------------------
 
-//Update
-
-
-elseif(isset($_POST['button_change'])) {
-    $projectName = $_POST['projectName'];
-    $beginDate = $_POST['beginDate'];
-    $amountTasks= $_POST['amountTasks'];
-    $projectManager = $_POST['projectManager'];
-
-    $date = date("d.m.Y");
-                           
-              if(invalidDate($date, $beginDate) !== false) {
-                  header("location: ../projectsAndTasksNew.php?error=invalidDate");
-                  exit();
-              }
-               if(invalidProjectManagerPNR($conn, $projectManager) !== false) {
-                  header("location: ../projectsAndTasksNew.php?error=invalidProjectManagerPNR");
-                  exit();
-              }
-              if(noAccess($conn,$projectID, $projectManager) !== false) {
-                header("location: ../projectsAndTasksNew.php?error=invalidProjectManagerPNR");
-                exit();
-            }
- 
-
-              updateProject($conn, $projectName, $beginDate, $projectManager);
-}
-
-elseif(isset($_POST['button_copy'])) {
-    $projectName = $_POST['projectName'];
-    $beginDate = $_POST['beginDate'];
-    $amountTasks= $_POST['amountTasks'];
-    $projectManager = $_POST['projectManager'];
-
-    $date = date("d.m.Y");
-                           
-              if(invalidDate($date, $beginDate) !== false) {
-                  header("location: ../projectsAndTasksNew.php?error=invalidDate");
-                  exit();
-              }
-               if(invalidProjectManagerPNR($conn, $projectManager) !== false) {
-                  header("location: ../projectsAndTasksNew.php?error=invalidProjectManagerPNR");
-                  exit();
-              }
-
-              createProject($conn, $projectName, $beginDate, $projectManager);
-}
-
-elseif(isset($_POST['button_copy'])) {
-    $tasks = array();
-    for ($i = 0; $i < $_SESSION['amountTasks']; $i++) {
-        array_push($tasks, $_POST["task{$i}"]);
-    }
+//Change
+if(isset($_POST['button_change'])) {
+    $task = $_POST['task'];
     
-    for($i = 0; $i < count($tasks); $i++) {
-        createTasks($conn, $tasks[$i]); 
-    }
-} 
+    $projectID  = getProjectID($conn);
+    echo $projectID;
+
+    updateTask($conn, $task, $projectID);
+}
 
 //----------------------------------------------------------------
+
+//Copy
+
+$error ="";
+if(isset($_POST['button_copyProject'])) {
+
+    $projectName = $_POST['projectName'];
+    $beginDate = $_POST['beginDate'];
+    $amountTasks= $_POST['amountTasks'];
+    $projectManager = $_POST['projectManager'];
+  
+    $date = date("d.m.Y");
+    $dateTimestamp = strtotime($date);
+    $beginDateTimestamp = strtotime($beginDate);
+
+               
+  $error = invalidDate($dateTimestamp, $beginDateTimestamp);
+      
+  
+  
+if($error == "") {
+$error = titleAlreadyExists($conn, $projectName);
+  
+}
+
+    if ($error == "") {
+        $error = createProject($conn, $projectName, $beginDate, $projectManager);
+  
+    }  
+}
+
+//----------------------------------------------------------------
+
+//delete
 
 elseif(isset($_POST['button_delete'])) {
     $projectID = $_POST['projectID'];
     
-    //Fehler
     if(invalidProjectID($conn, $projectID) !== false) {
         header("location: ../projectsAndTasksDelete.php?error=invalidProjectID");
         exit();
@@ -105,7 +88,7 @@ elseif(isset($_POST['button_delete'])) {
 
 //----------------------------------------------------------------
 
-//Mitarbeiter Projekten zuordnen
+//Connect and disconnect
 
 
 

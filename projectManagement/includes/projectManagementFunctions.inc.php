@@ -4,10 +4,10 @@
 
 function invalidDate($date, $beginDate) {
         if($beginDate < $date) {
-            return true;
+            return "invalidDate";
         }
         else {
-            return false;
+            return "";
         }
 }
 
@@ -18,8 +18,6 @@ function titleAlreadyExists($conn, $projectName) {
         if(!mysqli_stmt_prepare($stmt, $sql)){
                 echo "SQL Statement failed";
                return "stmtfailed";
-                /* header("location: ../projectsAndTasksNew.php?error=stmtfailed");
-            exit();*/
         }
         mysqli_stmt_bind_param($stmt, "s", $projectName);
         mysqli_stmt_execute($stmt);
@@ -28,84 +26,55 @@ function titleAlreadyExists($conn, $projectName) {
 
 
         if(!mysqli_fetch_assoc($resultData)) {
-                $result = "titleAlreadyExists";
+                $error = "titleAlreadyExists";
         }
         else{
-             $result = "";
+             $error = "";
             }
-        return $result;
+        return $error;
         mysqli_stmt_close($stmt);
     }
  
 
-//New und copy
+//New und copy greifen hier zu
 function createProject($conn, $projectName, $beginDate, $projectManager) {
 $sql = "INSERT INTO project (ProjectName, BeginDate, ProjectManagerPNR) VALUES (?, ?, ?);";
 $stmt = mysqli_stmt_init($conn);
 if(!mysqli_stmt_prepare($stmt, $sql)) {
         echo "SQL Statement failed";
         return "stmtfailed";
-        //header("location: ../projectsAndTasksNew.php?error=stmtfailed");
-        //exit();
 }
 else {
         mysqli_stmt_bind_param($stmt, "sss", $projectName, $beginDate, $projectManager);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         return "none";
-        //header("location: ../projectsAndTasksNew.php?error=none");
-        //exit();
-
 }
 }
-//update
-function updateProject($conn, $projectName, $beginDate, $projectManager) {
-        $sql = "UPDATE project (ProjectName, BeginDate, ProjectManagerPNR) VALUES (?, ?, ?);";
-        $stmt = mysqli_stmt_init($conn);
-        if(!mysqli_stmt_prepare($stmt, $sql)) {
-                echo "SQL Statement failed";
-                header("location: ../projectsAndTasksChange.php?error=stmtfailed");
-                exit();
-        }
-        else {
-                mysqli_stmt_bind_param($stmt, "sss", $projectName, $beginDate, $projectManager);
-                mysqli_stmt_execute($stmt);
-                mysqli_stmt_close($stmt);
-                header("location: ../projectsAndTasksChange.php?error=none");
-                exit();
-        
-        }
-}
-
+        //ProjektID für das Anlegen von neuen Aufgaben zum letzten erstellten Projekt
         function getProjectID($conn){
 
         $sql = "SELECT max(ProjectID) FROM project;"; 
         $stmt = mysqli_stmt_init($conn);
-        $projectID = 0;
+        
 
         if(!mysqli_stmt_prepare($stmt, $sql)){
                 header("location: ../projectsAndTasksChange.php?error=stmtfailed");
                 exit();
             } else {
-                    //mysqli_stmt_bind_param($stmt, "s", $projectID);
                     mysqli_stmt_execute($stmt);
                     $result = mysqli_stmt_get_result($stmt);
-                    $resultCheck = mysqli_num_rows($result);
-            }
-
-        if($resultCheck > 0) {
-                while($row = mysqli_fetch_assoc($result)) {
-                    $projectID = $row['ProjectID'];
-                                      
-                }
-                
+                    
+                    
         }
-        return $projectID; 
-}        
+        return $result;
+        
 
-//new und copy ProjektID übergeben
-function createTasks($conn, $tasks, $projectID) { 
-        $sql= "INSERT INTO projecttask (TaskDescription) VALUES (?);";
+        }   
+
+//new und copy 
+/*function createTasks($conn, $taskID, $projectID, $tasks) { 
+        $sql= "INSERT INTO projecttask (ProjectTaskID, ProjectID, TaskDescription) VALUES (?, ?, ?);";
         $stmt = mysqli_stmt_init($conn);
 if(!mysqli_stmt_prepare($stmt, $sql)) {
         echo "SQL Statement failed";
@@ -113,17 +82,17 @@ if(!mysqli_stmt_prepare($stmt, $sql)) {
         exit();
 }
 else {
-        mysqli_stmt_bind_param($stmt, "s", $tasks);
+        mysqli_stmt_bind_param($stmt, "sss", $taskID, $projectID, $tasks);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-        header("location: ../projectsAndTasksNew.php?error=none");
+       // header("location: ../projectsAndTasksNew.php?error=none");
         
 
 }
-}
-//change projectID und taskID ist noch nicht deklariert
-function updateTasks($conn, $tasks, $projectID, $projectTaskID) { 
-        $sql= "UPDATE projecttask SET TaskDescription = ? WHERE ProjectID = ? AND ProjectTaskID = ?;";
+} */
+// neue Aufgabe anlegen in change
+function updateTask($conn, $task, $projectID) { 
+        $sql= "INSERT projecttask SET TaskDescription = ? WHERE ProjectID = ?;";
         $stmt = mysqli_stmt_init($conn);
 if(!mysqli_stmt_prepare($stmt, $sql)) {
         echo "SQL Statement failed";
@@ -139,10 +108,11 @@ else {
 
 }
 }
-
+//taskID für change Aufgabe zum hizufügen anzeigen
 function getTaskID($conn, $projectID) {
-        $sql = "SELECT max(ProjectTaskID) FROM projecttask WHERE ProjectID = ?;"; 
+        $sql = "SELECT ProjectTaskID FROM projecttask WHERE ProjectID = ?;"; 
         $stmt = mysqli_stmt_init($conn);
+        $projectTaskID = 0;
 
         if(!mysqli_stmt_prepare($stmt, $sql)){
                 header("location: ../projectsAndTasksChange.php?error=stmtfailed");
@@ -156,15 +126,16 @@ function getTaskID($conn, $projectID) {
 
         if($resultCheck > 0) {
                 while($row = mysqli_fetch_assoc($result)) {
-                    $projectTaskID = $row['ProjectTaskID'];
-                                      
+                    $projectTaskID = $row['ProjectTaskID'];            
                 }
                 
         } 
+        return $projectTaskID;
 }
 
 //------------------------------------------------------------------------
 
+//change und copy
 function fillProject($conn, $projectID){
 
         $sql = "SELECT ProjectName, BeginDate FROM project WHERE ProjectID = ?;"; 
@@ -190,7 +161,7 @@ function fillProject($conn, $projectID){
         } 
 }
 
-        
+ //copy       
 function fillTasks($conn, $projectID){
 
                 $sql = "SELECT (TaskDescription) FROM projecttask WHERE ProjectID = ?;"; 
@@ -210,15 +181,13 @@ function fillTasks($conn, $projectID){
                         $tasks = array();
                         $_SESSION['tasks'] = array();
                         while($row = mysqli_fetch_assoc($result)) {
-                                array_push($tasks, $row['TaskDescription']);
-                                //$tasks = $row['TaskDescription'];
-                        // wie als Sessionvariable?                       
+                                array_push($tasks, $row['TaskDescription']);               
                         }
                         $_SESSION['tasks'] = $tasks;
                 } 
 }
 
-
+// Projektleiter dürfen nur eigene Projekte kopieren, ändern löschen
 function noAccess($conn, $projectID, $projectManager) {
         $sql = "SELECT * FROM project WHERE ProjectID = ? AND ProjectManagerPNR = ?;";
         $stmt = mysqli_stmt_init($conn);
@@ -234,14 +203,16 @@ function noAccess($conn, $projectID, $projectManager) {
 
 
         if(!mysqli_fetch_assoc($resultData)) {
-                $result = true;
+                $error = "noAccess";
         }
         else{
-             $result = false;
+             $error = "";
             }
-        return $result;
+        return $error;
 }
 
+
+//delete
 function deleteProject($conn, $projectID) {
         $sql = "DELETE FROM project WHERE ProjectID = ?;";
         $stmt = mysqli_stmt_init($conn);
@@ -259,7 +230,7 @@ function deleteProject($conn, $projectID) {
         
         }
         }
-
+// ProjektID existiert nicht
 function invalidProjectID($conn, $projectID) {
                 $sql = "SELECT * FROM project WHERE ProjectID = ?;";
                 $stmt = mysqli_stmt_init($conn);
@@ -275,24 +246,21 @@ function invalidProjectID($conn, $projectID) {
         
         
                 if(!mysqli_fetch_assoc($resultData)) {
-                        $result = true;
+                        $error = "invalidProject";
                 }
                 else{
-                     $result = false;
+                     $error = "";
                     }
-                return $result;
+                return $error;
                 mysqli_stmt_close($stmt);
             } 
 
 
-//------------------------------------------------------------------------
-
-
 
 //------------------------------------------------------------------------
 
-//Personalnummer und ProjektID muss es geben. Muss mit $conn sein siehe oben. Beides
 
+// PNR nicht vorhanden
 function invalidpnr($conn, $pnr) {
         $sql =  "SELECT * FROM employee WHERE PNR = ?;";
         $stmt = mysqli_stmt_init($conn);                
@@ -317,6 +285,7 @@ function invalidpnr($conn, $pnr) {
         mysqli_stmt_close($stmt);
         }
 
+        //Kombination aus PNR und Projekt existiert bereits
         function alreadyExisting($conn, $pnr, $projectID) {
                 $sql =  "SELECT * FROM employeeproject WHERE PNR != ? AND ProjectID != ?;";
                 $stmt = mysqli_stmt_init($conn);                
@@ -341,6 +310,7 @@ function invalidpnr($conn, $pnr) {
                 mysqli_stmt_close($stmt);
                 }
 
+                // Kombination aus PNR und ProjektID existiert noch nicht
                 function noSuchCombination($conn, $pnr, $projectID) {
                         $sql =  "SELECT * FROM employeeproject WHERE PNR = ? AND ProjectID = ?;";
                         $stmt = mysqli_stmt_init($conn);                
@@ -365,7 +335,7 @@ function invalidpnr($conn, $pnr) {
                         mysqli_stmt_close($stmt);
                         }                
                 
-
+// PNR und ProjektID verknüpfen
 function createConnection($conn, $pnr, $projectID) {
         $sql = "INSERT INTO employeeproject (PNR, ProjectID) VALUES (?, ?);";
         $stmt = mysqli_stmt_init($conn);
@@ -382,6 +352,7 @@ function createConnection($conn, $pnr, $projectID) {
 }
 }
 
+// PNR und ProjektID trennen
 function deleteConnection($conn, $pnr, $projectID) {
         $sql = "DELETE FROM employeeproject  WHERE PNR = ? AND ProjectID = ?;";
         $stmt = mysqli_stmt_init($conn);

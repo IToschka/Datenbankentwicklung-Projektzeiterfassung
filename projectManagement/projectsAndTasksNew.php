@@ -15,7 +15,7 @@
 
     <body>
         <?php 
-            $error = "";
+           $error = "";
 
             if(isset($_POST['button_createProject'])) {
 
@@ -28,24 +28,23 @@
                 $dateTimestamp = strtotime($date);
                 $beginDateTimestamp = strtotime($beginDate);
 
+
                            
-              if(invalidDate($dateTimestamp, $beginDateTimestamp) !== false) {
-                  header("location: ../projectsAndTasksNew.php?error=invalidDate");
-                  exit();
-              }
+              $error = invalidDate($dateTimestamp, $beginDateTimestamp);
               
-            $error = titleAlreadyExists($conn, $projectName);
-              /*if(titleAlreadyExists($conn, $projectName) !== false) {
-                header("location: ../projectsAndTasksNew.php?error=titleAlreadyExists");
-                exit();
-            }*/
-            
+                if ($error == "") {
+                    $error = titleAlreadyExists($conn, $projectName);
+                }
+                // Projekt speichern
                 if ($error == "") {
                     $error = createProject($conn, $projectName, $beginDate, $projectManager);
               
-                }  
+                }
+                $_SESSION['projectID'] = getProjectID($conn);
+                
             }
         ?>
+        <!-- ruft sich selbst auf -->
         <form action="projectsAndTasksNew.php" method="POST" > 
           <table>
                   <tbody>
@@ -77,6 +76,7 @@
          
          <form action="includes/projectAndTasksScript.inc.php" method="POST" > <table> <tbody>
                <?php 
+               //Übernimmt die amountTasks und gibt so viele Aufgabenfelder aus wie angegeben
                if(isset($_POST['button_createProject'])) {
                 $amountTasks = $_POST['amountTasks'];
                $_SESSION['amountTasks'] = $amountTasks;
@@ -107,18 +107,6 @@
                 echo "<p>Das Projekt wurde erfolgreich angelegt!</p>";
             }
         
-        /*if(isset($_GET["error"])){
-             if ($_GET["error"] == "invalidDate") {
-                 echo "<p>Das angegebene Datum liegt in der Vergangenheit!</p>";
-             } 
-            elseif ($_GET["error"] == "titleAlreadyExists") {
-                echo "<p>Ein Projekt mit diesem Titel existiert bereits!</p>";
-            }
-             elseif ($_GET["error"] == "none") {
-                 echo "<p>Das Projekt wurde erfolgreich angelegt!</p>";
-             }
-
-         }*/
 
          ?>
 

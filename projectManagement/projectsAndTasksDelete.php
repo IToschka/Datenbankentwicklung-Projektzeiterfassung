@@ -11,7 +11,7 @@
     <head>
    <meta charset="utf-8">
    <link rel="stylesheet" href="../css/style.css">
-   <title>Bestehendes Projekt kopieren</title>
+   <title>Bestehendes Projekt löschen</title>
     </head>
 
     <body>
@@ -24,12 +24,9 @@
 
             <?php
  if(isset($_GET["error"])){
-    if ($_GET["error"] == "invalidDate") {
-        echo "<p>Das angegebene Datum liegt in der Vergangenheit!</p>";
+    if ($_GET["error"] == "invalidProjectId") {
+        echo "<p>Die eingegeben Projek ID existiert nicht!</p>";
     }
-elseif ($_GET["error"] == "none") {
-    echo "<p>Das Projekt wurde erfolgreich gelöscht!</p>";
-}
  }
             ?>
 

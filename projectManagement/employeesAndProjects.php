@@ -34,6 +34,7 @@ include_once '../includes/loginHeader.inc.php'
         
         </form>
 
+
         <?php
 
 if(isset($_GET["error"])){
@@ -58,6 +59,11 @@ elseif ($_GET["error"] == "alreadyExisting") {
 }
 
         ?>
+
+<form action="../includes/footer.inc.php" method="POST" >
+            <input type="submit" name="button_BackToMenu" value="Zurück zum Menü">
+            <input type="submit" name="button_LogOut" value = "Abmelden">
+            </form>
     
     </body>
 

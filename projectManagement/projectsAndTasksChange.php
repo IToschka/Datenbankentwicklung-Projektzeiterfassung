@@ -19,31 +19,25 @@
         <?php include_once '../includes/dbh.inc.php';
                 include_once 'includes/projectManagementFunctions.inc.php';
         
+        $error = "";
         $projectName = "";
+        $projectManager = "";
         if(isset($_POST['button_choose'])) {
-         $projectID = $_POST['projectID']; 
-
-    
-           
-           /* if(invalidProjectID($conn, $projectID) !== false) {
-                header("location: ../projectsAndTasksChange.php?error=invalidProjectID");
-                exit();
-            } 
-         if(noNegativeProjectID($projectID) !== false) {
-            header("location: ../projectsAndTasksChange.php?error=noNegativeProjectID");
-            exit();
-         }
+            $projectID = $_POST['projectID']; 
+            $_SESSION['projectID'] = $projectID;
+            $projectManager = $_POST['projectManager'];
          
-         if(noAccess($conn, $projectID, $projectManager) !== false) {
-            header("location: ../projectsAndTasksChange.php?error=noAccess");
-            exit(); 
-         } */
+           /*  $error = noAccess($conn, $projectID, $projectManager);
+           /* header("location: ../projectsAndTasksChange.php?error=noAccess");
+            exit(); */
+          
         
-        fillProject($conn, $projectID); 
+         if($error == "") {
+        $error = fillProject($conn, $projectID); 
         $projectName = $_SESSION['projectName'];
         $beginDate = $_SESSION['beginDate'];
-
         }
+    }
                 
                      ?>
         <form method="post" action="projectsAndTasksChange.php">
@@ -58,11 +52,11 @@
                   <tbody>
                       <tr>
                           <td>Projekttitel:</td>
-                          <td><textarea name="projectName"  maxlength="50" cols="50"><?php echo $projectName; ?></textarea></td>
+                          <td><textarea name="projectName" texarea readonly ="readonly"  maxlength="50" cols="50"><?php echo $projectName; ?></textarea></td>
                       </tr>
                       <tr>
                           <td>Starttermin:</td>
-                          <td><input type="date" name="beginDate" value='<?php  echo $beginDate; ?>'></td>
+                          <td><input type="date" texarea readonly ="readonly" name="beginDate" value='<?php  echo $beginDate; ?>'></td>
                       </tr>
                       
                       <tr>
@@ -74,11 +68,12 @@
 
                 <?php 
         if(isset($_POST['button_addTask'])) {
-            $projectID = $_POST['projectID'];
-            $_SESSION['projectID'] = $projectID;
+            $projectID = $_SESSION['projectID'];
+            //$_SESSION['projectID'] = $projectID;
             
-            getTaskID($conn, $projectID);
-            $projectTaskID = $row['ProjectTaskID'];
+            
+            $projectTaskID = getTaskID($conn, $projectID);
+            //$projectTaskID = $row['ProjectTaskID'];
             $id = $projectTaskID +1;
 
 
@@ -97,21 +92,21 @@
 
          <?php
 
-        if(isset($_GET["error"])){
-             if ($_GET["error"] == "invalidProjectID") {
+    
+             if ($error == "invalidProjectID") {
                  echo "<p>Zur angegebenen Projekt ID besteht kein Projekt!</p>";
              } 
-            elseif ($_GET["error"] == "noAccess") {
+            elseif ($error == "noAccess") {
                 echo "<p>Projektleiter dürfen nur ihre eingenen Projekte ändern!</p>";
             }
-            elseif ($_GET["error"] == "invalidDate") {
+            elseif ($error == "invalidDate") {
                 echo "<p>Das angegebene Datum liegt in der Vergangenheit!</p>";
             }
-             elseif ($_GET["error"] == "none") {
+             elseif ($error == "none") {
                  echo "<p>Das Projekt wurde erfolgreich geändert!</p>";
              }
 
-         }
+         
 
          ?>
 

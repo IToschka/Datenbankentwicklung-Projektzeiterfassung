@@ -24,20 +24,26 @@
         
 
         $projectID = $_POST['projectID'];
+        
+        // Projekt mit Daten füllen
         fillProject($conn, $projectID); 
         $projectName = $_SESSION['projectName'];
         $beginDate = $_SESSION['beginDate'];
 
+        $tasks = "";
+        // Aufgaben mit Daten füllen
         fillTasks($conn, $projectID);
         $tasks = $_SESSION['tasks'];
 
         }
                 
                      ?>
+         <!-- Ruft sich selbst auf -->            
         <form method="post" action="projectsAndTasksCopy.php">
         <p>ProjektID:<input type="number" name="projectID" required min="1"></p>
             <input type="submit" name="button_choose" value="Bestätigen">
             </form>
+
         <br>
         <br>
        <form method="POST" action="includes/projectAndTasksSkript.inc.php">
@@ -59,7 +65,8 @@
                       </tr>
 
     <?php 
-            $tasks ="";
+            //Aufgaben füllen je nach dem wie lang das task array ist
+            $tasks = $_SESSION['tasks'];
             if ($tasks != null) {
                for($i=0; $i < count($tasks); $i++) { ?>          
                 <tr> <td><?php
@@ -73,7 +80,8 @@
                   </tbody>
               </table>
 
-            <input type="submit" name="button_copy" value="Eingaben speichern">
+            <input type="submit" name="button_copyProject" value="Projekt speichern">
+            <input type="submit" name="button_createTasks" value="Aufgaben speichern">
             
          </form>
          </body>
@@ -87,13 +95,13 @@
             elseif ($_GET["error"] == "noAccess") {
                 echo "<p>Die PNR des Projektleiters muss darf nur nummerische Werte enthalten!</p>";
             }
-            elseif ($_GET["error"] == "titleAlreadyExists") {
-                echo "<p>Es existiert bereits ein Projekt mit diesem Titel!</p>";
+            if ($error == "invalidDate") {
+                echo "<p>Das angegebene Datum liegt in der Vergangenheit!</p>";
+            } 
+            elseif ($error == "titleAlreadyExists") {
+                echo "<p>Ein Projekt mit diesem Titel existiert bereits!</p>";
             }
-            elseif ($_GET["error"] == "invalidDate") {
-                echo "<p>Es existiert bereits ein Projekt mit diesem Titel!</p>";
-            }
-             elseif ($_GET["error"] == "none") {
+             elseif ($error == "none") {
                  echo "<p>Das Projekt wurde erfolgreich angelegt!</p>";
              }
 
