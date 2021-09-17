@@ -91,7 +91,8 @@
              if ($_GET["error"] == "invalidProjectID") {
                  echo "<p>Zur angegebenen Projekt ID besteht kein Projekt!</p>";
              }
-            elseif ($_GET["error"] == "noAccess") {
+            elseif ($_GET["error"] == "
+            ") {
                 echo "<p>Die PNR des Projektleiters muss darf nur nummerische Werte enthalten!</p>";
             }
             if ($error == "invalidDate") {

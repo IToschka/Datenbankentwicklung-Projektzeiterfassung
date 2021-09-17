@@ -1,11 +1,12 @@
 <?php
+//Autor der Datei Katja Frei
+
 
 include_once '../includes/loginHeader.inc.php'
 
 ?>
 
 <!DOCTYPE html>
-<!-- Autor: Katja Frei -->
 <html>
 
 <head>

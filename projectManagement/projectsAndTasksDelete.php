@@ -1,5 +1,6 @@
 <?php
-    //Autor: Katja Frei
+    //Autor der Datei Katja Frei
+
     include_once '../menu/projectsAndTasksMenu.php';
     
 
@@ -23,11 +24,13 @@
 
 
             <?php
- if(isset($_GET["error"])){
     if ($_GET["error"] == "invalidProjectId") {
         echo "<p>Die eingegeben Projek ID existiert nicht!</p>";
     }
- }
+    elseif ($_GET["error"] == "noAccess") {
+        echo "<p>Die PNR des Projektleiters darf nur nummerische Werte enthalten!</p>";
+    }
+ 
             ?>
 
 </body>
